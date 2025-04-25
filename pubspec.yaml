@@ -1,0 +1,54 @@
+name: snibbo_app
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  auto_route: ^10.0.1
+  dio: ^5.8.0+1
+  toastification: ^3.0.2
+  bloc: ^9.0.0
+  equatable: ^2.0.7
+  flutter_animate: ^4.5.2
+  lottie: ^3.3.1
+  persistent_bottom_nav_bar: ^6.2.1
+  flutter_slidable: ^4.0.0
+  cached_network_image: ^3.4.1
+  webview_flutter: ^4.11.0
+  image_picker: ^1.1.2
+  flutter_native_splash: ^2.4.6
+  google_fonts: ^6.2.1
+  flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.5.3
+  smooth_page_indicator: ^1.2.1
+  flutter_screenutil: ^5.9.3
+  flutter_bloc: ^9.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  auto_route_generator: ^10.0.1
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: poppinsBold
+      fonts:
+        - asset: "assets/Poppins-bold.ttf"
+
