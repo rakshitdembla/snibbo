@@ -39,7 +39,7 @@ class _GeneralPageState extends State<GeneralPage> {
   Widget build(BuildContext context) {
     /*
     To do - Remove watch after final routings, use read in isDark
-    @Pending Since - 26-April-2025 
+    @Pending since - 26-April-2025 
     */
     
     final isDark = context.watch<ThemeBloc>().state is DarkThemeState;

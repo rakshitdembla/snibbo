@@ -4,12 +4,19 @@ class MyColors {
   MyColors._();
 
   // Light Theme Colors
-  static const LinearGradient gradient = LinearGradient(
-    colors: [Color(0xFF74C0FC), Color(0xFFF0F9FF)],
-    begin: Alignment.topLeft,
-    end: Alignment.centerRight,
-    stops: [0.1, 0.9],
-  );
+static const LinearGradient gradient = LinearGradient(
+  colors: [
+    Color(0xFF00C6FF), 
+    Color(0xFF0072FF),
+    Color(0xFF5B00FF), 
+    Color(0xFF0047FF),
+    Color(0xFF0026FF), 
+    Color(0xFF0011FF), 
+  ],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  stops: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+);
 
   static const Color primary = Colors.white;
   static const Color secondary = Color(0xFF339CFF);

@@ -15,6 +15,7 @@ class Themedata {
       primaryColor: MyColors.primary,
       primaryIconTheme: IconThemeData(color: MyColors.black),
       textTheme: MyFonts.blackTextTheme(),
+      
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           iconColor: WidgetStateProperty.all(MyColors.secondary),

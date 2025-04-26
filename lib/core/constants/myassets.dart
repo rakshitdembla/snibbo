@@ -5,9 +5,19 @@ class MyAssets {
   static String logoBig = "assets/hd_high_res.png";
   static String darkTextLogo = "assets/black_text_logo.png";
   static String whiteTextLogo = "assets/white_text_logo.png";
+  static String whiteGhost = "assets/white_ghost.png";
+  static String blackGhost = "assets/black_ghost.png";
+  static String blueGhost = "assets/blue_ghost.png";
+  static String gradient = "assets/gradient.png";
+  static String demoUser = "assets/demo.png";
 
   static String daySwitch = "assets/day_switch.png";
   static String nightSwitch = "assets/night_switch.png";
+
+  static String chatBubble = "assets/chat-bubble.png";
+  static String chatBubbleWhite = "assets/chat-bubble-white.png";
+  static String postBlack = "assets/post_black.png";
+  static String postWhite = "assets/post_white.png";
 
   // Memoji assets (webp format)
   static String chillMemoji = "assets/chill_memoji.webp";
