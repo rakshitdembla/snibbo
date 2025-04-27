@@ -6,10 +6,12 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 class ElevatedCTA extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String buttonName;
+  final bool isShort;
   const ElevatedCTA({
     super.key,
     required this.onPressed,
     required this.buttonName,
+    required this.isShort,
   });
 
   @override
@@ -17,8 +19,8 @@ class ElevatedCTA extends StatelessWidget {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
     return SizedBox(
-      width: width,
-      height: height * 0.055,
+      width: isShort ? width * 0.44 : width,
+      height: isShort ? height * 0.04 : height * 0.055,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -32,8 +34,8 @@ class ElevatedCTA extends StatelessWidget {
           style: TextStyle(
             fontFamily: MyFonts.assetsFontFamily(),
             color: MyColors.white,
-            fontWeight: FontWeight.w900,
-            fontSize: height * 0.020,
+            fontWeight: isShort ? FontWeight.w600 : FontWeight.w900,
+            fontSize: isShort ? height * 0.0165 : height * 0.020,
           ),
         ),
       ),

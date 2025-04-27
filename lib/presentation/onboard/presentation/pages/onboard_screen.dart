@@ -133,6 +133,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   }
                 },
                 buttonName: "Next",
+                isShort: false,
               ),
               SizedBox(height: height * 0.015),
               ElevatedOutlinedCTA(
@@ -140,6 +141,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   context.router.push(RegisterScreenRoute());
                 },
                 buttonName: "Skip",
+                isShort: false,
               ),
 
               SizedBox(height: height * 0.03),

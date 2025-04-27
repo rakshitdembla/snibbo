@@ -1,22 +1,27 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widget/post_action_icon.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widget/user_story_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
+import 'package:snibbo_app/test_list.dart';
 
 class PostWidget extends StatefulWidget {
-  const PostWidget({super.key});
+  final String postContentUrl;
+  const PostWidget({super.key,required this.postContentUrl});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
 
 class _PostWidgetState extends State<PostWidget> {
+    final testList = TestList.test();
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
@@ -34,32 +39,38 @@ class _PostWidgetState extends State<PostWidget> {
           child: Row(
             children: [
               UserStoryWidget(
+                profileUrl: MyAssets.demoUser,
                 height: height * 0.05,
                 margins: EdgeInsets.only(right: width * 0.02),
                 width: width * 0.1,
                 outsidePadding: EdgeInsets.all(width * 0.004),
                 insidePadding: EdgeInsets.all(width * 0.004),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Rakshit Dembla",
-                    style: TextStyle(
-                      fontSize: width * 0.033,
-                      fontWeight: FontWeight.w700,
+              GestureDetector(
+                onTap: (){
+                  context.router.push(UserProfileScreenRoute());
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Rakshit Dembla",
+                      style: TextStyle(
+                        fontSize: width * 0.033,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: height * 0.0025),
-                  Text(
-                    "@rakshitdembla",
-                    style: TextStyle(
-                      fontSize: width * 0.030,
-                      color: MyColors.grey,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(height: height * 0.0025),
+                    Text(
+                      "@rakshitdembla",
+                      style: TextStyle(
+                        fontSize: width * 0.030,
+                        color: MyColors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Spacer(),
               IconButton(
@@ -72,7 +83,11 @@ class _PostWidgetState extends State<PostWidget> {
             ],
           ),
         ),
-        Image.asset(MyAssets.demoUser, width: width),
+        GestureDetector(
+          onDoubleTap: () {
+            
+          },
+          child: Image.asset(widget.postContentUrl, width: width)),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: width * 0.02,

@@ -14,6 +14,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ForgotPasswordScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: OnboardScreenRoute.page),
+    AutoRoute(page: UserProfileScreenRoute.page),
     AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
   ];
 

@@ -8,6 +8,7 @@ import 'package:snibbo_app/core/widget/post_widget.dart';
 import 'package:snibbo_app/core/widget/user_story_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/test_list.dart';
 
 @RoutePage()
 class FeedScreen extends StatefulWidget {
@@ -18,100 +19,123 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+    final testList = TestList.test();
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return Scaffold(
-      appBar: AppBar(
-        leadingWidth: width * 0.17,
-        leading: Container(
-          alignment: Alignment.center,
-          child: Image.asset(
-            isDark ? MyAssets.whiteGhost : MyAssets.blackGhost,
-            height: height * 0.09,
-            width: width * 0.09,
-          ),
-        ),
-        actions: [
-          Image.asset(
-            isDark ? MyAssets.postWhite : MyAssets.postBlack,
-            height: height * 0.067,
-            width: width * 0.067,
-          ),
-          SizedBox(width: width * 0.04),
-
-          Stack(
-            children: [
-              Image.asset(
-                isDark ? MyAssets.chatBubbleWhite : MyAssets.chatBubble,
-                height: height * 0.077,
-                width: width * 0.077,
-              ),
-              Positioned(
-                top: height * 0.01,
-                right: width * 0,
-                child: CircleAvatar(
-                  backgroundColor: Colors.red,
-                  radius: width * 0.02,
-                  child: Text(
-                    "9+",
-                    style: TextStyle(
-                      color: MyColors.white,
-                      fontSize: width * 0.02,
-                      fontWeight: FontWeight.w600,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: height * 0.08,
+              flexibleSpace: FlexibleSpaceBar(
+                background: SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          isDark ? MyAssets.whiteGhost : MyAssets.blackGhost,
+                          height: height * 0.09,
+                          width: width * 0.09,
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Icon(
+                            Icons.add_box_outlined,
+                            size: width * 0.075,
+                            color: isDark ? MyColors.white : MyColors.black,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.05),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Stack(
+                            children: [
+                              Icon(
+                                Icons.send,
+                                size: width * 0.075,
+                                color: isDark ? MyColors.white : MyColors.black,
+                              ),
+                              Positioned(
+                                top: height * 0,
+                                right: width * 0,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.red,
+                                  radius: width * 0.018,
+                                  child: Text(
+                                    "9+",
+                                    style: TextStyle(
+                                      color: MyColors.white,
+                                      fontSize: width * 0.018,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
-          SizedBox(width: width * 0.03),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: height * 0.15,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      UserStoryWidget(
-                        outsidePadding : EdgeInsets.all(width * 0.007),insidePadding : EdgeInsets.all(width * 0.005),
-                        margins: EdgeInsets.fromLTRB(
-                          width * 0.023,
-                          height * 0.015,
-                          width * 0.023,
-                          height * 0.004,
-                        ),
-                        height: height * 0.10,
-                        width: width * 0.20,
-                      ),
+            ),
 
-                      Text(
-                        "rakshit_dembla...",
-                        style: TextStyle(fontSize: width * 0.024),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: height * 0.14,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: testList.length,
+                  itemBuilder: (context, index) {
+                    debugPrint("Story builds $index");
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        left: index == 0 ? width * 0.015 : 0,
                       ),
-                    ],
-                  );
-                },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          UserStoryWidget(
+                            profileUrl: testList[index],
+                            outsidePadding: EdgeInsets.all(width * 0.007),
+                            insidePadding: EdgeInsets.all(width * 0.005),
+                            margins: EdgeInsets.fromLTRB(
+                              width * 0.023,
+                              height * 0.015,
+                              width * 0.023,
+                              height * 0.004,
+                            ),
+                            height: height * 0.10,
+                            width: width * 0.20,
+                          ),
+                          Text(
+                            "rakshit_dembla...",
+                            style: TextStyle(fontSize: height * 0.012),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 5,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return PostWidget();
-              },
+
+            SliverList(
+              delegate: SliverChildBuilderDelegate(childCount: testList.length, (
+                context,
+                index,
+              ) {
+                debugPrint("Post builds $index");
+                return PostWidget(postContentUrl: testList[index],);
+              }),
             ),
           ],
         ),

@@ -15,7 +15,7 @@ class Themedata {
       primaryColor: MyColors.primary,
       primaryIconTheme: IconThemeData(color: MyColors.black),
       textTheme: MyFonts.blackTextTheme(),
-      
+
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           iconColor: WidgetStateProperty.all(MyColors.secondary),
@@ -24,7 +24,7 @@ class Themedata {
       iconTheme: IconThemeData(color: MyColors.secondaryDense),
       listTileTheme: ListTileThemeData(
         textColor: MyColors.black,
-        iconColor: MyColors.secondaryDense
+        iconColor: MyColors.secondaryDense,
       ),
       appBarTheme: AppBarTheme(
         titleTextStyle: TextStyle(
@@ -52,11 +52,11 @@ class Themedata {
       iconTheme: IconThemeData(),
       listTileTheme: ListTileThemeData(
         textColor: MyColors.white,
-        iconColor: MyColors.darkSecondary,
+        iconColor: MyColors.secondary,
       ),
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
-          iconColor: WidgetStateProperty.all(MyColors.darkSecondary),
+          iconColor: WidgetStateProperty.all(MyColors.secondary),
         ),
       ),
       appBarTheme: AppBarTheme(

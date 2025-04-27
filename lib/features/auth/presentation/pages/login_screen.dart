@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: height * 0.0070),
               Align(
                 alignment: Alignment.centerRight,
-                child: InkWell(
+                child: GestureDetector(
                   onTap: () {
                     context.router.push(ForgotPasswordScreenRoute());
                   },
@@ -106,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context.router.push(SettingsScreenRoute());
                 },
                 buttonName: "Log In",
+                isShort: false,
               ),
             ],
           ),

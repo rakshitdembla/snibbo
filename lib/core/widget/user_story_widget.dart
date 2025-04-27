@@ -11,9 +11,11 @@ class UserStoryWidget extends StatelessWidget {
   final double width;
   final EdgeInsetsGeometry insidePadding;
   final EdgeInsetsGeometry outsidePadding;
+  final String profileUrl;
 
   const UserStoryWidget({
     super.key,
+    required this.profileUrl,
     required this.height,
     required this.margins,
     required this.width,
@@ -40,7 +42,7 @@ class UserStoryWidget extends StatelessWidget {
           color: isDark ? MyColors.darkPrimary : MyColors.primary,
         ),
         child: ClipOval(
-          child: Image.asset(MyAssets.demoUser, fit: BoxFit.cover),
+          child: Image.asset(profileUrl, fit: BoxFit.cover),
         ),
       ),
     );

@@ -76,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 maxLength: 30,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon: Icons.person
+                prefixIcon: Icons.person,
               ),
               SizedBox(height: height * 0.02),
               MyTextField(
@@ -88,9 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 maxLength: 20,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon: 
-                  Icons.alternate_email,
-                
+                prefixIcon: Icons.alternate_email,
               ),
               SizedBox(height: height * 0.02),
 
@@ -103,9 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 maxLength: 64,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon:
-                  Icons.email_rounded,
-                
+                prefixIcon: Icons.email_rounded,
               ),
               SizedBox(height: height * 0.02),
               MyTextField(
@@ -117,11 +113,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 maxLength: 32,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon: Icons.lock
+                prefixIcon: Icons.lock,
               ),
 
               SizedBox(height: height * 0.040),
-              ElevatedCTA(onPressed: () {}, buttonName: "Sign Up"),
+              ElevatedCTA(
+                onPressed: () {},
+                buttonName: "Sign Up",
+                isShort: false,
+              ),
             ],
           ),
         ),

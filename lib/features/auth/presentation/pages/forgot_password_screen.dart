@@ -31,14 +31,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
     return Scaffold(
-            appBar: AppBar(
+      appBar: AppBar(
         scrolledUnderElevation: 0.0,
         automaticallyImplyLeading: true,
         iconTheme: IconThemeData(color: MyColors.black),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(left: width * 0.030, right: width * 0.030,top: height * 0.0050),
+          padding: EdgeInsets.only(
+            left: width * 0.030,
+            right: width * 0.030,
+            top: height * 0.0050,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -49,7 +53,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   h2: MyStrings.forgotPasswordH2,
                 ),
               ),
-                    SizedBox(height: height * 0.040),
+              SizedBox(height: height * 0.040),
               MyTextField(
                 hintText: MyStrings.forgotPassHint,
                 label: "Email",
@@ -59,13 +63,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 maxLength: 64,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon: 
-                  Icons.email_rounded,
-                 
-             
+                prefixIcon: Icons.email_rounded,
               ),
               SizedBox(height: height * 0.040),
-              ElevatedCTA(onPressed: () {}, buttonName: "Send Reset Link"),
+              ElevatedCTA(
+                onPressed: () {},
+                buttonName: "Send Reset Link",
+                isShort: false,
+              ),
             ],
           ),
         ),
