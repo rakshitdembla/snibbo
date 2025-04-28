@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widget/tab_bar.dart';
-import 'package:snibbo_app/core/widget/user_profile_widget.dart';
+import 'package:snibbo_app/core/widgets/tab_bar.dart';
+import 'package:snibbo_app/core/widgets/user_profile_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/pages/tabs/user_posts_tab.dart';
 

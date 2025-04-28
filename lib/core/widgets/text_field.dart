@@ -60,10 +60,7 @@ class _MyTextFieldState extends State<MyTextField> {
             cursorErrorColor: MyColors.grey,
             controller: widget.textEditingController,
             focusNode: widget.focusNode,
-            style: TextStyle(
-              color: MyColors.grey,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(color: MyColors.grey, fontWeight: FontWeight.w400),
 
             onSubmitted: widget.onSubmit,
             maxLength: widget.maxLength,
@@ -74,7 +71,7 @@ class _MyTextFieldState extends State<MyTextField> {
               hintText: widget.hintText,
               hintStyle: TextStyle(
                 color: MyColors.lowOpacitySecondary,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -82,17 +79,14 @@ class _MyTextFieldState extends State<MyTextField> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: MyColors.borders, width: 1.3),
+                borderSide: BorderSide(color: MyColors.searchField),
               ),
               filled: true,
               counter: SizedBox.shrink(),
-              prefixIcon: Icon(widget.prefixIcon, color: MyColors.secondary),
+              prefixIcon: Icon(widget.prefixIcon, color: MyColors.secondary,
+              ),
               iconColor: MyColors.secondary,
               fillColor: isDark ? MyColors.darkTextFields : MyColors.textFields,
-              focusColor: MyColors.secondaryUltraLight,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
           ),
         ),

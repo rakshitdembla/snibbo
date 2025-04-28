@@ -6,7 +6,7 @@ import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/post_action_icon.dart';
-import 'package:snibbo_app/core/widget/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/user_story_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';

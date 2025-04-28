@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widget/elevated_cta.dart';
-import 'package:snibbo_app/core/widget/text_field.dart';
+import 'package:snibbo_app/core/widgets/elevated_cta.dart';
+import 'package:snibbo_app/core/widgets/text_field.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import '../../../../core/theme/mycolors.dart';
-import '../../../../core/widget/text_span_bottom.dart';
+import '../../../../core/widgets/text_span_bottom.dart';
 
 @RoutePage()
 class RegisterScreen extends StatefulWidget {

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widget/elevated_cta.dart';
-import 'package:snibbo_app/core/widget/h1_h2_title.dart';
-import 'package:snibbo_app/core/widget/text_field.dart';
+import 'package:snibbo_app/core/widgets/elevated_cta.dart';
+import 'package:snibbo_app/core/widgets/h1_h2_title.dart';
+import 'package:snibbo_app/core/widgets/text_field.dart';
 
 @RoutePage()
 class ForgotPasswordScreen extends StatefulWidget {

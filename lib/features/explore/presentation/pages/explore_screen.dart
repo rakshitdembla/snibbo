@@ -1,9 +1,14 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import 'package:snibbo_app/test_list.dart';
 
 @RoutePage()
@@ -22,6 +27,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -31,14 +37,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 (context, isScrolled) => [
                   SliverAppBar(
                     title: ListTile(
+                      onTap: () {
+                        context.router.push(SearchScreenRoute());
+                      },
                       minTileHeight: height * 0.04,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       dense: true,
                       leading: Icon(
-                        Icons.search_outlined,
-                        color: MyColors.black,
+                        Icons.search_rounded,
+                        color: isDark ? MyColors.white : MyColors.black,
                       ),
                       title: Text(
                         "Search",
@@ -47,7 +56,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           fontSize: height * 0.02,
                         ),
                       ),
-                      tileColor: const Color.fromARGB(49, 161, 161, 161),
+                      tileColor: MyColors.searchField,
                     ),
                   ),
                 ],

@@ -36,4 +36,5 @@ class MyColors {
   
   static const Color black = Colors.black;
   static const Color white = Colors.white;
+  static const Color searchField =  Color.fromARGB(49, 161, 161, 161);
 }
