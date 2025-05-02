@@ -12,7 +12,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]);
+  ]); 
   final brightness =
       WidgetsBinding.instance.platformDispatcher.platformBrightness;
   runApp(
@@ -24,7 +24,6 @@ void main() async {
       ],
       child: MyApp(),
     ),
-    
   );
 }
 

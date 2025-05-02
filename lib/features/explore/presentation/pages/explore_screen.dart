@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +65,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
               itemCount: testList.length,
 
               itemBuilder: (context, index) {
-                return Image.asset(testList[index], fit: BoxFit.cover);
+                return GestureDetector(
+                  onTap: () {
+                    context.router.push(
+                      PostsViewScreenRoute(
+                        posts: testList,
+                        appbarTitle: "Explore",
+                      ),
+                    );
+                  },
+                  child: Image.asset(testList[index], fit: BoxFit.cover),
+                );
               },
               gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,

@@ -56,22 +56,27 @@ class _MyTextFieldState extends State<MyTextField> {
         SizedBox(
           width: width,
           child: TextField(
-            cursorColor: MyColors.grey,
-            cursorErrorColor: MyColors.grey,
+            cursorColor: MyColors.secondaryDense,
+            cursorErrorColor: MyColors.secondaryDense,
             controller: widget.textEditingController,
             focusNode: widget.focusNode,
-            style: TextStyle(color: MyColors.grey, fontWeight: FontWeight.w400),
-
+            style: TextStyle(
+              color: MyColors.white,
+              fontWeight: FontWeight.w400,
+              fontSize: height * 0.02,
+            ),
             onSubmitted: widget.onSubmit,
             maxLength: widget.maxLength,
             obscureText: widget.isPassword,
             textAlign: TextAlign.start,
             maxLines: widget.maxLines,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: height * 0.02),
               hintText: widget.hintText,
               hintStyle: TextStyle(
                 color: MyColors.lowOpacitySecondary,
                 fontWeight: FontWeight.w400,
+                fontSize: height * 0.02,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -83,7 +88,10 @@ class _MyTextFieldState extends State<MyTextField> {
               ),
               filled: true,
               counter: SizedBox.shrink(),
-              prefixIcon: Icon(widget.prefixIcon, color: MyColors.secondary,
+              prefixIcon: Icon(
+                widget.prefixIcon,
+                color: MyColors.secondary,
+                size: height * 0.027,
               ),
               iconColor: MyColors.secondary,
               fillColor: isDark ? MyColors.darkTextFields : MyColors.textFields,

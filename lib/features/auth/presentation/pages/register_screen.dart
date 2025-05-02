@@ -47,98 +47,112 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0.0,
-        automaticallyImplyLeading: true,
-        iconTheme: IconThemeData(color: MyColors.black),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(left: width * 0.030, right: width * 0.030),
-          child: Column(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          scrolledUnderElevation: 0.0,
+          automaticallyImplyLeading: true,
+          iconTheme: IconThemeData(color: MyColors.black),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(left: width * 0.030, right: width * 0.030),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: height * 0.07),
+                  child: Image.asset(
+                    MyAssets.logoBig,
+                    height: height * 0.11,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                MyTextField(
+                  hintText: MyStrings.nameHintText,
+                  label: "Name",
+                  focusNode: nameNode,
+                  isPassword: false,
+                  textEditingController: nameController,
+                  maxLength: 30,
+                  maxLines: 1,
+                  onSubmit: (String value) {
+                    FocusScope.of(context).requestFocus(usernameNode);
+                  },
+                  prefixIcon: Icons.person,
+                ),
+                SizedBox(height: height * 0.02),
+                MyTextField(
+                  hintText: MyStrings.usernameHintText,
+                  label: "Username",
+                  focusNode: usernameNode,
+                  isPassword: false,
+                  textEditingController: usernameController,
+                  maxLength: 20,
+                  maxLines: 1,
+                  onSubmit: (String value) {
+                    FocusScope.of(context).requestFocus(emailNode);
+                  },
+                  prefixIcon: Icons.alternate_email,
+                ),
+                SizedBox(height: height * 0.02),
+
+                MyTextField(
+                  hintText: MyStrings.emailHintText,
+                  label: "Email",
+                  focusNode: emailNode,
+                  isPassword: false,
+                  textEditingController: emailController,
+                  maxLength: 64,
+                  maxLines: 1,
+                  onSubmit: (String value) {
+                    FocusScope.of(context).requestFocus(passNode);
+                  },
+                  prefixIcon: Icons.email_rounded,
+                ),
+                SizedBox(height: height * 0.02),
+                MyTextField(
+                  hintText: MyStrings.passwordHintText,
+                  label: "Password",
+                  focusNode: passNode,
+                  isPassword: true,
+                  textEditingController: passController,
+                  maxLength: 32,
+                  maxLines: 1,
+                  onSubmit: (String value) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  prefixIcon: Icons.lock,
+                ),
+
+                SizedBox(height: height * 0.040),
+                ElevatedCTA(
+                  onPressed: () {},
+                  buttonName: "Sign Up",
+                  isShort: false,
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(vertical: height * 0.015),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: height * 0.07),
-                child: Image.asset(
-                  MyAssets.logoBig,
-                  height: height * 0.11,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              MyTextField(
-                hintText: MyStrings.nameHintText,
-                label: "Name",
-                focusNode: nameNode,
-                isPassword: true,
-                textEditingController: nameController,
-                maxLength: 30,
-                maxLines: 1,
-                onSubmit: (String value) {},
-                prefixIcon: Icons.person,
-              ),
-              SizedBox(height: height * 0.02),
-              MyTextField(
-                hintText: MyStrings.usernameHintText,
-                label: "Username",
-                focusNode: usernameNode,
-                isPassword: true,
-                textEditingController: usernameController,
-                maxLength: 20,
-                maxLines: 1,
-                onSubmit: (String value) {},
-                prefixIcon: Icons.alternate_email,
-              ),
-              SizedBox(height: height * 0.02),
-
-              MyTextField(
-                hintText: MyStrings.emailHintText,
-                label: "Email",
-                focusNode: emailNode,
-                isPassword: false,
-                textEditingController: emailController,
-                maxLength: 64,
-                maxLines: 1,
-                onSubmit: (String value) {},
-                prefixIcon: Icons.email_rounded,
-              ),
-              SizedBox(height: height * 0.02),
-              MyTextField(
-                hintText: MyStrings.passwordHintText,
-                label: "Password",
-                focusNode: passNode,
-                isPassword: true,
-                textEditingController: passController,
-                maxLength: 32,
-                maxLines: 1,
-                onSubmit: (String value) {},
-                prefixIcon: Icons.lock,
-              ),
-
-              SizedBox(height: height * 0.040),
-              ElevatedCTA(
-                onPressed: () {},
-                buttonName: "Sign Up",
-                isShort: false,
+              TextSpanBottom(
+                actionTitle: "Log In",
+                onTap: () {
+                  context.router.push(LoginScreenRoute());
+                },
+                title: "Already have an account? ",
               ),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: height * 0.015),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextSpanBottom(
-              actionTitle: "Log In",
-              onTap: () {
-                context.router.push(LoginScreenRoute());
-              },
-              title: "Already have an account? ",
-            ),
-          ],
         ),
       ),
     );

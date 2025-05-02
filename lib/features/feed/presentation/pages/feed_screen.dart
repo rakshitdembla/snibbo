@@ -19,7 +19,7 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-    final testList = TestList.test();
+  final testList = TestList.test();
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
@@ -129,13 +129,13 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
 
             SliverList(
-              delegate: SliverChildBuilderDelegate(childCount: testList.length, (
-                context,
-                index,
-              ) {
-                debugPrint("Post builds $index");
-                return PostWidget(postContentUrl: testList[index],);
-              }),
+              delegate: SliverChildBuilderDelegate(
+                childCount: testList.length,
+                (context, index) {
+                  debugPrint("Post builds $index");
+                  return PostWidget(postContentUrl: testList[index]);
+                },
+              ),
             ),
           ],
         ),
