@@ -1,5 +1,4 @@
 class MyStrings {
-
   MyStrings._();
 
   static const appName = "Snibbo";
@@ -9,10 +8,10 @@ class MyStrings {
   static const nameHintText = "John Doe";
   static const usernameHintText = "john_doe_90";
 
-    static const forgotPassHint = "Email address";
+  static const forgotPassHint = "Email address";
 
   static const forgotPasswordH1 = "Forgot Password?";
   static const forgotPasswordH2 = "Let's help recover your account";
 
-
+  static const secureStorageToken = "tokenId";
 }

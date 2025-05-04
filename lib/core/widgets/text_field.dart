@@ -61,8 +61,8 @@ class _MyTextFieldState extends State<MyTextField> {
             controller: widget.textEditingController,
             focusNode: widget.focusNode,
             style: TextStyle(
-              color: MyColors.white,
-              fontWeight: FontWeight.w400,
+              color: isDark ? MyColors.white : MyColors.grey,
+              fontWeight: FontWeight.w500,
               fontSize: height * 0.02,
             ),
             onSubmitted: widget.onSubmit,

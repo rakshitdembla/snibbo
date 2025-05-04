@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
@@ -34,60 +35,79 @@ class UiUtils {
     );
   }
 
-  static void errorToast(String title,bool isDark,String description,BuildContext context) {
+  static void showToast(
+    String title,
+    bool isDark,
+    String description,
+    BuildContext context,
+  ) {
+    final width = screenWidth(context);
+    final height = screenWidth(context);
     toastification.show(
-  type: ToastificationType.error,
-  style: ToastificationStyle.flat,
-  autoCloseDuration: const Duration(seconds: 2),
-  title: Text(title,style: TextStyle(
-    color: isDark ? MyColors.white : MyColors.black, fontSize: screenWidth(context) * 0.03
-  ),),
-  description: Text(description,style: TextStyle(
-    color: MyColors.grey,
-    fontSize: screenWidth(context) * 0.02
-  ),),
-  alignment: Alignment.topRight,
-  direction: TextDirection.ltr,
-  animationDuration: const Duration(milliseconds: 300),
-  animationBuilder: (context, animation, alignment, child) {
-    return FadeTransition(
-      opacity: animation,
-      child: child,
+      type: ToastificationType.error,
+      style: ToastificationStyle.minimal,
+      autoCloseDuration: const Duration(seconds: 3),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: isDark ? MyColors.white : MyColors.black,
+          fontSize: width * 0.04,
+        ),
+      ),
+      description: Text(
+        description,
+        style: TextStyle(color: MyColors.grey, fontSize: width * 0.03),
+      ),
+      alignment: Alignment.bottomCenter,
+      direction: TextDirection.ltr,
+      animationDuration: const Duration(milliseconds: 300),
+      animationBuilder: (context, animation, alignment, child) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+      icon: Icon(Icons.error_outline),
+      showIcon: true,
+      primaryColor: Colors.red,
+      backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
+
+      padding: EdgeInsets.symmetric(
+        horizontal: width * 0.03,
+        vertical: height * 0.03,
+      ),
+      margin: EdgeInsets.symmetric(
+        horizontal: width * 0.03,
+        vertical: height * 0.03,
+      ),
+      closeButton: ToastCloseButton(
+        buttonBuilder:
+            (context, onClose) => Align(
+              alignment: Alignment.center,
+              child: InkWell(
+                onTap: onClose,
+                child: Icon(
+                  Icons.close,
+                  size: width * 0.05,
+                  color: const Color.fromARGB(133, 124, 123, 123),
+                ),
+              ),
+            ),
+      ),
+
+      borderRadius: BorderRadius.circular(12.r),
+      showProgressBar: true,
+      progressBarTheme: ProgressIndicatorThemeData(
+        linearTrackColor: MyColors.secondaryGrey,
+        color: Colors.red,
+        linearMinHeight: height * 0.004,
+        borderRadius: BorderRadius.circular(50.r),
+      ),
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+      applyBlurEffect: true,
+      borderSide: BorderSide(
+        width: 0,
+        color: isDark ? MyColors.refresh : MyColors.darkPrimary,
+      ),
     );
-  },
-  icon: Icon(Icons.check,),
-  showIcon: true, 
-  primaryColor: Colors.green,
-  backgroundColor: isDark ? MyColors.darkPrimary :  MyColors.primary,
-  foregroundColor: Colors.black,
-  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-  borderRadius: BorderRadius.circular(12),
-  boxShadow: const [
-    BoxShadow(
-      color: Color(0x07000000),
-      blurRadius: 16,
-      offset: Offset(0, 16),
-      spreadRadius: 0,
-    )
-  ],
-  showProgressBar: true,
-  closeButton: ToastCloseButton(
-    showType: CloseButtonShowType.onHover,
-    buttonBuilder: (context, onClose) {
-      return OutlinedButton.icon(
-        onPressed: onClose,
-        icon: const Icon(Icons.close, size: 20),
-        label: const Text('Close'),
-      );
-    },
-  ),
-  closeOnClick: false,
-  pauseOnHover: true,
-  dragToClose: true,
-  applyBlurEffect: true,
-  // callbacks: ToastificationCallbacks(
-  // ),
-);
-  } 
+  }
 }

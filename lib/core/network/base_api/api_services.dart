@@ -2,16 +2,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class ApiService {
-  
- static Future<dynamic> get(
-    String path,
+  Dio dio = Dio(
+    BaseOptions(
+      validateStatus: (status) {
+        return status != null && status < 500;
+      },
+    ),
+  );
+
+  Future<Response?> get({
+    required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    VoidCallback? onError,
-  ) async {
-
-    Dio dio = Dio();
-
+  }) async {
     debugPrint("hitting get request at $path🚀");
 
     try {
@@ -22,89 +25,83 @@ class ApiService {
       );
       debugPrint("got get request response✅ $response");
 
-      return response.data;
-
+      return response;
     } catch (e) {
-      onError;
+      debugPrint("❌Error in get request ${e.toString()}");
+      return null;
     }
   }
 
- static Future<dynamic> post(
-    String path,
+  Future<Response?> post({
+    required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    VoidCallback? onError,
-     Map<String, dynamic> body
-  ) async {
-
-    Dio dio = Dio();
+    Map<String, dynamic>? body,
+  }) async {
     debugPrint("hitting post request at $path🚀");
 
     try {
       final response = await dio.post(
-        data: body,
         path,
+        data: body ?? {},
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers ?? {}),
       );
       debugPrint("got post request response✅ $response");
 
-      return response.data;
-
+      return response;
     } catch (e) {
-      onError;
+      debugPrint("❌Error in post request ${e.toString()}");
+      return null;
     }
   }
 
- static Future<dynamic> patch(
-    String path,
+  Future<Response?> patch({
+    required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    VoidCallback? onError,
-    Map<String, dynamic> body
-  ) async {
-    Dio dio = Dio();
+    Map<String, dynamic>? body,
+  }) async {
     debugPrint("hitting patch request at $path🚀");
 
     try {
       final response = await dio.patch(
-        data: body,
         path,
+        data: body ?? {},
+
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers ?? {}),
       );
       debugPrint("got patch request response✅ $response");
-      
-      return response.data;
 
+      return response;
     } catch (e) {
-      onError;
+      debugPrint("❌Error in patch request ${e.toString()}");
+      return null;
     }
   }
 
- static Future<dynamic> delete(
-    String path,
+  Future<Response?> delete({
+    required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    VoidCallback? onError,
-    Map<String, dynamic> body
-  ) async {
-    Dio dio = Dio();
+    Map<String, dynamic>? body,
+  }) async {
     debugPrint("hitting delete request at $path🚀");
 
     try {
       final response = await dio.delete(
-        data: body,
         path,
+        data: body,
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers ?? {}),
       );
       debugPrint("got delete request response✅ $response");
-      
-      return response.data;
 
+      return response;
     } catch (e) {
-      onError;
+      debugPrint("❌Error in delete request ${e.toString()}");
+      return null;
     }
   }
 }

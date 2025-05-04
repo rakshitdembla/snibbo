@@ -2,27 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/themedata.dart';
+import 'package:snibbo_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/service_locator.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]); 
+  ]);
   final brightness =
       WidgetsBinding.instance.platformDispatcher.platformBrightness;
+  setupServiceLocator();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => ThemeBloc(initialBrightness: brightness),
         ),
+        BlocProvider(
+          create: (context) => LoginBloc(authRepository: sl<AuthRepository>()),
+        ),
       ],
-      child: MyApp(),
+      child: ToastificationWrapper(child: MyApp()),
     ),
   );
 }

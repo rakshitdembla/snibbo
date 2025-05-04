@@ -1,11 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/text_field.dart';
 import 'package:snibbo_app/core/widgets/text_span_bottom.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_events.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_states.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 import '../../../../core/constants/myassets.dart';
@@ -38,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
@@ -67,9 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 maxLength: 64,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon: 
-                  Icons.email_rounded,
-                
+                prefixIcon: Icons.email_rounded,
               ),
               SizedBox(height: height * 0.02),
               MyTextField(
@@ -81,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 maxLength: 32,
                 maxLines: 1,
                 onSubmit: (String value) {},
-                prefixIcon: Icons.lock
+                prefixIcon: Icons.lock,
               ),
               SizedBox(height: height * 0.0070),
               Align(
@@ -101,12 +107,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: height * 0.040),
-              ElevatedCTA(
-                onPressed: () {
-                  context.router.push(SettingsScreenRoute());
+              BlocConsumer<LoginBloc, LoginStates>(
+                listener: (context, state) {
+                  if (state is LoginErrorState) {
+                    UiUtils.showToast(
+                      state.title,
+                      isDark,
+                      state.description,
+                      context,
+                    );
+                  } else if (state is LoginSuccessState) {
+                    context.router.push(GeneralPageRoute());
+                  }
                 },
-                buttonName: "Log In",
-                isShort: false,
+                builder: (context, state) {
+                  return state is LoginLoadingState
+                      ? Center(child: CircularProgressLoading())
+                      : ElevatedCTA(
+                        onPressed: () {
+                          context.read<LoginBloc>().add(
+                            Login(
+                              email: emailController.text,
+                              password: passController.text,
+                            ),
+                          );
+                        },
+                        buttonName: "Log In",
+                        isShort: false,
+                      );
+                },
               ),
             ],
           ),
