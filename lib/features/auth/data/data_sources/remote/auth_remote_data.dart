@@ -29,10 +29,32 @@ class AuthRemoteData {
           return (false, null, responseData["message"].toString());
         }
       } else {
-        return (false, null, "Something went wrong");
+        return (false, null, "Something went wrong, please try again later.");
       }
     } catch (e) {
       return (false, null, e.toString());
+    }
+  }
+
+  Future<(bool success, String? message)> forgetPassword(String email) async {
+    try {
+      final response = await sl<ApiService>().post(
+        path: ApiRoutes.forgetPassword,
+        body: {"email": email},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+        if (response.statusCode == 200) {
+          return (true, responseData["message"].toString());
+        } else {
+          return (false, responseData["message"].toString());
+        }
+      } else {
+        return (false, "Something went wrong, please try again later.");
+      }
+    } catch (e) {
+      return (false, e.toString());
     }
   }
 
@@ -48,16 +70,19 @@ class AuthRemoteData {
       if (response != null) {
         final responseData = response.data;
         if (response.statusCode == 201) {
+          final tokenId = responseData["user"]?["_id"];
           return (
             true,
-            responseData["_id"].toString(),
-            responseData["message"].toString(),
+            tokenId == null ? null : responseData["user"]?["_id"].toString(),
+            tokenId == null
+                ? "Register failed: Missing user ID in response. Please try again."
+                : responseData["message"].toString(),
           );
         } else {
           return (false, null, responseData["message"].toString());
         }
       } else {
-        return (false, null, "Something went wrong");
+        return (false, null, "Something went wrong, please try again later.");
       }
     } catch (e) {
       return (false, null, e.toString());

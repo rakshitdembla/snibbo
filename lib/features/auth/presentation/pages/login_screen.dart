@@ -111,12 +111,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 listener: (context, state) {
                   if (state is LoginErrorState) {
                     UiUtils.showToast(
-                      state.title,
-                      isDark,
-                      state.description,
-                      context,
+                      title: state.title,
+                      isDark: isDark,
+                      description: state.description,
+                      context: context,
+                      isSuccess: false,
+                      isWarning: false,
                     );
                   } else if (state is LoginSuccessState) {
+                    UiUtils.showToast(
+                      title: state.title,
+                      isDark: isDark,
+                      description: state.description,
+                      context: context,
+                      isSuccess: true,
+                      isWarning: false,
+                    );
                     context.router.push(GeneralPageRoute());
                   }
                 },
@@ -127,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           context.read<LoginBloc>().add(
                             Login(
-                              email: emailController.text,
+                              email: emailController.text.trim(),
                               password: passController.text,
                             ),
                           );

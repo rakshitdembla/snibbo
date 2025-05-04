@@ -9,4 +9,8 @@ abstract class AuthRepository {
   Future<(bool success, String? tokenId, String? message)> registerUser(
     RegisterReqModel registerReqModel,
   );
+
+  Future<(bool success, String? message)> forgetPassword(
+    String email
+  );
 }

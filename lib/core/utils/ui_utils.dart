@@ -35,16 +35,23 @@ class UiUtils {
     );
   }
 
-  static void showToast(
-    String title,
-    bool isDark,
-    String description,
-    BuildContext context,
-  ) {
+  static void showToast({
+    required String title,
+    required bool isDark,
+    required String description,
+    required BuildContext context,
+    required bool isSuccess,
+    required bool isWarning,
+  }) {
     final width = screenWidth(context);
     final height = screenWidth(context);
     toastification.show(
-      type: ToastificationType.error,
+      type:
+          isSuccess
+              ? ToastificationType.success
+              : isWarning
+              ? ToastificationType.warning
+              : ToastificationType.error,
       style: ToastificationStyle.minimal,
       autoCloseDuration: const Duration(seconds: 3),
       title: Text(
@@ -64,9 +71,22 @@ class UiUtils {
       animationBuilder: (context, animation, alignment, child) {
         return FadeTransition(opacity: animation, child: child);
       },
-      icon: Icon(Icons.error_outline),
+      icon: Icon(
+        isSuccess
+            ? Icons.check
+            : isWarning
+            ? Icons.warning_outlined
+            : Icons.error_outline,
+
+            size: width * 0.06,
+      ),
       showIcon: true,
-      primaryColor: Colors.red,
+      primaryColor:
+          isSuccess
+              ? Colors.green
+              : isWarning
+              ? Colors.orange
+              : Colors.red,
       backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
 
       padding: EdgeInsets.symmetric(
@@ -96,14 +116,19 @@ class UiUtils {
       showProgressBar: true,
       progressBarTheme: ProgressIndicatorThemeData(
         linearTrackColor: MyColors.secondaryGrey,
-        color: Colors.red,
+        color:
+            isSuccess
+                ? Colors.green
+                : isWarning
+                ?  Colors.orange
+                : Colors.red,
         linearMinHeight: height * 0.004,
         borderRadius: BorderRadius.circular(50.r),
       ),
       closeOnClick: false,
       pauseOnHover: true,
       dragToClose: true,
-      applyBlurEffect: true,
+      applyBlurEffect: false,
       borderSide: BorderSide(
         width: 0,
         color: isDark ? MyColors.refresh : MyColors.darkPrimary,

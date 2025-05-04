@@ -1,10 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/text_field.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_events.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_states.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import '../../../../core/theme/mycolors.dart';
 import '../../../../core/widgets/text_span_bottom.dart';
@@ -46,6 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -130,10 +138,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
 
                 SizedBox(height: height * 0.040),
-                ElevatedCTA(
-                  onPressed: () {},
-                  buttonName: "Sign Up",
-                  isShort: false,
+                BlocConsumer<RegisterBloc, RegisterStates>(
+                  listener: (context, state) {
+                    if (state is RegisterErrorState) {
+                      UiUtils.showToast(
+                        title: state.title,
+                        isDark: isDark,
+                        description: state.description,
+                        context: context,
+                        isSuccess: false,
+                        isWarning: false,
+                      );
+                    } else if (state is RegisterSuccessState) {
+                      UiUtils.showToast(
+                        title: state.title,
+                        isDark: isDark,
+                        description: state.description,
+                        context: context,
+                        isSuccess: true,
+                        isWarning: false,
+                      );
+                      context.router.push(GeneralPageRoute());
+                    }
+                  },
+                  builder: (context, state) {
+                    return state is RegisterLoadingState
+                        ? CircularProgressLoading()
+                        : ElevatedCTA(
+                          onPressed: () {
+                            context.read<RegisterBloc>().add(
+                              Register(
+                                email: emailController.text.trim(),
+                                password: passController.text,
+                                name: nameController.text.trim(),
+                                username: usernameController.text.trim(),
+                              ),
+                            );
+                          },
+                          buttonName: "Sign Up",
+                          isShort: false,
+                        );
+                  },
                 ),
               ],
             ),

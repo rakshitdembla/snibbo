@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/auth/data/models/login_req_model.dart';
-import 'package:snibbo_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:snibbo_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_events.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_states.dart';
+import 'package:snibbo_app/service_locator.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginStates> {
-  final AuthRepository authRepository;
-  LoginBloc({required this.authRepository}) : super(LoginInitialState()) {
+  LoginBloc() : super(LoginInitialState()) {
     on<Login>((event, emit) async {
       emit(LoginLoadingState());
       final String email = event.email;
@@ -46,7 +46,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
         return;
       }
 
-      final (success, tokenId, message) = await authRepository.loginUser(
+      final (success, tokenId, message) = await sl<LoginUsecase>().call(
         LoginReqModel(email: email, password: password),
       );
 

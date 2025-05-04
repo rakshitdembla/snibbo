@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/auth/data/models/register_req_model.dart';
-import 'package:snibbo_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:snibbo_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_events.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_states.dart';
+import 'package:snibbo_app/service_locator.dart';
 
 class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
-  final AuthRepository authRepository;
-  RegisterBloc({required this.authRepository}) : super(RegisterInitialState()) {
+  RegisterBloc() : super(RegisterInitialState()) {
     on<Register>((event, emit) async {
-      emit(RegisterInitialState());
+      emit(RegisterLoadingState());
 
       final String email = event.email;
       final String password = event.password;
@@ -22,11 +23,21 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
           name.isEmpty) {
         emit(
           RegisterErrorState(
-            title: "Missingf info",
-            description: "All fields are mandatory",
+            title: "Missing Information",
+            description: "All fields are required to register.",
           ),
         );
 
+        return;
+      }
+
+      if (username.length < 4) {
+        emit(
+          RegisterErrorState(
+            title: "Username Too Short",
+            description: "Username must be at least 4 characters long.",
+          ),
+        );
         return;
       }
 
@@ -36,7 +47,8 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
         emit(
           RegisterErrorState(
             title: "Invalid Email",
-            description: "Please enter a valid email address.",
+            description:
+                "Please enter a valid email address (e.g., user@example.com).",
           ),
         );
         return;
@@ -45,24 +57,14 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
       if (password.length < 8) {
         emit(
           RegisterErrorState(
-            title: "Weak Password",
-            description: "Password should be at least 8 characters long.",
+            title: "Password Too Short",
+            description: "For security, please use at least 8 characters.",
           ),
         );
         return;
       }
 
-      if (username.length < 4) {
-        emit(
-          RegisterErrorState(
-            title: "Invalid Username",
-            description: "Password should be at least 8 characters long.",
-          ),
-        );
-        return;
-      }
-
-      final (success, tokenId, message) = await authRepository.registerUser(
+      final (success, tokenId, message) = await sl<RegisterUsecase>().call(
         RegisterReqModel(
           email: email,
           password: password,
@@ -71,8 +73,9 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
         ),
       );
 
-      if (success) {
-        await ServicesUtils.saveTokenId(tokenId!);
+      if (success && tokenId != null && tokenId.isNotEmpty) {
+        debugPrint("token id is $tokenId");
+        await ServicesUtils.saveTokenId(tokenId);
         emit(
           RegisterSuccessState(
             title: "Register Successful",

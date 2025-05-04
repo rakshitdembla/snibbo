@@ -15,4 +15,9 @@ class AuthRepositoryImpl implements AuthRepository{
     return sl<AuthRemoteData>().registerUser(registerReqModel);
   
   }
+  
+  @override
+  Future<(bool, String?)> forgetPassword(String email) {
+    return sl<AuthRemoteData>().forgetPassword(email);
+  }
 }

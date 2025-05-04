@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/themedata.dart';
-import 'package:snibbo_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';
@@ -23,12 +24,12 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(
+        BlocProvider<ThemeBloc>(
           create: (context) => ThemeBloc(initialBrightness: brightness),
         ),
-        BlocProvider(
-          create: (context) => LoginBloc(authRepository: sl<AuthRepository>()),
-        ),
+        BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
+        BlocProvider<RegisterBloc>(create: (context) => RegisterBloc()),
+        BlocProvider<ForgetPassBloc>(create: (context) => ForgetPassBloc()),
       ],
       child: ToastificationWrapper(child: MyApp()),
     ),

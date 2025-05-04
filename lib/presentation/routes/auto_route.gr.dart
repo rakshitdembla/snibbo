@@ -11,7 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i16;
 import 'package:flutter/material.dart' as _i17;
-import 'package:snibbo_app/features/auth/presentation/pages/forgot_password_screen.dart'
+import 'package:snibbo_app/features/auth/presentation/pages/forget_password_screen.dart'
     as _i4;
 import 'package:snibbo_app/features/auth/presentation/pages/login_screen.dart'
     as _i6;

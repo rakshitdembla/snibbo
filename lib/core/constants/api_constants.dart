@@ -19,4 +19,5 @@ class ApiRoutes {
 
   static String login = "${ApiMainUrl.url}${ApiEndPoints.auth}/login";
   static String register = "${ApiMainUrl.url}${ApiEndPoints.auth}/register";
+  static String forgetPassword = "${ApiMainUrl.url}${ApiEndPoints.auth}/forget-password";
 }
