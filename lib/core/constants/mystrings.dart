@@ -14,4 +14,6 @@ class MyStrings {
   static const forgotPasswordH2 = "Let's help recover your account";
 
   static const secureStorageToken = "tokenId";
+
+  static const userIdHeader = "user_id";
 }

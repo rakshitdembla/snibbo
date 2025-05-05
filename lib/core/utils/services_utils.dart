@@ -16,4 +16,10 @@ class ServicesUtils {
       value: tokenId,
     );
   }
+
+  static Future<String?> getTokenId() async {
+    final secureStorage = sl<FlutterSecureStorage>();
+
+    return await secureStorage.read(key: MyStrings.secureStorageToken);
+  }
 }

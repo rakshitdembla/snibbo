@@ -16,8 +16,20 @@ class ApiEndPoints {
 
 class ApiRoutes {
   ApiRoutes._();
+  static String authRoute = "${ApiMainUrl.url}${ApiEndPoints.auth}";
+  static String login = "$authRoute/login";
+  static String register = "$authRoute/register";
+  static String forgetPassword = "$authRoute/forget-password";
 
-  static String login = "${ApiMainUrl.url}${ApiEndPoints.auth}/login";
-  static String register = "${ApiMainUrl.url}${ApiEndPoints.auth}/register";
-  static String forgetPassword = "${ApiMainUrl.url}${ApiEndPoints.auth}/forget-password";
+  static String postRoute = "${ApiMainUrl.url}${ApiEndPoints.posts}";
+  static String followingPosts = "$postRoute/following-posts";
+  static String allPosts = "$postRoute/all";
+  static String likePost = "$postRoute/like";
+  static String disLikePost = "$postRoute/dislike";
+  static String postComments = "$postRoute/all-comments";
+  static String postLikedUsers = "$postRoute/liked-users";
+
+  static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
+  static String followingStories = "$storyRoute/followings/stories";
+  static String storyByUsername = "$storyRoute/user-stories";
 }
