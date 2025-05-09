@@ -10,14 +10,8 @@ class MyAssets {
   static String blueGhost = "assets/blue_ghost.png";
   static String gradient = "assets/gradient.png";
   static String demoUser = "assets/demo.png";
-
-  static String daySwitch = "assets/day_switch.png";
-  static String nightSwitch = "assets/night_switch.png";
-
-  static String chatBubble = "assets/chat-bubble.png";
-  static String chatBubbleWhite = "assets/chat-bubble-white.png";
-  static String postBlack = "assets/post_black.png";
-  static String postWhite = "assets/post_white.png";
+  static String profilePictureHolder = "assets/user_profile.webp";
+  static String storyImage = "assets/story_image.jpg";
 
   // Memoji assets (webp format)
   static String chillMemoji = "assets/chill_memoji.webp";

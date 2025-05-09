@@ -1,7 +1,7 @@
 class ApiMainUrl {
   ApiMainUrl._();
 
-  static String url = "http://192.168.31.213:3000/api";
+static String url = "http://192.168.31.213:3000/api";
 }
 
 class ApiEndPoints {
@@ -32,4 +32,5 @@ class ApiRoutes {
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";
   static String storyByUsername = "$storyRoute/user-stories";
+  static String getMyStories = "$storyRoute/my-stories";
 }

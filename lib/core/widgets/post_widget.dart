@@ -14,14 +14,14 @@ import 'package:snibbo_app/test_list.dart';
 
 class PostWidget extends StatefulWidget {
   final String postContentUrl;
-  const PostWidget({super.key,required this.postContentUrl});
+  const PostWidget({super.key, required this.postContentUrl});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
 
 class _PostWidgetState extends State<PostWidget> {
-    final testList = TestList.test();
+  final testList = TestList.test();
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
@@ -39,15 +39,17 @@ class _PostWidgetState extends State<PostWidget> {
           child: Row(
             children: [
               UserStoryWidget(
+                showBorder: true,
+                greyBorder: false,
+                isMini: true,
+                showLike: false,
+                showComment: false,
                 profileUrl: MyAssets.demoUser,
-                height: height * 0.05,
+                storySize: 0.053,
                 margins: EdgeInsets.only(right: width * 0.02),
-                width: width * 0.1,
-                outsidePadding: EdgeInsets.all(width * 0.004),
-                insidePadding: EdgeInsets.all(width * 0.004),
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   context.router.push(UserProfileScreenRoute());
                 },
                 child: Column(
@@ -84,10 +86,12 @@ class _PostWidgetState extends State<PostWidget> {
           ),
         ),
         GestureDetector(
-          onDoubleTap: () {
-            
-          },
-          child: Image.asset(widget.postContentUrl, width: width)),
+          onDoubleTap: () {},
+          child: Image.network(
+            widget.postContentUrl, width: width,errorBuilder: (context, error, stackTrace) {
+            return Image.asset(MyAssets.demoUser,width: width,);
+          },),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: width * 0.02,
@@ -104,20 +108,20 @@ class _PostWidgetState extends State<PostWidget> {
               PostActionIcon(
                 count: "51",
                 icon: Icons.mode_comment_outlined,
-                iconColor:  isDark ? MyColors.white :MyColors.black,
+                iconColor: isDark ? MyColors.white : MyColors.black,
               ),
               SizedBox(width: width * 0.035),
 
               PostActionIcon(
                 count: "5",
                 icon: Icons.share_outlined,
-                iconColor:  isDark ? MyColors.white :MyColors.black,
+                iconColor: isDark ? MyColors.white : MyColors.black,
               ),
               Spacer(),
               PostActionIcon(
                 count: "",
                 icon: Icons.bookmark_add_outlined,
-                iconColor:  isDark ? MyColors.white :MyColors.black,
+                iconColor: isDark ? MyColors.white : MyColors.black,
               ),
             ],
           ),
@@ -133,7 +137,7 @@ class _PostWidgetState extends State<PostWidget> {
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600,
                     fontSize: width * 0.03,
-                    color:  isDark ? MyColors.white :MyColors.black,
+                    color: isDark ? MyColors.white : MyColors.black,
                   ),
                   children: [
                     TextSpan(

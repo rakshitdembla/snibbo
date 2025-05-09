@@ -1,4 +1,4 @@
-import 'package:snibbo_app/features/feed/domain/entities/following_story_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/story_preview_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/repositories/feed_repository.dart';
 
@@ -20,11 +20,17 @@ class GetFeedPostsUsecase {
   Future<
     (
       bool success,
-      List<FollowingStoryEntity>? followingStoryEntity,
+      List<UserStoryPreviewEntity>? userStoryPreviewEntity,
       String? message,
     )
   >
   getFollowingStories(String tokenId) {
     return feedRepository.getFollowingStory(tokenId);
+  }
+
+  Future<(bool, UserStoryPreviewEntity?, String?)> getMyStories(
+    String tokenId,
+  ) {
+    return feedRepository.getMyStories(tokenId);
   }
 }

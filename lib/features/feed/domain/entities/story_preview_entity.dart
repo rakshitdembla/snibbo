@@ -1,11 +1,11 @@
-class FollowingStoryEntity {
+class UserStoryPreviewEntity {
   String username;
   String name;
   String profilePicture;
   List<String> userStories;
   bool isVerified;
 
-  FollowingStoryEntity({
+  UserStoryPreviewEntity({
     required this.username,
     required this.name,
     required this.profilePicture,

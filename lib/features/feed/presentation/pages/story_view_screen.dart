@@ -103,12 +103,15 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
           child: Row(
             children: [
               UserStoryWidget(
+                 showBorder: true,
+              greyBorder: false,
                 profileUrl: MyAssets.demoUser,
-                height: height * 0.05,
+                storySize: 0.05,
+                showComment: false,
+                showLike: false,
+                isMini: true,
                 margins: EdgeInsets.zero,
-                width: width * 0.05,
-                insidePadding: EdgeInsets.zero,
-                outsidePadding: EdgeInsets.zero,
+                
               ),
               Text(
                 "rakshitdembla",

@@ -1,4 +1,5 @@
 import "package:get_it/get_it.dart";
+import "package:image_picker/image_picker.dart";
 import "package:snibbo_app/core/network/base_api/api_services.dart";
 import "package:snibbo_app/features/auth/data/data_sources/remote/auth_remote_data.dart";
 import "package:snibbo_app/features/auth/data/repositories/auth_repository_impl.dart";
@@ -52,5 +53,8 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<FeedStoriesUsecase>(
     FeedStoriesUsecase(feedRepository: sl<FeedRepository>()),
+  );
+  sl.registerSingleton<ImagePicker>(
+    ImagePicker(),
   );
 }

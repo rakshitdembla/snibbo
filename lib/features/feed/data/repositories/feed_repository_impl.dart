@@ -1,7 +1,7 @@
 import 'package:snibbo_app/features/feed/data/data_sources/remote/feed_posts_remote_data.dart';
 import 'package:snibbo_app/features/feed/data/data_sources/remote/feed_stories_remote_data.dart';
 import 'package:snibbo_app/features/feed/data/data_sources/remote/get_feed_remote_data.dart';
-import 'package:snibbo_app/features/feed/domain/entities/following_story_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/story_preview_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
@@ -16,7 +16,7 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<(bool, List<FollowingStoryEntity>?, String?)> getFollowingStory(
+  Future<(bool, List<UserStoryPreviewEntity>?, String?)> getFollowingStory(
     String tokenId,
   ) {
     return sl<GetFeedRemoteData>().getFollowingStory(tokenId);
@@ -52,5 +52,11 @@ class FeedRepositoryImpl implements FeedRepository {
   @override
   Future<(bool, UserStoriesEntity?, String?)> getUserStories(String username) {
    return sl<FeedStoriesRemoteData>().getUserStories(username);
+  }
+  
+  @override
+  Future<(bool, UserStoryPreviewEntity?, String?)> getMyStories(String tokenId) {
+    return sl<GetFeedRemoteData>().getMyStories(tokenId);
+  
   }
 }

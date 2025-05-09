@@ -1,4 +1,4 @@
-import 'package:snibbo_app/features/feed/domain/entities/following_story_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/story_preview_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
@@ -15,11 +15,20 @@ abstract class FeedRepository {
   Future<
     (
       bool success,
-      List<FollowingStoryEntity>? followingStoryEntity,
+      List<UserStoryPreviewEntity>? userStoryPreviewEntity,
       String? message,
     )
   >
   getFollowingStory(String tokenId);
+
+  Future<
+    (
+      bool success,
+      UserStoryPreviewEntity? userStoryPreviewEntity,
+      String? message,
+    )
+  >
+  getMyStories(String tokenId);
 
   // -- Feed Post Interactions
   Future<(bool success, String? message)> reactToPost(

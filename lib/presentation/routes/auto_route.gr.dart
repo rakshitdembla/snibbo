@@ -37,7 +37,7 @@ import 'package:snibbo_app/presentation/general/presentation/pages/general_page.
     as _i5;
 import 'package:snibbo_app/presentation/onboard/presentation/pages/onboard_screen.dart'
     as _i7;
-import 'package:snibbo_app/presentation/posts_view/posts_view_screen.dart'
+import 'package:snibbo_app/presentation/posts_view/presentation/pages/posts_view_screen.dart'
     as _i8;
 import 'package:snibbo_app/presentation/splash/presentation/pages/splash_screen.dart'
     as _i13;

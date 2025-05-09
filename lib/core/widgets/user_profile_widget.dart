@@ -21,12 +21,14 @@ class UserProfileWidget extends StatelessWidget {
           Row(
             children: [
               UserStoryWidget(
+                showBorder: false,
+                greyBorder: false,
+                isMini: false,
+                showComment: false,
+                showLike: false,
                 profileUrl: MyAssets.demoUser,
-                height: height * 0.11,
+                storySize: 0.05,
                 margins: EdgeInsets.zero,
-                width: width * 0.22,
-                insidePadding: EdgeInsets.all(width * 0.008),
-                outsidePadding: EdgeInsets.all(width * 0.008),
               ),
               SizedBox(width: width * 0.04),
               SizedBox(

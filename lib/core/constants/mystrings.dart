@@ -1,3 +1,5 @@
+import 'package:snibbo_app/core/constants/my_keys.dart';
+
 class MyStrings {
   MyStrings._();
 
@@ -16,4 +18,6 @@ class MyStrings {
   static const secureStorageToken = "tokenId";
 
   static const userIdHeader = "user_id";
+
+  static const cloudinaryUrl = "https://api.cloudinary.com/v1_1/${MyKeys.cloudinaryCloudName}/image/upload";
 }

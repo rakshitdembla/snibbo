@@ -22,6 +22,9 @@ class ApiService {
         path,
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers ?? {}),
+        onReceiveProgress: (count, total) {
+          debugPrint("Count : $count,Total : $total😋");
+        },
       );
       debugPrint("got get request response✅ $response");
 
@@ -36,7 +39,7 @@ class ApiService {
     required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    Map<String, dynamic>? body,
+    dynamic body,
   }) async {
     debugPrint("hitting post request at $path🚀");
 
@@ -46,6 +49,9 @@ class ApiService {
         data: body ?? {},
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers ?? {}),
+        onReceiveProgress: (count, total) {
+          debugPrint("Count : $count,Total : $total😋");
+        },
       );
       debugPrint("got post request response✅ $response");
 
@@ -60,7 +66,7 @@ class ApiService {
     required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    Map<String, dynamic>? body,
+    dynamic body,
   }) async {
     debugPrint("hitting patch request at $path🚀");
 
@@ -71,6 +77,9 @@ class ApiService {
 
         queryParameters: queryParameters ?? {},
         options: Options(headers: headers ?? {}),
+        onReceiveProgress: (count, total) {
+          debugPrint("Count : $count,Total : $total😋");
+        },
       );
       debugPrint("got patch request response✅ $response");
 
@@ -85,7 +94,7 @@ class ApiService {
     required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-    Map<String, dynamic>? body,
+    dynamic body,
   }) async {
     debugPrint("hitting delete request at $path🚀");
 
@@ -94,6 +103,7 @@ class ApiService {
         path,
         data: body,
         queryParameters: queryParameters ?? {},
+
         options: Options(headers: headers ?? {}),
       );
       debugPrint("got delete request response✅ $response");

@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snibbo_app/core/constants/myassets.dart';
-import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/post_widget.dart';
@@ -10,6 +8,8 @@ import 'package:snibbo_app/core/widgets/user_story_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_states.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/feed_app_bar.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/my_story_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/test_list.dart';
@@ -42,152 +42,141 @@ class _FeedScreenState extends State<FeedScreen> {
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    return Scaffold(
-      body: SafeArea(
-        child: BlocConsumer<GetFeedBloc, GetFeedStates>(
-          listener: (context, state) {
-            if (state is GetFeedErrorState) {
-              UiUtils.showToast(
-                title: state.title,
-                isDark: isDark,
-                description: state.description,
-                context: context,
-                isSuccess: false,
-                isWarning: false,
-              );
-            }
-          },
-          builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: height * 0.08,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: SafeArea(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity! > 1000) {
+          UiUtils.showBottomSheet(
+            context: context,
+            isDark: isDark,
+            h1: "Create Your Story",
+            h2:
+                "Capture a photo or pick one from your gallery to begin sharing your special moments.",
+                cameraSourceTap: () {},
+                gallerySourceTap: () {}
+          );
+        } else if (details.primaryVelocity! < -1000) {
+          debugPrint("Redirect to chats");
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: BlocConsumer<GetFeedBloc, GetFeedStates>(
+            listener: (context, state) {
+              //** LISTENER */
+
+              // ERROR STATE HANDLING ---->
+              if (state is GetFeedErrorState) {
+                UiUtils.showToast(
+                  title: state.title,
+                  isDark: isDark,
+                  description: state.description,
+                  context: context,
+                  isSuccess: false,
+                  isWarning: false,
+                );
+              }
+            },
+            builder: (context, state) {
+              //** BUILDER */
+              return CustomScrollView(
+                slivers: [
+                  FeedAppBar(),
+                  // SUCCESS STATE HANDLING --->
+                  if (state is GetFeedSuccessState) ...[
+                    // - STORIES BUILDER
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: height * 0.14,
                         child: Row(
                           children: [
-                            Image.asset(
-                              isDark
-                                  ? MyAssets.whiteGhost
-                                  : MyAssets.blackGhost,
-                              height: height * 0.09,
-                              width: width * 0.09,
+                            // - MY STORY
+                            MyStoryWidget(
+                              showBorder:
+                                  state.myStories.userStories.isEmpty
+                                      ? false
+                                      : true,
+                              profileUrl: state.myStories.profilePicture,
+                              username: state.myStories.username,
+                              isDark: isDark,
                             ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Icon(
-                                Icons.add_box_outlined,
-                                size: width * 0.075,
-                                color: isDark ? MyColors.white : MyColors.black,
-                              ),
-                            ),
-                            SizedBox(width: width * 0.05),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Stack(
-                                children: [
-                                  Icon(
-                                    Icons.send,
-                                    size: width * 0.075,
-                                    color:
-                                        isDark
-                                            ? MyColors.white
-                                            : MyColors.black,
-                                  ),
-                                  Positioned(
-                                    top: height * 0,
-                                    right: width * 0,
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.red,
-                                      radius: width * 0.018,
-                                      child: Text(
-                                        "9+",
-                                        style: TextStyle(
-                                          color: MyColors.white,
-                                          fontSize: width * 0.018,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+
+                            // - USER STORIES
+                            ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.storiesList.length,
+                              itemBuilder: (context, index) {
+                                debugPrint("Story builds $index");
+                                final story = state.storiesList[index];
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    UserStoryWidget(
+                                      showBorder: true,
+                                      greyBorder: false,
+                                      profileUrl: testList[index],
+                                      showComment: false,
+                                      showLike: false,
+                                      isMini: false,
+                                      margins: EdgeInsets.fromLTRB(
+                                        width * 0.023,
+                                        height * 0.015,
+                                        width * 0.023,
+                                        height * 0.004,
+                                      ),
+                                      storySize: 0.10,
+                                    ),
+                                    Text(
+                                      story.username,
+                                      style: TextStyle(
+                                        fontSize: height * 0.013,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                );
+                              },
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ),
-
-                if (state is GetFeedSuccessState) ...[
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: height * 0.14,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.storiesList.length,
-                        itemBuilder: (context, index) {
-                          debugPrint("Story builds $index");
-                          final story = state.storiesList[index];
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              left: index == 0 ? width * 0.015 : 0,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                UserStoryWidget(
-                                  profileUrl: testList[index],
-                                  outsidePadding: EdgeInsets.all(width * 0.007),
-                                  insidePadding: EdgeInsets.all(width * 0.005),
-                                  margins: EdgeInsets.fromLTRB(
-                                    width * 0.023,
-                                    height * 0.015,
-                                    width * 0.023,
-                                    height * 0.004,
-                                  ),
-                                  height: height * 0.10,
-                                  width: width * 0.20,
-                                ),
-                                Text(
-                                  story.name,
-                                  style: TextStyle(fontSize: height * 0.012),
-                                ),
-                              ],
-                            ),
-                          );
+                    // - FEED POSTS BUILDER
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: state.postsList.length,
+                        (context, index) {
+                          final post = state.postsList[index];
+                          return PostWidget(postContentUrl: post.postContent);
                         },
                       ),
                     ),
-                  ),
-
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      childCount: testList.length,
-                      (context, index) {
-                        debugPrint("Post builds $index");
-                        return PostWidget(postContentUrl: testList[index]);
-                      },
+                  ]
+                  // ERROR STATE HANDLING --->
+                  else if (state is GetFeedErrorState) ...[
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height:
+                            height - kBottomNavigationBarHeight - height * 0.16,
+                        width: width,
+                        child: Center(child: Text("No Posts Found")),
+                      ),
                     ),
-                  ),
-                ] else ...[
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height:
-                          height - kBottomNavigationBarHeight - height * 0.16,
-                      width: width,
-                      child: Center(child: CircularProgressLoading()),
+                  ]
+                  //NULL STATE HANDLING --->
+                  else ...[
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height:
+                            height - kBottomNavigationBarHeight - height * 0.16,
+                        width: width,
+                        child: Center(child: CircularProgressLoading()),
+                      ),
                     ),
-                  ),
+                  ],
                 ],
-              ],
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

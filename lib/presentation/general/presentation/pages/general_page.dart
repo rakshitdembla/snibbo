@@ -7,7 +7,7 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/activity/presentation/pages/activity_screen.dart';
 import 'package:snibbo_app/features/explore/presentation/pages/explore_screen.dart';
 import 'package:snibbo_app/features/feed/presentation/pages/feed_screen.dart';
-import 'package:snibbo_app/features/post/presentation/pages/create_post_screen.dart';
+import 'package:snibbo_app/features/create/presentation/pages/create_post_screen.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/settings/presentation/pages/settings_page.dart';
@@ -37,12 +37,8 @@ class _GeneralPageState extends State<GeneralPage> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    To do - Remove watch after final routings, use read in isDark
-    @Pending since - 26-April-2025 
-    */
-    
-    final isDark = context.watch<ThemeBloc>().state is DarkThemeState;
+  
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return PersistentTabView(
       controller: _controller,
       backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,

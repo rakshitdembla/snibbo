@@ -1,14 +1,14 @@
 
-import 'package:snibbo_app/features/feed/domain/entities/following_story_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/story_preview_entity.dart';
 
-class FollowingStoryModel {
+class UserStoryPreviewModel {
   String username;
   String name;
   String profilePicture;
   List<String> userStories;
   bool isVerified;
 
-  FollowingStoryModel({
+  UserStoryPreviewModel({
     required this.username,
     required this.name,
     required this.profilePicture,
@@ -16,19 +16,19 @@ class FollowingStoryModel {
     required this.isVerified,
   });
 
-  factory FollowingStoryModel.fromJson(Map<String, dynamic> json) =>
-      FollowingStoryModel(
+  factory UserStoryPreviewModel.fromJson(Map<String, dynamic> json) =>
+      UserStoryPreviewModel(
         username: json["username"],
         name: json["name"],
         profilePicture: json["profilePicture"] ?? "",
         userStories: List<String>.from(
-          json["userStories"].map((x) => x['_id']),
+          json["userStories"],
         ),
         isVerified: json["isVerified"],
       );
 
-  FollowingStoryEntity toEntity() {
-    return FollowingStoryEntity(
+  UserStoryPreviewEntity toEntity() {
+    return UserStoryPreviewEntity(
       username: username,
       name: name,
       profilePicture: profilePicture,
