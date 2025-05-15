@@ -7,7 +7,7 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/text_field.dart';
-import 'package:snibbo_app/core/widgets/text_span_bottom.dart';
+import 'package:snibbo_app/features/auth/presentation/widgets/text_span_bottom.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_events.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_states.dart';

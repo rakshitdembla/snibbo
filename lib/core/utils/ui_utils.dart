@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:snibbo_app/core/constants/myassets.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
-import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
-import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:toastification/toastification.dart';
 
 class UiUtils {
@@ -17,23 +13,6 @@ class UiUtils {
 
   static double screenWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
-  }
-
-  static PersistentBottomNavBarItem navBarItem({
-    required IconData icon,
-    required IconData inactiveIcon,
-    required BuildContext context,
-  }) {
-    final isDark = context.watch<ThemeBloc>().state is DarkThemeState;
-    final width = UiUtils.screenWidth(context);
-    return PersistentBottomNavBarItem(
-      icon: Icon(icon, color: isDark ? MyColors.white : MyColors.black),
-      inactiveIcon: Icon(
-        inactiveIcon,
-        color: isDark ? MyColors.white : MyColors.black,
-      ),
-      iconSize: width * 0.075,
-    );
   }
 
   static void showToast({
@@ -137,131 +116,28 @@ class UiUtils {
     );
   }
 
-  static void showBottomSheet({
-    required BuildContext context,
-    required bool isDark,
-    required String h1,
-    required String h2,
-    required GestureTapCallback cameraSourceTap,
-    required GestureTapCallback gallerySourceTap
+  static Widget showShimmerBuilder({
+    required wasSynchronouslyLoaded,
+    required frame,
+    required child,
   }) {
-    final height = screenHeight(context);
-    final width = screenWidth(context);
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-      ),
-      isDismissible: true,
-      builder: (context) {
-        return SizedBox(
-          height: height * 0.6,
+    if (wasSynchronouslyLoaded || frame != null) {
+      return child;
+    } else {
+      return Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(color: Colors.grey[300]),
+      );
+    }
+  }
 
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(30.r),
-                  ),
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        MyAssets.storyImage,
-                        height: height * 0.3,
-                        width: width,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        left: width * 0.92,
-                        top: height * 0.01,
-                        child: InkWell(
-                          onTap: () {
-                             Navigator.pop(context); 
-                          },
-                          child: Icon(
-                              Icons.cancel_outlined,
-                              size: height * 0.03,
-                              color: MyColors.white,
-                            ),
-                        ),
-                       
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.025,
-                    vertical: height * 0.01,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        h1,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: height * 0.03,
-                        ),
-                      ),
-
-                      SizedBox(height: height * 0.004),
-                      Text(
-                        h2,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: MyColors.grey,
-                          fontSize: height * 0.018,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                StorySourceTile(
-                  icon: Icons.camera_alt_outlined,
-                  title: "Camera",
-                  onTap: cameraSourceTap,
-                ),
-                StorySourceTile(
-                  icon: Icons.image_outlined,
-                  title: "Gallery",
-                  onTap: gallerySourceTap,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+  static Widget showShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(color: Colors.grey[300]),
     );
   }
-}
 
-class StorySourceTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final GestureTapCallback onTap;
-  const StorySourceTile({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      leading: Icon(icon, size: UiUtils.screenHeight(context) * 0.035),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: UiUtils.screenHeight(context) * 0.021,
-        ),
-      ),
-    );
-  }
 }

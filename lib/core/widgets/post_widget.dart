@@ -6,7 +6,7 @@ import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/post_action_icon.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/user_profile_pic_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
@@ -38,12 +38,10 @@ class _PostWidgetState extends State<PostWidget> {
           ),
           child: Row(
             children: [
-              UserStoryWidget(
+              UserProfilePicWidget(
                 showBorder: true,
                 greyBorder: false,
                 isMini: true,
-                showLike: false,
-                showComment: false,
                 profileUrl: MyAssets.demoUser,
                 storySize: 0.053,
                 margins: EdgeInsets.only(right: width * 0.02),

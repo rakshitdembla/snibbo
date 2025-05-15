@@ -15,7 +15,7 @@ class AuthRemoteData {
       );
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 200) {
           final tokenId = responseData["user"]?["_id"];
           return (
@@ -44,7 +44,7 @@ class AuthRemoteData {
       );
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 200) {
           return (true, responseData["message"].toString());
         } else {
@@ -68,7 +68,7 @@ class AuthRemoteData {
       );
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 201) {
           final tokenId = responseData["user"]?["_id"];
           return (

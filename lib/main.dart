@@ -5,7 +5,9 @@ import 'package:snibbo_app/core/theme/themedata.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_user_stories_bloc/get_user_stories_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';
@@ -32,6 +34,10 @@ void main() async {
         BlocProvider<RegisterBloc>(create: (context) => RegisterBloc()),
         BlocProvider<ForgetPassBloc>(create: (context) => ForgetPassBloc()),
         BlocProvider<GetFeedBloc>(create: (context) => GetFeedBloc()),
+        BlocProvider<CreateStoryBloc>(create: (context) => CreateStoryBloc()),
+        BlocProvider<GetUserStoriesBloc>(
+          create: (context) => GetUserStoriesBloc(),
+        ),
       ],
       child: ToastificationWrapper(child: MyApp()),
     ),

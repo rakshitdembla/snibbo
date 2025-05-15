@@ -18,6 +18,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: PostsViewScreenRoute.page),
     AutoRoute(page: SearchScreenRoute.page),
     AutoRoute(page: StoryViewScreenRoute.page),
+    AutoRoute(page: FetchStoriesLoadingRoute.page),
     AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
   ];
 

@@ -1,7 +1,13 @@
 class ApiMainUrl {
   ApiMainUrl._();
+  // Use this when running on emulator
+  static String url_ = "http://10.0.2.2:3000/api";
 
-static String url = "http://192.168.31.213:3000/api";
+  //Jio AirFiber IP
+  static String url = "http://192.168.31.213:3000/api";
+
+  //RailwayWifi IP
+  
 }
 
 class ApiEndPoints {
@@ -33,4 +39,8 @@ class ApiRoutes {
   static String followingStories = "$storyRoute/followings/stories";
   static String storyByUsername = "$storyRoute/user-stories";
   static String getMyStories = "$storyRoute/my-stories";
+  static String createStory = "$storyRoute/create";
+  static String viewStory = "$storyRoute/view";
+  static String deleteStory = "$storyRoute/delete";
+  static String storyViewers = "$storyRoute/view-users";
 }

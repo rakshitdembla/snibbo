@@ -6,7 +6,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
-import 'package:snibbo_app/core/widgets/h1_h2_title.dart';
+import 'package:snibbo_app/features/auth/presentation/widgets/h1_h2_title.dart';
 import 'package:snibbo_app/core/widgets/text_field.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_events.dart';

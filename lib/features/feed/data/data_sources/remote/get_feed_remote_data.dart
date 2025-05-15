@@ -1,10 +1,12 @@
 import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
-import 'package:snibbo_app/features/feed/data/models/story_preview_model.dart';
 import 'package:snibbo_app/features/feed/data/models/post_model.dart';
-import 'package:snibbo_app/features/feed/domain/entities/story_preview_entity.dart';
+import 'package:snibbo_app/features/feed/data/models/user_model.dart';
+import 'package:snibbo_app/features/feed/data/models/user_stories_model.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class GetFeedRemoteData {
@@ -18,7 +20,7 @@ class GetFeedRemoteData {
       );
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 200) {
           final postsJson = responseData["posts"] as List;
           final postEntities =
@@ -46,7 +48,7 @@ class GetFeedRemoteData {
       final response = await sl<ApiService>().get(path: ApiRoutes.allPosts);
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 200) {
           final postsJson = responseData["posts"] as List;
           final postEntities =
@@ -68,13 +70,7 @@ class GetFeedRemoteData {
   }
 
   // Get Followings Stories -->
-  Future<
-    (
-      bool success,
-      List<UserStoryPreviewEntity>? userStoryPreviewEntity,
-      String? message,
-    )
-  >
+  Future<(bool success, List<UserEntity>? storyEntities, String? message)>
   getFollowingStory(String tokenId) async {
     try {
       final response = await sl<ApiService>().get(
@@ -83,15 +79,14 @@ class GetFeedRemoteData {
       );
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 200) {
-          final List userStories = responseData["stories"]?["followings"] ?? [];
+          final List userStories = responseData["followings"] ?? [];
           return (
             true,
-            userStories
-                    .map((x) => UserStoryPreviewModel.fromJson(x).toEntity())
-                    .toList()
-                as List<UserStoryPreviewEntity>?,
+            List<UserEntity>.from(
+              userStories.map((x) => UserModel.fromJson(x).toEntity()),
+            ),
             "Data fetched successfully.",
           );
         } else {
@@ -113,7 +108,7 @@ class GetFeedRemoteData {
   Future<
     (
       bool success,
-      UserStoryPreviewEntity? userStoryPreviewEntity,
+      UserStoriesEntity? myStories,
       String? message,
     )
   >
@@ -125,11 +120,11 @@ class GetFeedRemoteData {
       );
 
       if (response != null) {
-        final responseData = response.data;
+        final responseData = await response.data;
         if (response.statusCode == 200) {
           return (
             true,
-            UserStoryPreviewModel.fromJson(responseData["user"]).toEntity(),
+            UserStoriesModel.fromJson(responseData["user"]).toEntity(),
             "Data fetched successfully.",
           );
         } else {

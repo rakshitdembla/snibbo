@@ -12,7 +12,6 @@ class CloudImageModel {
   String resourceType;
   DateTime createdAt;
   List<dynamic> tags;
-  int pages;
   int bytes;
   String type;
   String etag;
@@ -35,7 +34,6 @@ class CloudImageModel {
     required this.resourceType,
     required this.createdAt,
     required this.tags,
-    required this.pages,
     required this.bytes,
     required this.type,
     required this.etag,
@@ -60,7 +58,6 @@ class CloudImageModel {
         resourceType: json["resource_type"],
         createdAt: DateTime.parse(json["created_at"]),
         tags: List<dynamic>.from(json["tags"]),
-        pages: json["pages"],
         bytes: json["bytes"],
         type: json["type"],
         etag: json["etag"],
@@ -85,7 +82,6 @@ class CloudImageModel {
       resourceType: resourceType,
       createdAt: createdAt,
       tags: tags,
-      pages: pages,
       bytes: bytes,
       type: type,
       etag: etag,

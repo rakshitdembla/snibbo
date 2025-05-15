@@ -3,7 +3,7 @@ import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/elevated_outlined_cta.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/user_profile_pic_widget.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/social_stats_widget.dart';
 
 class UserProfileWidget extends StatelessWidget {
@@ -20,12 +20,10 @@ class UserProfileWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              UserStoryWidget(
+              UserProfilePicWidget(
                 showBorder: false,
                 greyBorder: false,
                 isMini: false,
-                showComment: false,
-                showLike: false,
                 profileUrl: MyAssets.demoUser,
                 storySize: 0.05,
                 margins: EdgeInsets.zero,

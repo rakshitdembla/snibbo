@@ -6,7 +6,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/elevated_outlined_cta.dart';
-import 'package:snibbo_app/core/widgets/text_span_bottom.dart';
+import 'package:snibbo_app/features/auth/presentation/widgets/text_span_bottom.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/presentation/onboard/presentation/widget/on_board_dots.dart';
 import 'package:snibbo_app/presentation/onboard/presentation/widget/on_board_page.dart';

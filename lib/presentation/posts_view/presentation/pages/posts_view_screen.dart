@@ -15,11 +15,11 @@ class PostsViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final height = UiUtils.screenHeight(context);
+    final height = UiUtils.screenHeight(context);
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: true, title: Text(appbarTitle)),
       body: Padding(
-        padding: EdgeInsets.only(bottom: height * 0.02,top: 0 ),
+        padding: EdgeInsets.only(bottom: height * 0.02, top: 0),
         child: ListView.builder(
           itemCount: posts.length,
           itemBuilder:

@@ -10,7 +10,6 @@ class CloudImageEntity {
   String resourceType;
   DateTime createdAt;
   List<dynamic> tags;
-  int pages;
   int bytes;
   String type;
   String etag;
@@ -33,7 +32,6 @@ class CloudImageEntity {
     required this.resourceType,
     required this.createdAt,
     required this.tags,
-    required this.pages,
     required this.bytes,
     required this.type,
     required this.etag,

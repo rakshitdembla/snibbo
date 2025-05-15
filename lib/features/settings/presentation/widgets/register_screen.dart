@@ -14,7 +14,7 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import '../../../../core/theme/mycolors.dart';
-import '../../../../core/widgets/text_span_bottom.dart';
+import '../../../auth/presentation/widgets/text_span_bottom.dart';
 
 @RoutePage()
 class RegisterScreen extends StatefulWidget {
