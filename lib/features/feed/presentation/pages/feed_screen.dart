@@ -131,17 +131,12 @@ class _FeedScreenState extends State<FeedScreen> {
                                 );
                               } else {
                                 final story = state.storiesList![index - 1];
-                                //# User Stories ->
-
-                                //   BlocProvider.of<GetUserStoriesBloc>(
-                                //   context,
-                                // ).add(GetUserStories(username: username!))
-                                //! add this
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     UserProfilePicWidget(
                                       showBorder: true,
+                                      username: story.username,
                                       greyBorder: false,
                                       profileUrl: testList[index],
                                       isMini: false,

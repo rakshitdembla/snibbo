@@ -6,16 +6,18 @@ import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_user_stories_bloc/get_user_stories_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_user_stories_bloc/get_user_stories_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_user_stories_bloc/get_user_stories_states.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
-class UserProfilePicWidget extends StatelessWidget {
+class UserProfilePicWidget extends StatefulWidget {
   final EdgeInsetsGeometry margins;
   final String profileUrl;
   final double storySize;
   final bool isMini;
+  final String? username;
   final bool showBorder;
   final bool greyBorder;
 
@@ -24,16 +26,22 @@ class UserProfilePicWidget extends StatelessWidget {
     required this.profileUrl,
     required this.margins,
     required this.storySize,
+    this.username,
     required this.isMini,
     required this.greyBorder,
     required this.showBorder,
   });
 
   @override
+  State<UserProfilePicWidget> createState() => _UserProfilePicWidgetState();
+}
+
+class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
+  @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
-    final storyRadius = height * storySize;
+    final storyRadius = height * widget.storySize;
     return BlocConsumer<GetUserStoriesBloc, UserStoriesStates>(
       listener: (context, state) {
         if (state is UserStoriesErrorState) {
@@ -45,7 +53,9 @@ class UserProfilePicWidget extends StatelessWidget {
             isSuccess: false,
             isWarning: false,
           );
-        } else if (state is UserStoriesSuccessState) {
+        } else if (state is UserStoriesSuccessState &&
+            state.userStories.userStories.isNotEmpty) {
+          debugPrint("SUCCESS STATE && STORIES NOT EMPTY SO ROUTING......");
           final user = state.userStories;
           context.router.push(
             StoryViewScreenRoute(
@@ -54,27 +64,35 @@ class UserProfilePicWidget extends StatelessWidget {
               profilePicture: user.profilePicture,
             ),
           );
-        }
+        } else {}
       },
       builder: (context, state) {
-        final storyWidget = 
-           Container(
+        final storyWidget = GestureDetector(
+          onTap: () {
+            debugPrint("ADDED GET USERSTORIES BY USERNAME EVENT");
+            widget.username != null
+                ? context.read<GetUserStoriesBloc>().add(
+                  GetUserStories(username: widget.username!),
+                )
+                : null;
+          },
+          child: Container(
             padding: EdgeInsets.all(
-              isMini ? storyRadius * 0.050 : storyRadius * 0.04,
+              widget.isMini ? storyRadius * 0.050 : storyRadius * 0.04,
             ),
-            margin: margins,
+            margin: widget.margins,
             height: storyRadius,
             width: storyRadius,
             decoration: BoxDecoration(
               gradient:
-                  showBorder
-                      ? greyBorder
+                  widget.showBorder
+                      ? widget.greyBorder
                           ? null
                           : MyColors.gradient
                       : null,
               color:
-                  showBorder
-                      ? greyBorder
+                  widget.showBorder
+                      ? widget.greyBorder
                           ? MyColors.lowOpacitySecondary
                           : null
                       : null,
@@ -82,7 +100,7 @@ class UserProfilePicWidget extends StatelessWidget {
             ),
             child: Container(
               padding: EdgeInsets.all(
-                isMini ? storyRadius * 0.06 : storyRadius * 0.03,
+                widget.isMini ? storyRadius * 0.06 : storyRadius * 0.03,
               ),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -90,7 +108,7 @@ class UserProfilePicWidget extends StatelessWidget {
               ),
               child: ClipOval(
                 child: Image.network(
-                  profileUrl,
+                  widget.profileUrl,
                   fit: BoxFit.cover,
                   frameBuilder: (
                     context,
@@ -113,8 +131,9 @@ class UserProfilePicWidget extends StatelessWidget {
                 ),
               ),
             ),
-          );
-        
+          ),
+        );
+
         return state is UserStoriesLoadingState
             ? storyWidget
                 .animate(onPlay: (controller) => controller.repeat())
