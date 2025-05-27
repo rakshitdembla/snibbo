@@ -1,7 +1,7 @@
 class ApiMainUrl {
   ApiMainUrl._();
   // Use this when running on emulator
-  static String url = "http://10.0.2.2:3000/api";
+  static String url = "http://127.0.0.1:3000/api";
 
   //Jio AirFiber IP
   static String url_ = "http://192.168.31.213:3000/api";

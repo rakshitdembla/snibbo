@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:snibbo_app/core/constants/my_keys.dart';
 import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
 import 'package:snibbo_app/core/models/cloud_image_model.dart';
@@ -57,7 +58,7 @@ class ServicesUtils {
     final file = await sl<ImagePicker>().pickImage(source: imageSource);
 
     if (file != null) {
-      debugPrint("Picked File ${file}");
+      debugPrint("Picked File $file");
       return file;
     }
     return null;
@@ -69,18 +70,18 @@ class ServicesUtils {
     required File file,
   }) async {
     File? editedFile;
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder:
-            (context) => ProImageEditor.file(
+    await
+      PersistentNavBarNavigator.pushNewScreen(
+        context,
+        withNavBar: false,
+      screen:
+            ProImageEditor.file(
               file,
               callbacks: ProImageEditorCallbacks(
                 onImageEditingComplete: (Uint8List bytes) async {
                   final tempDir = await getTemporaryDirectory();
                   final fileName = const Uuid().v4();
                   final newFile = File('${tempDir.path}/$fileName.jpg');
-
                   final writtenFile = await newFile.writeAsBytes(bytes);
                   editedFile = writtenFile;
 
@@ -88,14 +89,13 @@ class ServicesUtils {
                 },
                 onCloseEditor: (editorMode) {
                   if (context.mounted) {
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                     debugPrint("Image editing closes. ${file.toString()}");
                   }
                 },
               ),
             ),
-      ),
-    );
+      );
     return editedFile;
   }
 

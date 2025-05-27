@@ -102,7 +102,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
           ),
           Positioned(
             left: width * 0.04,
-            top: height * 0.06,
+            top: height * 0.09,
             child: Row(
               children: [
                 UserProfilePicWidget(

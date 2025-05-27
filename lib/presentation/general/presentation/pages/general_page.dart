@@ -37,55 +37,56 @@ class _GeneralPageState extends State<GeneralPage> {
 
   @override
   Widget build(BuildContext context) {
-  
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    return PersistentTabView(
-      controller: _controller,
-      backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
-      isVisible: true,
-      confineToSafeArea: true,
-      navBarHeight: kBottomNavigationBarHeight,
-      context,
-      items: [
-        BottomNavBarItem.item(
-          context: context,
-          icon: Icons.home_rounded,
-
-          inactiveIcon: Icons.home_outlined,
+    return Scaffold(
+      body: SafeArea(
+        top: true,
+        bottom: true,
+        child: PersistentTabView(
+          controller: _controller,
+          backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
+          isVisible: true,
+          confineToSafeArea: false,
+          navBarHeight: kBottomNavigationBarHeight,
+          context,
+          items: [
+            BottomNavBarItem.item(
+              context: context,
+              icon: Icons.home_rounded,
+              inactiveIcon: Icons.home_outlined,
+            ),
+            BottomNavBarItem.item(
+              context: context,
+              icon: Icons.travel_explore,
+              inactiveIcon: Icons.travel_explore_outlined,
+            ),
+            BottomNavBarItem.item(
+              context: context,
+              icon: Icons.add_box_rounded,
+              inactiveIcon: Icons.add_box_outlined,
+            ),
+            BottomNavBarItem.item(
+              context: context,
+              icon: Icons.favorite,
+        
+              inactiveIcon: Icons.favorite_outline,
+            ),
+           BottomNavBarItem.item(
+              context: context,
+              icon: Icons.person,
+              inactiveIcon: Icons.person_outline,
+            ),
+          ],
+          screens: [
+            FeedScreen(),
+            ExploreScreen(),
+            CreatePostScreen(),
+            ActivityScreen(),
+            SettingsScreen(),
+          ],
+          navBarStyle: NavBarStyle.style6,
         ),
-        BottomNavBarItem.item(
-          context: context,
-          icon: Icons.travel_explore,
-
-          inactiveIcon: Icons.travel_explore_outlined,
-        ),
-        BottomNavBarItem.item(
-          context: context,
-          icon: Icons.add_box_rounded,
-
-          inactiveIcon: Icons.add_box_outlined,
-        ),
-        BottomNavBarItem.item(
-          context: context,
-          icon: Icons.favorite,
-
-          inactiveIcon: Icons.favorite_outline,
-        ),
-       BottomNavBarItem.item(
-          context: context,
-          icon: Icons.person,
-
-          inactiveIcon: Icons.person_outline,
-        ),
-      ],
-      screens: [
-        FeedScreen(),
-        ExploreScreen(),
-        CreatePostScreen(),
-        ActivityScreen(),
-        SettingsScreen(),
-      ],
-      navBarStyle: NavBarStyle.style13,
+      ),
     );
   }
 }

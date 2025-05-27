@@ -99,9 +99,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
         //** --> Scaffold Body
         child: Scaffold(
-          body: SafeArea(
+          body: 
             //@ --> Get Feed BLoc Builder
-            child: BlocBuilder<GetFeedBloc, GetFeedStates>(
+            BlocBuilder<GetFeedBloc, GetFeedStates>(
               builder: (context, state) {
                 return CustomScrollView(
                   slivers: [
@@ -130,6 +130,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                   isDark: isDark,
                                 );
                               } else {
+                                //# User Stories ->
                                 final story = state.storiesList![index - 1];
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -202,7 +203,6 @@ class _FeedScreenState extends State<FeedScreen> {
                 );
               },
             ),
-          ),
         ),
       ),
     );

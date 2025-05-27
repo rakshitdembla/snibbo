@@ -6,6 +6,7 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/user_profile_pic_widget.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_states.dart';
+import 'package:snibbo_app/features/create/presentation/pages/create_story_sheet.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
@@ -81,13 +82,21 @@ class MyStoryWidget extends StatelessWidget {
                                       isDark ? MyColors.black : MyColors.white,
                                 ),
                               )
-                              : Icon(
-                                Icons.add,
-                                size: height * 0.02,
-                                color:
-                                    isDark
-                                        ? MyColors.darkPrimary
-                                        : MyColors.primary,
+                              : GestureDetector(
+                                onTap: () {
+                                  CreateStorySheet.show(
+                                    context: context,
+                                    isDark: isDark,
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.add,
+                                  size: height * 0.02,
+                                  color:
+                                      isDark
+                                          ? MyColors.darkPrimary
+                                          : MyColors.primary,
+                                ),
                               );
                         },
                       ),

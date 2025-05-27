@@ -43,6 +43,24 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
     final height = UiUtils.screenHeight(context);
     final storyRadius = height * widget.storySize;
     return BlocConsumer<GetUserStoriesBloc, UserStoriesStates>(
+      listenWhen: (previous, current) {
+        if (current is UserStoriesSuccessState) {
+          return current.username == widget.username;
+        } else if (current is UserStoriesErrorState) {
+          return current.username == widget.username;
+        }
+        return false;
+      },
+      buildWhen: (previous, current) {
+        if (current is UserStoriesLoadingState) {
+          return current.username == widget.username;
+        } else if (current is UserStoriesSuccessState) {
+          return current.username == widget.username;
+        } else if (current is UserStoriesErrorState) {
+          return current.username == widget.username;
+        }
+        return false;
+      },
       listener: (context, state) {
         if (state is UserStoriesErrorState) {
           UiUtils.showToast(
@@ -55,7 +73,6 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
           );
         } else if (state is UserStoriesSuccessState &&
             state.userStories.userStories.isNotEmpty) {
-          debugPrint("SUCCESS STATE && STORIES NOT EMPTY SO ROUTING......");
           final user = state.userStories;
           context.router.push(
             StoryViewScreenRoute(
@@ -67,72 +84,71 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
         } else {}
       },
       builder: (context, state) {
-        final storyWidget = GestureDetector(
-          onTap: () {
-            debugPrint("ADDED GET USERSTORIES BY USERNAME EVENT");
-            widget.username != null
-                ? context.read<GetUserStoriesBloc>().add(
-                  GetUserStories(username: widget.username!),
-                )
-                : null;
-          },
+        final story = Container(
+          padding: EdgeInsets.all(
+            widget.isMini ? storyRadius * 0.050 : storyRadius * 0.04,
+          ),
+          margin: widget.margins,
+          height: storyRadius,
+          width: storyRadius,
+          decoration: BoxDecoration(
+            gradient:
+                widget.showBorder
+                    ? widget.greyBorder
+                        ? null
+                        : MyColors.gradient
+                    : null,
+            color:
+                widget.showBorder
+                    ? widget.greyBorder
+                        ? MyColors.lowOpacitySecondary
+                        : null
+                    : null,
+            shape: BoxShape.circle,
+          ),
           child: Container(
             padding: EdgeInsets.all(
-              widget.isMini ? storyRadius * 0.050 : storyRadius * 0.04,
+              widget.isMini ? storyRadius * 0.06 : storyRadius * 0.03,
             ),
-            margin: widget.margins,
-            height: storyRadius,
-            width: storyRadius,
             decoration: BoxDecoration(
-              gradient:
-                  widget.showBorder
-                      ? widget.greyBorder
-                          ? null
-                          : MyColors.gradient
-                      : null,
-              color:
-                  widget.showBorder
-                      ? widget.greyBorder
-                          ? MyColors.lowOpacitySecondary
-                          : null
-                      : null,
               shape: BoxShape.circle,
+              color: isDark ? MyColors.darkPrimary : MyColors.primary,
             ),
-            child: Container(
-              padding: EdgeInsets.all(
-                widget.isMini ? storyRadius * 0.06 : storyRadius * 0.03,
-              ),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isDark ? MyColors.darkPrimary : MyColors.primary,
-              ),
-              child: ClipOval(
-                child: Image.network(
-                  widget.profileUrl,
-                  fit: BoxFit.cover,
-                  frameBuilder: (
-                    context,
-                    child,
-                    frame,
-                    wasSynchronouslyLoaded,
-                  ) {
-                    return UiUtils.showShimmerBuilder(
-                      wasSynchronouslyLoaded: wasSynchronouslyLoaded,
-                      frame: frame,
-                      child: child,
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      MyAssets.profilePictureHolder,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+            child: ClipOval(
+              child: Image.network(
+                widget.profileUrl,
+                fit: BoxFit.cover,
+                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                  return UiUtils.showShimmerBuilder(
+                    wasSynchronouslyLoaded: wasSynchronouslyLoaded,
+                    frame: frame,
+                    child: child,
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    MyAssets.profilePictureHolder,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
             ),
           ),
         );
+
+        final storyWidget =
+            widget.username != null
+                ? GestureDetector(
+                  onTap: () {
+                    widget.username != null
+                        ? context.read<GetUserStoriesBloc>().add(
+                          GetUserStories(username: widget.username!),
+                        )
+                        : null;
+                  },
+                  child: story,
+                )
+                : story;
 
         return state is UserStoriesLoadingState
             ? storyWidget
