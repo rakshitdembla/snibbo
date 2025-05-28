@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/post_widget.dart';
-import 'package:snibbo_app/core/widgets/user_profile_pic_widget.dart';
+import 'package:snibbo_app/core/widgets/user_story_widget.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_states.dart';
 import 'package:snibbo_app/features/create/presentation/pages/create_story_sheet.dart';
@@ -12,7 +12,7 @@ import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_fee
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_states.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/feed_app_bar.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/my_story_widget.dart';
+import 'package:snibbo_app/core/widgets/my_story_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/test_list.dart';
@@ -135,7 +135,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    UserProfilePicWidget(
+                                    UserStoryWidget(
                                       showBorder: true,
                                       username: story.username,
                                       greyBorder: false,

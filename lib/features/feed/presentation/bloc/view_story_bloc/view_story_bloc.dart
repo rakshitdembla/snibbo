@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/stories_usecase.dart';
@@ -8,6 +9,7 @@ import 'package:snibbo_app/service_locator.dart';
 class ViewStoryBloc extends Bloc<ViewStoryEvents, ViewStoryStates> {
   ViewStoryBloc() : super(ViewStoryInitialState()) {
     on<ViewStory>((event, emit) async {
+      debugPrint("adding view to this story");
       emit(ViewStoryLoadingState());
 
       final userId = await ServicesUtils.getTokenId();
@@ -18,9 +20,10 @@ class ViewStoryBloc extends Bloc<ViewStoryEvents, ViewStoryStates> {
       );
 
       if (success) {
+        debugPrint("view added successfully");
         emit(
           ViewStorySuccessState(
-            title: "Story removed",
+            title: "Story view added successfully.",
             description: message.toString(),
           ),
         );
@@ -30,7 +33,7 @@ class ViewStoryBloc extends Bloc<ViewStoryEvents, ViewStoryStates> {
       emit(
         ViewStoryErrorState(
           description: message.toString(),
-          title: "Unable to delete story",
+          title: "Unable to add view to this story.",
         ),
       );
     });

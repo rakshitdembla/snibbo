@@ -20,7 +20,7 @@ class DeleteStoryBloc extends Bloc<DeleteStoryEvents, DeleteStoryStates> {
       if (success) {
         emit(
           DeleteStorySuccessState(
-            title: "Story removed",
+            title: "Story deleted successfully.",
             description: message.toString(),
           ),
         );

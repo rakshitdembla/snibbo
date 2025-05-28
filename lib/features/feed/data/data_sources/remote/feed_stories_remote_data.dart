@@ -1,4 +1,5 @@
 import 'package:snibbo_app/core/constants/api_constants.dart';
+import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
 import 'package:snibbo_app/features/feed/data/models/user_model.dart';
 import 'package:snibbo_app/features/feed/data/models/user_stories_model.dart';
@@ -7,7 +8,6 @@ import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dar
 import 'package:snibbo_app/service_locator.dart';
 
 class FeedStoriesRemoteData {
-  
   // Get User Stories By Username -->
   Future<(bool success, UserStoriesEntity? userStories, String? message)>
   getUserStories(String username) async {
@@ -47,6 +47,7 @@ class FeedStoriesRemoteData {
     try {
       final response = await sl<ApiService>().post(
         path: "${ApiRoutes.viewStory}/$storyId",
+          headers: {MyStrings.userIdHeader: userId},
       );
 
       if (response != null) {
@@ -72,6 +73,7 @@ class FeedStoriesRemoteData {
     try {
       final response = await sl<ApiService>().delete(
         path: "${ApiRoutes.deleteStory}/$storyId",
+           headers: {MyStrings.userIdHeader: userId},
       );
 
       if (response != null) {
@@ -93,8 +95,9 @@ class FeedStoriesRemoteData {
   Future<(bool success, List<UserEntity>? users, String? message)>
   storyViewers({required String userId, required String storyId}) async {
     try {
-      final response = await sl<ApiService>().delete(
+      final response = await sl<ApiService>().get(
         path: "${ApiRoutes.storyViewers}/$storyId",
+        headers: {MyStrings.userIdHeader: userId},
       );
 
       if (response != null) {

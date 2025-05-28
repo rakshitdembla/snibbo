@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/tab_bar.dart';
-import 'package:snibbo_app/core/widgets/user_profile_widget.dart';
+import 'package:snibbo_app/core/widgets/profile_view.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/pages/tabs/user_posts_tab.dart';
 
@@ -39,7 +39,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: height * 0.02),
-                    child: UserProfileWidget(),
+                    child: ProfileView(),
                   ),
                 ),
                 SliverPersistentHeader(

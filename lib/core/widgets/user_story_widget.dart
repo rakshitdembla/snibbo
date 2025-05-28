@@ -12,7 +12,7 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
-class UserProfilePicWidget extends StatefulWidget {
+class UserStoryWidget extends StatefulWidget {
   final EdgeInsetsGeometry margins;
   final String profileUrl;
   final double storySize;
@@ -21,7 +21,7 @@ class UserProfilePicWidget extends StatefulWidget {
   final bool showBorder;
   final bool greyBorder;
 
-  const UserProfilePicWidget({
+  const UserStoryWidget({
     super.key,
     required this.profileUrl,
     required this.margins,
@@ -33,28 +33,19 @@ class UserProfilePicWidget extends StatefulWidget {
   });
 
   @override
-  State<UserProfilePicWidget> createState() => _UserProfilePicWidgetState();
+  State<UserStoryWidget> createState() => _UserStoryWidgetState();
 }
 
-class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
+class _UserStoryWidgetState extends State<UserStoryWidget> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
     final storyRadius = height * widget.storySize;
     return BlocConsumer<GetUserStoriesBloc, UserStoriesStates>(
+      //# --> Listener for user-stories
       listenWhen: (previous, current) {
         if (current is UserStoriesSuccessState) {
-          return current.username == widget.username;
-        } else if (current is UserStoriesErrorState) {
-          return current.username == widget.username;
-        }
-        return false;
-      },
-      buildWhen: (previous, current) {
-        if (current is UserStoriesLoadingState) {
-          return current.username == widget.username;
-        } else if (current is UserStoriesSuccessState) {
           return current.username == widget.username;
         } else if (current is UserStoriesErrorState) {
           return current.username == widget.username;
@@ -76,6 +67,7 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
           final user = state.userStories;
           context.router.push(
             StoryViewScreenRoute(
+              isMyStory: false,
               stories: user.userStories,
               username: user.username,
               profilePicture: user.profilePicture,
@@ -83,7 +75,19 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
           );
         } else {}
       },
+      //# --> Builder for user-stories
+      buildWhen: (previous, current) {
+        if (current is UserStoriesLoadingState) {
+          return current.username == widget.username;
+        } else if (current is UserStoriesSuccessState) {
+          return current.username == widget.username;
+        } else if (current is UserStoriesErrorState) {
+          return current.username == widget.username;
+        }
+        return false;
+      },
       builder: (context, state) {
+        //Base story widget -->
         final story = Container(
           padding: EdgeInsets.all(
             widget.isMini ? storyRadius * 0.050 : storyRadius * 0.04,
@@ -135,7 +139,7 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
             ),
           ),
         );
-
+        //#--> Bloc Event to get user-stories
         final storyWidget =
             widget.username != null
                 ? GestureDetector(
@@ -149,7 +153,7 @@ class _UserProfilePicWidgetState extends State<UserProfilePicWidget> {
                   child: story,
                 )
                 : story;
-
+        //# --> Loading State Handling
         return state is UserStoriesLoadingState
             ? storyWidget
                 .animate(onPlay: (controller) => controller.repeat())

@@ -339,6 +339,7 @@ class StoryViewScreenRoute
     required List<_i20.StoryEntitiy> stories,
     required String username,
     required String profilePicture,
+    required bool isMyStory,
     List<_i17.PageRouteInfo>? children,
   }) : super(
          StoryViewScreenRoute.name,
@@ -347,6 +348,7 @@ class StoryViewScreenRoute
            stories: stories,
            username: username,
            profilePicture: profilePicture,
+           isMyStory: isMyStory,
          ),
          initialChildren: children,
        );
@@ -362,6 +364,7 @@ class StoryViewScreenRoute
         stories: args.stories,
         username: args.username,
         profilePicture: args.profilePicture,
+        isMyStory: args.isMyStory,
       );
     },
   );
@@ -373,6 +376,7 @@ class StoryViewScreenRouteArgs {
     required this.stories,
     required this.username,
     required this.profilePicture,
+    required this.isMyStory,
   });
 
   final _i19.Key? key;
@@ -383,9 +387,11 @@ class StoryViewScreenRouteArgs {
 
   final String profilePicture;
 
+  final bool isMyStory;
+
   @override
   String toString() {
-    return 'StoryViewScreenRouteArgs{key: $key, stories: $stories, username: $username, profilePicture: $profilePicture}';
+    return 'StoryViewScreenRouteArgs{key: $key, stories: $stories, username: $username, profilePicture: $profilePicture, isMyStory: $isMyStory}';
   }
 }
 

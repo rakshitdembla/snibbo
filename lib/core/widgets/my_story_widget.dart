@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/user_profile_pic_widget.dart';
+import 'package:snibbo_app/core/widgets/user_story_widget.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_states.dart';
 import 'package:snibbo_app/features/create/presentation/pages/create_story_sheet.dart';
@@ -33,19 +33,21 @@ class MyStoryWidget extends StatelessWidget {
       padding: EdgeInsets.only(left: width * 0.015),
       child: GestureDetector(
         onTap: () {
+          myStoryState.userStories.isNotEmpty ?
           context.router.push(
             StoryViewScreenRoute(
+              isMyStory: true,
               stories: myStoryState.userStories,
               username: username,
               profilePicture: profileUrl,
             ),
-          );
+          ) : null;
         },
         child: Column(
           children: [
             Stack(
               children: [
-                UserProfilePicWidget(
+                UserStoryWidget(
                   showBorder: showBorder,
                   greyBorder: true,
                   profileUrl: profileUrl,
@@ -109,7 +111,7 @@ class MyStoryWidget extends StatelessWidget {
               username,
               style: TextStyle(
                 fontSize: height * 0.013,
-                color: MyColors.darkRefresh,
+                color: isDark ? MyColors.darkRefresh : const Color.fromARGB(255, 85, 85, 85),
               ),
             ),
           ],

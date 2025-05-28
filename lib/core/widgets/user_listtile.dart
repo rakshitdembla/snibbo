@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/user_profile_pic_widget.dart';
+import 'package:snibbo_app/core/widgets/user_story_widget.dart';
 
 class UserListTile extends StatelessWidget {
   final String profileUrl;
@@ -19,17 +19,19 @@ class UserListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
+    final height = UiUtils.screenHeight(context);
     return ListTile(
-      leading: UserProfilePicWidget(
+      minTileHeight: height * 0.08,
+      leading: UserStoryWidget(
         profileUrl: profileUrl,
         margins: EdgeInsets.symmetric(),
-        storySize: width * 0.02,
+        storySize: 0.06,
         isMini: true,
-        greyBorder: true,
-        showBorder: true,
+        greyBorder: false,
+        showBorder: false,
       ),
-      title: Text(name),
-      subtitle: Text(username),
+      title: Text(name,style: TextStyle(fontSize: width* 0.037,fontWeight: FontWeight.w600),),
+      subtitle: Text("@$username",style: TextStyle(fontSize: width* 0.028,fontWeight: FontWeight.w100)),
       trailing: IconButton(
         onPressed: () {},
         icon: Icon(
