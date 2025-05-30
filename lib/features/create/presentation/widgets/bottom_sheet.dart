@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/core/widgets/bottom_modal_sheet.dart';
 
 class BottomModalSheet {
   static Future<dynamic> show({
@@ -16,48 +16,38 @@ class BottomModalSheet {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
 
-    return await showModalBottomSheet(
+    return await MyBottomModalSheet.show(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-      ),
-      isDismissible: true,
+      isDark: isDark,
       builder: (context) {
         return SizedBox(
           height: height * 0.6,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(30.r),
-                  ),
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        image,
-                        height: height * 0.3,
-                        width: width,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        left: width * 0.92,
-                        top: height * 0.01,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.cancel_outlined,
-                            size: height * 0.03,
-                            color: MyColors.white,
-                          ),
+                Stack(
+                  children: [
+                    Image.asset(
+                      image,
+                      height: height * 0.3,
+                      width: width,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      left: width * 0.92,
+                      top: height * 0.01,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.cancel_outlined,
+                          size: height * 0.03,
+                          color: MyColors.white,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -74,13 +64,13 @@ class BottomModalSheet {
                           fontSize: height * 0.03,
                         ),
                       ),
-                      SizedBox(height: height * 0.004),
+                      SizedBox(height: height * 0.003),
                       Text(
                         h2,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: MyColors.grey,
-                          fontSize: height * 0.018,
+                          fontSize: height * 0.017,
                         ),
                       ),
                     ],
@@ -125,7 +115,7 @@ class StorySourceTile extends StatelessWidget {
         title,
         style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: UiUtils.screenHeight(context) * 0.021,
+          fontSize: UiUtils.screenHeight(context) * 0.020,
         ),
       ),
     );

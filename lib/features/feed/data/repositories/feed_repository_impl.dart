@@ -15,10 +15,10 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<(bool, List<UserEntity>? storyEntities, String?)> getFollowingStory(
-    String tokenId,
+  Future<(bool, List<UserEntity>? userStories, String?)> getFollowingStory(
+    String tokenId,int page,int limit
   ) {
-    return sl<GetFeedRemoteData>().getFollowingStory(tokenId);
+    return sl<GetFeedRemoteData>().getFollowingStory(tokenId,page,limit);
   }
 
   @override

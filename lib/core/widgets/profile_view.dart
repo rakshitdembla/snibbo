@@ -3,7 +3,7 @@ import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/elevated_outlined_cta.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/social_stats_widget.dart';
 
 class ProfileView extends StatelessWidget {
@@ -20,7 +20,7 @@ class ProfileView extends StatelessWidget {
         children: [
           Row(
             children: [
-              UserStoryWidget(
+              UserCircularProfileWidget(
                 showBorder: false,
                 greyBorder: false,
                 isMini: false,

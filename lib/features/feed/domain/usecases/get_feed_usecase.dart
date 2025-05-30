@@ -30,12 +30,12 @@ class GetFeedPostsUsecase {
   Future<
     (
       bool success,
-      List<UserEntity>? storyEntities,
+      List<UserEntity>? userStories,
       String? message,
     )
   >
-  getFollowingStories(String tokenId) {
-    return feedRepository.getFollowingStory(tokenId);
+  getFollowingStories({required String tokenId,required int page,required int limit}) {
+    return feedRepository.getFollowingStory(tokenId,page,limit);
   }
 
   /// Retrieves stories by providing username

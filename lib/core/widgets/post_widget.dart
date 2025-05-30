@@ -1,16 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/post_action_icon.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_states.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_action_icon.dart';
+import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
-import 'package:snibbo_app/test_list.dart';
 
 class PostWidget extends StatefulWidget {
   final String postContentUrl;
@@ -21,12 +25,19 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  final testList = TestList.test();
+  late bool showingLike;
+  @override
+  void initState() {
+    showingLike = context.read<LikePostBloc>().state is TapLikeShowState;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,7 +49,7 @@ class _PostWidgetState extends State<PostWidget> {
           ),
           child: Row(
             children: [
-              UserStoryWidget(
+              UserCircularProfileWidget(
                 showBorder: true,
                 greyBorder: false,
                 isMini: true,
@@ -84,41 +95,110 @@ class _PostWidgetState extends State<PostWidget> {
           ),
         ),
         GestureDetector(
-          onDoubleTap: () {},
-          child: Image.network(
-            widget.postContentUrl, width: width,errorBuilder: (context, error, stackTrace) {
-            return Image.asset(MyAssets.demoUser,width: width,);
-          },),
+          onDoubleTap: () async {
+            if (showingLike) {
+              return;
+            }
+
+            context.read<LikePostBloc>().add(TapLike());
+          },
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.network(
+                widget.postContentUrl,
+                width: width,
+                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                  return UiUtils.showShimmerBuilder(
+                    wasSynchronouslyLoaded: wasSynchronouslyLoaded,
+                    frame: frame,
+                    child: child,
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    MyAssets.demoUser,
+                    width: width,
+                    frameBuilder: (
+                      context,
+                      child,
+                      frame,
+                      wasSynchronouslyLoaded,
+                    ) {
+                      return UiUtils.showShimmerBuilder(
+                        wasSynchronouslyLoaded: wasSynchronouslyLoaded,
+                        frame: frame,
+                        child: child,
+                      );
+                    },
+                  );
+                },
+              ),
+
+              BlocBuilder<LikePostBloc, LikePostStates>(
+                builder: (context, state) {
+                  if (state is TapLikeShowState) {
+                    return Icon(
+                          LineIcons.heartAlt,
+                          color: Colors.redAccent,
+                          size: width * 0.3,
+                        )
+                        .animate(onComplete: (controller) => controller.stop())
+                        .fadeIn(duration: 400.ms)
+                        .scale(
+                          duration: 400.ms,
+                          curve: Curves.easeOutBack,
+                          begin: Offset(0.5, 0.5),
+                          end: Offset(1.2, 1.2),
+                        )
+                        .then()
+                        .moveY(
+                          begin: 0,
+                          end: -30,
+                          duration: 700.ms,
+                          curve: Curves.easeOut,
+                        )
+                        .rotate(begin: -0.1, end: 0.1, duration: 700.ms)
+                        .fadeOut(duration: 500.ms);
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.02,
-            vertical: height * 0.01,
+          padding: EdgeInsets.only(
+            left: width * 0.023,
+            right: width * 0.02,
+            top: height * 0.008,
+            bottom: height * 0.01,
           ),
           child: Row(
             children: [
               PostActionIcon(
                 count: "5",
-                icon: Icons.favorite_border_rounded,
+                icon: LineIcons.heart,
                 iconColor: isDark ? MyColors.white : MyColors.black,
               ),
-              SizedBox(width: width * 0.035),
+              SizedBox(width: width * 0.04),
               PostActionIcon(
                 count: "51",
-                icon: Icons.mode_comment_outlined,
+                icon: LineIcons.comments,
                 iconColor: isDark ? MyColors.white : MyColors.black,
               ),
-              SizedBox(width: width * 0.035),
+              SizedBox(width: width * 0.04),
 
               PostActionIcon(
-                count: "5",
-                icon: Icons.share_outlined,
+                count: "",
+                icon: LineIcons.telegramPlane,
                 iconColor: isDark ? MyColors.white : MyColors.black,
               ),
               Spacer(),
               PostActionIcon(
                 count: "",
-                icon: Icons.bookmark_add_outlined,
+                icon: LineIcons.bookmark,
                 iconColor: isDark ? MyColors.white : MyColors.black,
               ),
             ],

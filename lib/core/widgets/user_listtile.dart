@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 
 class UserListTile extends StatelessWidget {
   final String profileUrl;
@@ -22,7 +22,7 @@ class UserListTile extends StatelessWidget {
     final height = UiUtils.screenHeight(context);
     return ListTile(
       minTileHeight: height * 0.08,
-      leading: UserStoryWidget(
+      leading: UserCircularProfileWidget(
         profileUrl: profileUrl,
         margins: EdgeInsets.symmetric(),
         storySize: 0.06,

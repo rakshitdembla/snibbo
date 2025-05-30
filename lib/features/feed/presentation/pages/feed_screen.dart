@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
-import 'package:snibbo_app/core/widgets/post_widget.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/refresh_bar.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_states.dart';
 import 'package:snibbo_app/features/create/presentation/pages/create_story_sheet.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_states.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/feed_app_bar.dart';
-import 'package:snibbo_app/core/widgets/my_story_widget.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/posts/feed_posts_list.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/stories/feed_stories_list.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/test_list.dart';
@@ -27,9 +30,11 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   final testList = TestList.test();
+  late StoryPaginationBloc paginationBloc;
 
   @override
   void initState() {
+    paginationBloc = context.read<StoryPaginationBloc>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GetFeedBloc>().add(GetFeedData());
     });
@@ -68,6 +73,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   isWarning: false,
                 );
               } else if (storyState is CreateStorySucessState) {
+                context.read<GetFeedBloc>().add(GetFeedData());
                 UiUtils.showToast(
                   title: storyState.title,
                   isDark: isDark,
@@ -92,6 +98,12 @@ class _FeedScreenState extends State<FeedScreen> {
                   isSuccess: false,
                   isWarning: false,
                 );
+              } else if (feedState is GetFeedSuccessState) {
+                context.read<StoryPaginationBloc>().add(
+                  InitializePaginationStories(
+                    initialStories: feedState.storiesList ?? [],
+                  ),
+                );
               }
             },
           ),
@@ -99,81 +111,53 @@ class _FeedScreenState extends State<FeedScreen> {
 
         //** --> Scaffold Body
         child: Scaffold(
-          body: 
-            //@ --> Get Feed BLoc Builder
-            BlocBuilder<GetFeedBloc, GetFeedStates>(
-              builder: (context, state) {
-                return CustomScrollView(
+          body:
+          //@ --> Get Feed BLoc Builder
+          BlocBuilder<GetFeedBloc, GetFeedStates>(
+            builder: (context, state) {
+              return MyRefreshBar(
+                onRefresh: () async {
+                  context.read<GetFeedBloc>().add(GetFeedData());
+                },
+                widget: CustomScrollView(
                   slivers: [
                     FeedAppBar(),
                     //# Success State Handling ->
                     if (state is GetFeedSuccessState) ...[
-                      //# Stories Builder ->
                       SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: height * 0.14,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: state.storiesList!.length + 1,
-                            itemBuilder: (context, index) {
-                              //# My Story ->
-                              if (index == 0) {
-                                return MyStoryWidget(
-                                  myStoryState: state.myStories,
-                                  showBorder:
-                                      state.myStories.userStories.isEmpty
-                                          ? false
-                                          : true,
-                                  profileUrl: state.myStories.profilePicture,
-                                  username: state.myStories.username,
-                                  isDark: isDark,
-                                );
-                              } else {
-                                //# User Stories ->
-                                final story = state.storiesList![index - 1];
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    UserStoryWidget(
-                                      showBorder: true,
-                                      username: story.username,
-                                      greyBorder: false,
-                                      profileUrl: testList[index],
-                                      isMini: false,
-                                      margins: EdgeInsets.fromLTRB(
-                                        width * 0.023,
-                                        height * 0.015,
-                                        width * 0.023,
-                                        height * 0.004,
-                                      ),
-                                      storySize: 0.10,
-                                    ),
-                                    Text(
-                                      story.username,
-                                      style: TextStyle(
-                                        fontSize: height * 0.013,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      //# Feed Posts ->
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          childCount: state.postsList.length,
-                          (context, index) {
-                            final post = state.postsList[index];
-                            return PostWidget(postContentUrl: post.postContent);
+                        //$ Story Pagination BLoc Consumer
+                        child: BlocConsumer<
+                          StoryPaginationBloc,
+                          StoryPaginationStates
+                        >(
+                          //Story Pagination Listener
+                          listener: (context, paginationState) {
+                            if (paginationState is StoryPaginationError) {
+                              UiUtils.showToast(
+                                title: paginationState.title,
+                                isDark: isDark,
+                                description: paginationState.description,
+                                context: context,
+                                isSuccess: false,
+                                isWarning: false,
+                              );
+                            }
+                          },
+                          //Story Pagination Builder
+                          builder: (context, paginationState) {
+                            final allStories = paginationBloc.allStories;
+                            //Feed Stories
+                            return FeedStoriesList(
+                              allStories: allStories,
+                              state: state,
+                            );
                           },
                         ),
                       ),
+                      //# Feed Posts ->
+                      FeedPostsList(state: state),
                     ]
-                    //#Error State Hnadling ->
+                    //#Error State Handling ->
                     else if (state is GetFeedErrorState) ...[
                       SliverToBoxAdapter(
                         child: SizedBox(
@@ -200,9 +184,10 @@ class _FeedScreenState extends State<FeedScreen> {
                       ),
                     ],
                   ],
-                );
-              },
-            ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

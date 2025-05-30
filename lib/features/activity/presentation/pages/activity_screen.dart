@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({super.key});
@@ -21,7 +21,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         itemBuilder: (context, index) {
           return ListTile(
             minTileHeight: height * 0.05,
-            leading: UserStoryWidget(
+            leading: UserCircularProfileWidget(
               showBorder: true,
               greyBorder: false,
 

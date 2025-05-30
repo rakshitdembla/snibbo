@@ -70,12 +70,16 @@ class GetFeedRemoteData {
   }
 
   // Get Followings Stories -->
-  Future<(bool success, List<UserEntity>? storyEntities, String? message)>
-  getFollowingStory(String tokenId) async {
+  Future<(bool success, List<UserEntity>? storyUsers, String? message)>
+  getFollowingStory(String tokenId,int page,int limit) async {
     try {
       final response = await sl<ApiService>().get(
         path: ApiRoutes.followingStories,
         headers: {MyStrings.userIdHeader: tokenId},
+        queryParameters: {
+          "page" : page,
+          "limit" : limit
+        }
       );
 
       if (response != null) {

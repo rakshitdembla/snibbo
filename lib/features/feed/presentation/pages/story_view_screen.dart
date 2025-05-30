@@ -2,21 +2,24 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
-import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
-import 'package:snibbo_app/core/widgets/user_story_widget.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/delete_story_bloc/delete_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/delete_story_bloc/delete_story_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/delete_story_bloc/delete_story_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/story_viewers_bloc/story_viewers_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/story_viewers_bloc/story_viewers_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/view_story_bloc/view_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/view_story_bloc/view_story_events.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/icon_with_text.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/story_view_widget.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/story_viewers_sheet.dart';
+import 'package:snibbo_app/features/feed/presentation/helpers/storyhelpers.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/stories/icon_with_text.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_user_details_widget.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_view_widget.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_viewers_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import "package:story_view/story_view.dart";
@@ -24,6 +27,7 @@ import "package:story_view/story_view.dart";
 @RoutePage()
 class StoryViewScreen extends StatefulWidget {
   final List<StoryEntitiy> stories;
+  final List<UserEntity>? storyUsers;
   final String username;
   final String profilePicture;
   final bool isMyStory;
@@ -33,6 +37,7 @@ class StoryViewScreen extends StatefulWidget {
     required this.username,
     required this.profilePicture,
     required this.isMyStory,
+    this.storyUsers,
   });
 
   @override
@@ -44,6 +49,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
   late List<StoryItem> storyItems;
   int storyIndex = 0;
   late String storyId;
+  List<UserEntity>? storyUsers;
 
   @override
   void initState() {
@@ -59,7 +65,8 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
               ),
             )
             .toList();
-              storyId = widget.stories[0].id;
+    storyId = widget.stories[0].id;
+    storyUsers = widget.storyUsers;
     super.initState();
   }
 
@@ -77,7 +84,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
     final deleteLoadingState =
         context.watch<DeleteStoryBloc>().state is DeleteStoryLoadingState;
 
-    //--> Delete Story States
+    //--> Delete Story Listener
     return BlocListener<DeleteStoryBloc, DeleteStoryStates>(
       listener: (context, state) {
         if (state is DeleteStoryErrorState) {
@@ -100,6 +107,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
           );
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) Navigator.of(context).pop();
+            context.read<GetFeedBloc>().add(GetFeedData());
           });
         }
       },
@@ -109,64 +117,87 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
         // --> StoryView Widget
         Stack(
           children: [
-            StoryViewWidget(
-              storyItems: storyItems,
-              controller: controller,
-              onStoryShow: (storyItem, index) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  setState(() {
-                    storyIndex = index;
-                    storyId = widget.stories[index].id;
-                  });
-                });
-                BlocProvider.of<ViewStoryBloc>(context).add(ViewStory(storyId: storyId));
+            //Swipes
+            GestureDetector(
+              onHorizontalDragEnd: (details) {
+                if (storyUsers != null && storyUsers!.isNotEmpty) {
+                  if (details.primaryVelocity! < 0) {
+                    StoryHelpers().goToNextStory(
+                      widget.username,
+                      storyUsers!,
+                      context,
+                    );
+                  } else if (details.primaryVelocity! > 0) {
+                    StoryHelpers().goToPreviousStory(
+                      widget.username,
+                      storyUsers!,
+                      context,
+                    );
+                  }
+                }
               },
+
+              child: StoryViewWidget(
+                storyItems: storyItems,
+                controller: controller,
+                //-- on story show
+                onStoryShow: (storyItem, index) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    setState(() {
+                      storyIndex = index;
+                      storyId = widget.stories[storyIndex].id;
+                    });
+                    if (!widget.isMyStory) {
+                      BlocProvider.of<ViewStoryBloc>(
+                        context,
+                      ).add(ViewStory(storyId: storyId));
+                    }
+                  });
+                },
+
+                //On story complete
+                onComplete: () {
+                  if (storyUsers != null && storyUsers!.isNotEmpty) {
+                    StoryHelpers().goToNextStory(
+                      widget.username,
+                      storyUsers!,
+                      context,
+                    );
+                  } else {
+                    context.router.pop();
+                  }
+                },
+
+                //On Vertical Swipes
+                onVerticalSwipeComplete: (direction) {
+                  if (direction == Direction.down) {
+                    context.router.popUntilRoot();
+                  } else if (direction == Direction.up && widget.isMyStory) {
+                    BlocProvider.of<StoryViewersBloc>(
+                      context,
+                    ).add(GetStoryViewers(storyId: storyId));
+                    StoryViewersSheet.show(
+                      context: context,
+                      isDark: isDark,
+                      controller: controller,
+                    );
+                  }
+                },
+              ),
             ),
 
             // --> UserDetails
             Positioned(
               left: width * 0.03,
               top: height * 0.11,
-              child: Row(
-                children: [
-                  UserStoryWidget(
-                    showBorder: false,
-                    greyBorder: false,
-                    profileUrl: widget.profilePicture,
-                    storySize: 0.045,
-                    isMini: true,
-                    margins: EdgeInsets.zero,
-                  ),
-                  SizedBox(width: width * 0.015),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.username,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: MyColors.white,
-                          fontSize: width * 0.035,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        ServicesUtils.toTimeAgo(
-                          widget.stories[storyIndex].createdAt,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: const Color.fromARGB(255, 172, 171, 171),
-                          fontSize: width * 0.025,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              child: StoryUserDetailsWidget(
+                profilePicture: widget.profilePicture,
+                stories: widget.stories,
+                storyIndex: storyIndex,
+                username: widget.username,
               ),
             ),
+
             // --> Story Actions
             widget.isMyStory
                 ? Positioned(
@@ -195,12 +226,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                           ),
                           Spacer(),
                           deleteLoadingState
-                              ? CircularProgressIndicator.adaptive(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  MyColors.white,
-                                ),
-                                strokeWidth: 6.0,
-                              )
+                              ? SecondaryCircularProgress()
                               : IconWithText(
                                 height: height,
                                 icon: Icons.delete_outline,

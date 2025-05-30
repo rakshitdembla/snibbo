@@ -17,8 +17,8 @@ abstract class FeedRepository {
   getAllPosts();
 
   /// Gets stories from accounts the current user follows
-  Future<(bool success, List<UserEntity>? storyEntities, String? message)>
-  getFollowingStory(String tokenId);
+  Future<(bool success, List<UserEntity>? storyUsers, String? message)>
+  getFollowingStory(String tokenId,int page,int limit);
 
   /// Gets stories created by the current user
   Future<(bool success, UserStoriesEntity? myStories, String? message)>
