@@ -6,7 +6,7 @@ class MyBottomModalSheet {
   static Future<void> show({
     required BuildContext context,
     required bool isDark,
-     StoryController? controller,
+    StoryController? controller,
     required WidgetBuilder builder,
   }) async{
     await showModalBottomSheet(
@@ -15,6 +15,7 @@ class MyBottomModalSheet {
       isDismissible: true,
       context: context,
       builder: builder,
+      useSafeArea: true
     );
     controller?.play();
   }

@@ -26,7 +26,7 @@ class UserListTile extends StatelessWidget {
         profileUrl: profileUrl,
         margins: EdgeInsets.symmetric(),
         storySize: 0.06,
-        isMini: true,
+        
         greyBorder: false,
         showBorder: false,
       ),

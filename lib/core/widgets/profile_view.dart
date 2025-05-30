@@ -23,7 +23,7 @@ class ProfileView extends StatelessWidget {
               UserCircularProfileWidget(
                 showBorder: false,
                 greyBorder: false,
-                isMini: false,
+                
                 profileUrl: MyAssets.demoUser,
                 storySize: 0.05,
                 margins: EdgeInsets.zero,

@@ -28,7 +28,7 @@ class StoryUserDetailsWidget extends StatelessWidget {
             greyBorder: false,
             profileUrl: profilePicture,
             storySize: 0.045,
-            isMini: true,
+            
             margins: EdgeInsets.zero,
           ),
           SizedBox(width: width * 0.015),

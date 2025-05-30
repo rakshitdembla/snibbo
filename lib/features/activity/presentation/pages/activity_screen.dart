@@ -25,7 +25,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               showBorder: true,
               greyBorder: false,
 
-              isMini: true,
+              
               profileUrl: MyAssets.demoUser,
               storySize: 0.05,
               margins: EdgeInsets.zero,

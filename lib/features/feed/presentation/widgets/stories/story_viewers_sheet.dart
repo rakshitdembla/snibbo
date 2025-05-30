@@ -4,8 +4,8 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/bottom_modal_sheet.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/user_listtile.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/story_viewers_bloc/story_viewers_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/story_viewers_bloc/story_viewers_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_viewers_bloc/story_viewers_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_viewers_bloc/story_viewers_states.dart';
 import 'package:story_view/controller/story_controller.dart';
 
 class StoryViewersSheet {

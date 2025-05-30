@@ -51,7 +51,7 @@ class MyStoryWidget extends StatelessWidget {
                   showBorder: showBorder,
                   greyBorder: true,
                   profileUrl: profileUrl,
-                  isMini: false,
+                  
                   margins: EdgeInsets.fromLTRB(
                     width * 0.023,
                     height * 0.015,

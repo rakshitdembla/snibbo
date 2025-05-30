@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/post_widget.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_widget.dart';
 
 @RoutePage()
 class PostsViewScreen extends StatelessWidget {

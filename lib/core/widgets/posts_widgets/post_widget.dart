@@ -1,17 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/core/widgets/animated_like.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_states.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_action_icon.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
@@ -43,19 +44,19 @@ class _PostWidgetState extends State<PostWidget> {
       children: [
         Padding(
           padding: EdgeInsets.only(
-            left: width * 0.03,
+            left: width * 0.013,
             bottom: height * 0.003,
-            top: height * 0.01,
+            top: height * 0.015,
           ),
           child: Row(
             children: [
               UserCircularProfileWidget(
-                showBorder: true,
+                showBorder: false,
                 greyBorder: false,
-                isMini: true,
+                
                 profileUrl: MyAssets.demoUser,
-                storySize: 0.053,
-                margins: EdgeInsets.only(right: width * 0.02),
+                storySize: 0.055,
+                margins: EdgeInsets.only(right: width * 0.01),
               ),
               GestureDetector(
                 onTap: () {
@@ -138,28 +139,12 @@ class _PostWidgetState extends State<PostWidget> {
               BlocBuilder<LikePostBloc, LikePostStates>(
                 builder: (context, state) {
                   if (state is TapLikeShowState) {
-                    return Icon(
+                    return 
+                        AnimatedLike(widget: Icon(
                           LineIcons.heartAlt,
                           color: Colors.redAccent,
                           size: width * 0.3,
-                        )
-                        .animate(onComplete: (controller) => controller.stop())
-                        .fadeIn(duration: 400.ms)
-                        .scale(
-                          duration: 400.ms,
-                          curve: Curves.easeOutBack,
-                          begin: Offset(0.5, 0.5),
-                          end: Offset(1.2, 1.2),
-                        )
-                        .then()
-                        .moveY(
-                          begin: 0,
-                          end: -30,
-                          duration: 700.ms,
-                          curve: Curves.easeOut,
-                        )
-                        .rotate(begin: -0.1, end: 0.1, duration: 700.ms)
-                        .fadeOut(duration: 500.ms);
+                        ));
                   } else {
                     return SizedBox.shrink();
                   }
@@ -178,12 +163,16 @@ class _PostWidgetState extends State<PostWidget> {
           child: Row(
             children: [
               PostActionIcon(
+                onTap: () {},
                 count: "5",
                 icon: LineIcons.heart,
                 iconColor: isDark ? MyColors.white : MyColors.black,
               ),
               SizedBox(width: width * 0.04),
               PostActionIcon(
+                onTap: () {
+                  ShowCommentsSheet.show(context: context, isDark: isDark);
+                },
                 count: "51",
                 icon: LineIcons.comments,
                 iconColor: isDark ? MyColors.white : MyColors.black,
@@ -191,12 +180,14 @@ class _PostWidgetState extends State<PostWidget> {
               SizedBox(width: width * 0.04),
 
               PostActionIcon(
+                onTap: () {},
                 count: "",
                 icon: LineIcons.telegramPlane,
                 iconColor: isDark ? MyColors.white : MyColors.black,
               ),
               Spacer(),
               PostActionIcon(
+                onTap: () {},
                 count: "",
                 icon: LineIcons.bookmark,
                 iconColor: isDark ? MyColors.white : MyColors.black,

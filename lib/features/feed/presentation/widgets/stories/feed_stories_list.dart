@@ -67,15 +67,14 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
               username: widget.state.myStories.username,
               isDark: isDark,
             );
-          } 
+          }
           //# If has More Stories->
           else if (index == widget.allStories.length + 1) {
             return paginationBloc.hasMore
                 ? Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.04
-                  ),
-                  child: Center(child: CircularProgressLoading()))
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+                  child: Center(child: CircularProgressLoading()),
+                )
                 : SizedBox.shrink();
           } else {
             //# User Stories ->
@@ -91,7 +90,7 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
                           ? true
                           : false,
                   profileUrl: story.profilePicture.toString(),
-                  isMini: false,
+
                   margins: EdgeInsets.fromLTRB(
                     width * 0.023,
                     height * 0.015,

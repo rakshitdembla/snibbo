@@ -6,12 +6,12 @@ import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/delete_story_bloc/delete_story_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/delete_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_user_stories_bloc/get_user_stories_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/story_viewers_bloc/story_viewers_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/view_story_bloc/view_story_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/get_user_stories_bloc/get_user_stories_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_viewers_bloc/story_viewers_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_story_bloc/view_story_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';

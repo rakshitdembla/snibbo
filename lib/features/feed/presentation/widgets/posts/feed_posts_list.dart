@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:snibbo_app/core/widgets/post_widget.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_states.dart';
 
 class FeedPostsList extends StatelessWidget {

@@ -13,7 +13,6 @@ class UserCircularProfileWidget extends StatefulWidget {
   final EdgeInsetsGeometry margins;
   final String profileUrl;
   final double storySize;
-  final bool isMini;
   final String? username;
   final bool showBorder;
   final bool greyBorder;
@@ -25,7 +24,6 @@ class UserCircularProfileWidget extends StatefulWidget {
     required this.margins,
     required this.storySize,
     this.username,
-    required this.isMini,
     required this.greyBorder,
     required this.showBorder,
     this.storyUsers,
@@ -45,7 +43,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
     //Base story widget -->
     final storyWidget = Container(
       padding: EdgeInsets.all(
-        widget.isMini ? storyRadius * 0.050 : storyRadius * 0.04,
+      storyRadius * 0.04,
       ),
       margin: widget.margins,
       height: storyRadius,
@@ -67,7 +65,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
       ),
       child: Container(
         padding: EdgeInsets.all(
-          widget.isMini ? storyRadius * 0.06 : storyRadius * 0.03,
+         storyRadius * 0.03,
         ),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
