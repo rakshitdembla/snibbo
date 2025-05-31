@@ -4,14 +4,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_Story_events.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
-import 'package:snibbo_app/features/create/presentation/widgets/bottom_sheet.dart';
+import 'package:snibbo_app/features/create/presentation/widgets/create_bottom_modal_sheet.dart';
 
 class CreateStorySheet {
   static Future<dynamic> show({
     required BuildContext context,
     required bool isDark,
   }) async {
-    return BottomModalSheet.show(
+    return CreateBottomModalSheet.show(
       context: context,
       isDark: isDark,
       image: MyAssets.storyImage,

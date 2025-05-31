@@ -10,6 +10,7 @@ import 'package:snibbo_app/core/constants/my_keys.dart';
 import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
 import 'package:snibbo_app/core/models/cloud_image_model.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
+import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,12 @@ class ServicesUtils {
     return timeago.format(dateTime);
   }
 
+  //@ BottomNav Bar Size
+  static double bottomNavBar({required BuildContext context}) {
+    return MediaQuery.of(context).padding.bottom + kBottomNavigationBarHeight + 
+    UiUtils.screenHeight(context) * 0.02;
+  }
+
   // @Image Picker Helper
   static Future<XFile?> pickImage(
     ImageSource imageSource,
@@ -70,32 +77,30 @@ class ServicesUtils {
     required File file,
   }) async {
     File? editedFile;
-    await
-      PersistentNavBarNavigator.pushNewScreen(
-        context,
-        withNavBar: false,
-      screen:
-            ProImageEditor.file(
-              file,
-              callbacks: ProImageEditorCallbacks(
-                onImageEditingComplete: (Uint8List bytes) async {
-                  final tempDir = await getTemporaryDirectory();
-                  final fileName = const Uuid().v4();
-                  final newFile = File('${tempDir.path}/$fileName.jpg');
-                  final writtenFile = await newFile.writeAsBytes(bytes);
-                  editedFile = writtenFile;
+    await PersistentNavBarNavigator.pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: ProImageEditor.file(
+        file,
+        callbacks: ProImageEditorCallbacks(
+          onImageEditingComplete: (Uint8List bytes) async {
+            final tempDir = await getTemporaryDirectory();
+            final fileName = const Uuid().v4();
+            final newFile = File('${tempDir.path}/$fileName.jpg');
+            final writtenFile = await newFile.writeAsBytes(bytes);
+            editedFile = writtenFile;
 
-                  debugPrint("Image editing completes.${file.toString()}");
-                },
-                onCloseEditor: (editorMode) {
-                  if (context.mounted) {
-                    Navigator.of(context, rootNavigator: true).pop();
-                    debugPrint("Image editing closes. ${file.toString()}");
-                  }
-                },
-              ),
-            ),
-      );
+            debugPrint("Image editing completes.${file.toString()}");
+          },
+          onCloseEditor: (editorMode) {
+            if (context.mounted) {
+              Navigator.of(context, rootNavigator: true).pop();
+              debugPrint("Image editing closes. ${file.toString()}");
+            }
+          },
+        ),
+      ),
+    );
     return editedFile;
   }
 

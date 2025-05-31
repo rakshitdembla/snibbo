@@ -19,7 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/service_locator.dart';
 import 'package:toastification/toastification.dart';
 
-import 'features/feed/presentation/bloc/like_post_bloc/like_post_bloc.dart';
+import 'features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

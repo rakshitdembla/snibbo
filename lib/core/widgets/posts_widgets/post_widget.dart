@@ -7,9 +7,9 @@ import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/animated_like.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/like_post_bloc/like_post_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_states.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
@@ -163,7 +163,9 @@ class _PostWidgetState extends State<PostWidget> {
           child: Row(
             children: [
               PostActionIcon(
-                onTap: () {},
+                onTap: () {
+                  
+                },
                 count: "5",
                 icon: LineIcons.heart,
                 iconColor: isDark ? MyColors.white : MyColors.black,

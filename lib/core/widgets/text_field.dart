@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
@@ -11,7 +12,7 @@ class MyTextField extends StatefulWidget {
   final TextEditingController textEditingController;
   final FocusNode focusNode;
   final int maxLength;
-  final int maxLines;
+  final dynamic maxLines;
   final String hintText;
   final ValueChanged<String>? onSubmit;
   final IconData prefixIcon;
@@ -79,11 +80,11 @@ class _MyTextFieldState extends State<MyTextField> {
                 fontSize: height * 0.02,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: Colors.transparent),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: MyColors.searchField),
               ),
               filled: true,

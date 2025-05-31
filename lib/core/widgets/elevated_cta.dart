@@ -34,7 +34,7 @@ class ElevatedCTA extends StatelessWidget {
           style: TextStyle(
             fontFamily: MyFonts.assetsFontFamily(),
             color: MyColors.white,
-            fontWeight: isShort ? FontWeight.w600 : FontWeight.w900,
+            fontWeight: isShort ? FontWeight.w600 : FontWeight.w600,
             fontSize: isShort ? height * 0.0165 : height * 0.020,
           ),
         ),

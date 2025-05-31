@@ -3,7 +3,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/bottom_modal_sheet.dart';
 
-class BottomModalSheet {
+class CreateBottomModalSheet {
   static Future<dynamic> show({
     required BuildContext context,
     required bool isDark,
