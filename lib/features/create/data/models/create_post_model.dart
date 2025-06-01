@@ -1,12 +1,12 @@
 class CreatePostModel {
   String content;
   String contentType;
-  String? captions;
+  String captions;
 
   CreatePostModel({
     required this.content,
     required this.contentType,
-    this.captions,
+    required this.captions,
   });
 
   Map<String, dynamic> toJson() => {

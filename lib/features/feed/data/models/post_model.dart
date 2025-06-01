@@ -7,7 +7,7 @@ class PostModel {
   UserModel userId;
   String postContent;
   String? postCaption;
-  List<String> postLikes;
+  List<Map<String,dynamic>> postLikes;
   List<String> postComments;
   DateTime createdAt;
   DateTime updatedAt;
@@ -30,7 +30,7 @@ class PostModel {
     userId: UserModel.fromJson(json["userId"]),
     postContent: json["postContent"],
     postCaption: json["postCaption"] ?? "",
-    postLikes: List<String>.from(json["postLikes"]),
+    postLikes: List<Map<String,dynamic>>.from(json["postLikes"]),
     postComments: List<String>.from(json["postComments"]),
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),

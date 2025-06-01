@@ -16,7 +16,6 @@ import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_vi
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_story_bloc/view_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_story_bloc/view_story_events.dart';
 import 'package:snibbo_app/features/feed/presentation/helpers/storyhelpers.dart';
-import 'package:snibbo_app/core/widgets/icon_with_text.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_user_details_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_view_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_viewers_sheet.dart';
@@ -208,7 +207,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                       padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                       child: Row(
                         children: [
-                          IconWithText(
+                          IconWithText._(
                             height: height,
                             icon: Icons.group_outlined,
                             text: "Activity",
@@ -227,7 +226,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                           Spacer(),
                           deleteLoadingState
                               ? SecondaryCircularProgress()
-                              : IconWithText(
+                              : IconWithText._(
                                 height: height,
                                 icon: Icons.delete_outline,
                                 text: "Delete",
@@ -245,6 +244,45 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                 : SizedBox.shrink(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class IconWithText extends StatelessWidget {
+  final double height;
+  final IconData icon;
+  final String text;
+  final GestureTapCallback? onTap;
+  const IconWithText._({
+    required this.height,
+    required this.icon,
+    required this.text,
+    required this.onTap
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap ,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: MyColors.white,
+            size: height * 0.0275,
+          ),
+          SizedBox(height: height * (0.002)),
+          Text(
+            text,
+            style: TextStyle(
+              color: MyColors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: height * 0.014,
+            ),
+          ),
+        ],
       ),
     );
   }

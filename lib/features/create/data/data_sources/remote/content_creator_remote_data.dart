@@ -5,6 +5,7 @@ import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
+import 'package:snibbo_app/features/create/data/models/create_post_model.dart';
 import 'package:snibbo_app/features/create/data/models/create_story_model.dart';
 import 'package:snibbo_app/service_locator.dart';
 
@@ -29,11 +30,7 @@ class ContentCreatorRemoteData {
 
       final fileLength = await file.length();
       if (fileLength > 2000000) {
-        return (
-          false,
-          "Image size too large. Maximum 2MB allowed.",
-          null,
-        );
+        return (false, "Image size too large. Maximum 2MB allowed.", null);
       }
 
       //@Edit Image -->
@@ -89,6 +86,32 @@ class ContentCreatorRemoteData {
 
         if (response.statusCode == 201) {
           return (true, "Story uploaded successfully.");
+        } else {
+          return (false, responseData["message"].toString());
+        }
+      } else {
+        return (false, "No response from server. Please try again later.");
+      }
+    } catch (e) {
+      return (false, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  Future<(bool success, String? message)> createPost({
+    required CreatePostModel createPostModel,
+    required String userId,
+  }) async {
+    try {
+      final response = await sl<ApiService>().post(
+        path: ApiRoutes.createPost,
+        headers: {MyStrings.userIdHeader: userId},
+        body: createPostModel.toJson(),
+      );
+
+      if (response != null) {
+        final responseData = await response.data;
+        if (response.statusCode == 201) {
+          return (true, "Post uploaded successfully.");
         } else {
           return (false, responseData["message"].toString());
         }

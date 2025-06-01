@@ -6,8 +6,8 @@ import 'package:snibbo_app/core/widgets/my_story_widget.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
@@ -59,12 +59,13 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
         itemBuilder: (context, index) {
           //# My Story ->
           if (index == 0) {
+            final myStory = widget.state.myStories;
             return MyStoryWidget(
-              myStoryState: widget.state.myStories,
+              myStoryState: myStory,
               showBorder:
-                  widget.state.myStories.userStories.isEmpty ? false : true,
-              profileUrl: widget.state.myStories.profilePicture,
-              username: widget.state.myStories.username,
+                  myStory.userStories.isEmpty ? false : true,
+              profileUrl: myStory.profilePicture,
+              username: myStory.username,
               isDark: isDark,
             );
           }

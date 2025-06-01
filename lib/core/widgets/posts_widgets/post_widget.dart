@@ -1,40 +1,72 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/animated_like.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_states.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_actions_row.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_captions.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/toogle_like_bloc/toogle_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/toogle_like_bloc/toogle_like_events.dart';
+import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_menu_bottom_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class PostWidget extends StatefulWidget {
-  final String postContentUrl;
-  const PostWidget({super.key, required this.postContentUrl});
+  final PostEntity postEntity;
+  const PostWidget({super.key, required this.postEntity});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  late bool showingLike;
+  late UserEntity postUser;
+  late PostEntity post;
+  bool showingLike = false;
+  late String? username;
+  bool _isInitialized = false;
+  late bool alreadyLiked;
+
+  Future<void> _initialize() async {
+    username = await ServicesUtils.getUsername();
+    postUser = widget.postEntity.userId;
+    post = widget.postEntity;
+
+    alreadyLiked = post.postLikes.any((like) => like["username"] == username);
+
+    if (!mounted) return;
+
+    if (alreadyLiked) {
+      context.read<AnimatedLikeBloc>().showLiked = {post.id: true};
+      context.read<ToogleLikeBloc>().likedMap = {post.id: true};
+    }
+    setState(() {
+      _isInitialized = true;
+    });
+  }
+
   @override
   void initState() {
-    showingLike = context.read<LikePostBloc>().state is TapLikeShowState;
     super.initState();
+    _initialize();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return const SizedBox();
+    }
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
@@ -53,8 +85,7 @@ class _PostWidgetState extends State<PostWidget> {
               UserCircularProfileWidget(
                 showBorder: false,
                 greyBorder: false,
-                
-                profileUrl: MyAssets.demoUser,
+                profileUrl: postUser.profilePicture.toString(),
                 storySize: 0.055,
                 margins: EdgeInsets.only(right: width * 0.01),
               ),
@@ -66,7 +97,7 @@ class _PostWidgetState extends State<PostWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Rakshit Dembla",
+                      postUser.name,
                       style: TextStyle(
                         fontSize: width * 0.033,
                         fontWeight: FontWeight.w700,
@@ -74,7 +105,7 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
                     SizedBox(height: height * 0.0025),
                     Text(
-                      "@rakshitdembla",
+                      postUser.username,
                       style: TextStyle(
                         fontSize: width * 0.030,
                         color: MyColors.grey,
@@ -86,7 +117,9 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  PostMenuBottomSheet.call(context: context, isDark: isDark);
+                },
                 icon: Icon(
                   Icons.more_vert,
                   color: isDark ? MyColors.white : MyColors.black,
@@ -97,17 +130,20 @@ class _PostWidgetState extends State<PostWidget> {
         ),
         GestureDetector(
           onDoubleTap: () async {
-            if (showingLike) {
-              return;
-            }
+            //@ Show Ui Like Animation & Add Like
+            BlocProvider.of<AnimatedLikeBloc>(
+              context,
+            ).add(DoubleTapLike(postId: post.id));
 
-            context.read<LikePostBloc>().add(TapLike());
+            BlocProvider.of<ToogleLikeBloc>(
+              context,
+            ).add(ToogleLike(postId: post.id, isDislike: false));
           },
           child: Stack(
             alignment: Alignment.center,
             children: [
               Image.network(
-                widget.postContentUrl,
+                post.postContent,
                 width: width,
                 frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                   return UiUtils.showShimmerBuilder(
@@ -118,7 +154,7 @@ class _PostWidgetState extends State<PostWidget> {
                 },
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    MyAssets.demoUser,
+                    MyAssets.demoUser, //@ error builder
                     width: width,
                     frameBuilder: (
                       context,
@@ -135,16 +171,27 @@ class _PostWidgetState extends State<PostWidget> {
                   );
                 },
               ),
-
-              BlocBuilder<LikePostBloc, LikePostStates>(
+              BlocBuilder<AnimatedLikeBloc, AnimatedLikeStates>(
+                buildWhen: (previous, current) {
+                  if (current is ShowLikeState) {
+                    return current.postId == post.id;
+                  } else if (current is HideLikeState) {
+                    return current.postid == post.id;
+                  } else {
+                    return false;
+                  }
+                },
                 builder: (context, state) {
-                  if (state is TapLikeShowState) {
-                    return 
-                        AnimatedLike(widget: Icon(
-                          LineIcons.heartAlt,
-                          color: Colors.redAccent,
-                          size: width * 0.3,
-                        ));
+                  final bool showAnimation =
+                      state is ShowLikeState && state.postId == post.id;
+                  if (showAnimation) {
+                    return AnimatedLike(
+                      widget: Icon(
+                        LineIcons.heartAlt,
+                        color: Colors.redAccent,
+                        size: width * 0.3,
+                      ),
+                    );
                   } else {
                     return SizedBox.shrink();
                   }
@@ -153,87 +200,19 @@ class _PostWidgetState extends State<PostWidget> {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: width * 0.023,
-            right: width * 0.02,
-            top: height * 0.008,
-            bottom: height * 0.01,
-          ),
-          child: Row(
-            children: [
-              PostActionIcon(
-                onTap: () {
-                  
-                },
-                count: "5",
-                icon: LineIcons.heart,
-                iconColor: isDark ? MyColors.white : MyColors.black,
-              ),
-              SizedBox(width: width * 0.04),
-              PostActionIcon(
-                onTap: () {
-                  ShowCommentsSheet.show(context: context, isDark: isDark);
-                },
-                count: "51",
-                icon: LineIcons.comments,
-                iconColor: isDark ? MyColors.white : MyColors.black,
-              ),
-              SizedBox(width: width * 0.04),
-
-              PostActionIcon(
-                onTap: () {},
-                count: "",
-                icon: LineIcons.telegramPlane,
-                iconColor: isDark ? MyColors.white : MyColors.black,
-              ),
-              Spacer(),
-              PostActionIcon(
-                onTap: () {},
-                count: "",
-                icon: LineIcons.bookmark,
-                iconColor: isDark ? MyColors.white : MyColors.black,
-              ),
-            ],
-          ),
-        ),
+        PostActionsRow(post: post),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.03),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                text: TextSpan(
-                  text: "rakshitdembla",
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w600,
-                    fontSize: width * 0.03,
-                    color: isDark ? MyColors.white : MyColors.black,
-                  ),
-                  children: [
-                    TextSpan(
-                      text:
-                          " Ghibli Trend in which chatGpt by OpenAi came in trend and it got so much viral...",
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w400,
-                        fontSize: width * 0.035,
-                        color: isDark ? MyColors.white : MyColors.black,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " more",
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w400,
-                        fontSize: width * 0.035,
-                        color: MyColors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+              PostCaptions(
+                postCaption: post.postCaption.toString(),
+                username: postUser.username,
               ),
               SizedBox(height: height * 0.0020),
               Text(
-                "14 April 2025",
+                ServicesUtils.toTimeAgo(post.createdAt),
                 style: TextStyle(color: MyColors.grey, fontSize: width * 0.028),
               ),
             ],

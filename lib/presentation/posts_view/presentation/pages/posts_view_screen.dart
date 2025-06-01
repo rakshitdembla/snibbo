@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/post_widget.dart';
 
 @RoutePage()
 class PostsViewScreen extends StatelessWidget {
@@ -20,11 +19,11 @@ class PostsViewScreen extends StatelessWidget {
       appBar: AppBar(automaticallyImplyLeading: true, title: Text(appbarTitle)),
       body: Padding(
         padding: EdgeInsets.only(bottom: height * 0.02, top: 0),
-        child: ListView.builder(
-          itemCount: posts.length,
-          itemBuilder:
-              (context, index) => PostWidget(postContentUrl: posts[index]),
-        ),
+        // child: ListView.builder(
+        //   itemCount: posts.length,
+        //   itemBuilder:
+        //       (context, index) => PostWidget(postContentUrl: posts[index]),
+        // ),
       ),
     );
   }

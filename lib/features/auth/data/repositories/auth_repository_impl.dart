@@ -6,12 +6,12 @@ import 'package:snibbo_app/service_locator.dart';
 
 class AuthRepositoryImpl implements AuthRepository{
   @override
-  Future<(bool, String?, String?)> loginUser(LoginReqModel loginReqModel) {
+  Future<(bool, String?,String?, String?)> loginUser(LoginReqModel loginReqModel) {
     return sl<AuthRemoteData>().loginUser(loginReqModel);
   }
   
   @override
-  Future<(bool, String?, String?)> registerUser(RegisterReqModel registerReqModel) {
+  Future<(bool, String?,String?, String?)> registerUser(RegisterReqModel registerReqModel) {
     return sl<AuthRemoteData>().registerUser(registerReqModel);
   
   }

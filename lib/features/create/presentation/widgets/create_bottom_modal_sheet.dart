@@ -23,6 +23,9 @@ class CreateBottomModalSheet {
         return SizedBox(
           height: height * 0.6,
           child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: UiUtils.bottomNavBar(context: context)
+            ),
             child: Column(
               children: [
                 Stack(

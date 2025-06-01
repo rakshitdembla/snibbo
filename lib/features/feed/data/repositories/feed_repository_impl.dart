@@ -10,20 +10,26 @@ import 'package:snibbo_app/service_locator.dart';
 
 class FeedRepositoryImpl implements FeedRepository {
   @override
-  Future<(bool, List<PostEntity>?, String?)> getFollowingPosts(String tokenId) {
-    return sl<GetFeedRemoteData>().getFollowingPosts(tokenId);
+  Future<(bool, List<PostEntity>?, String?)> getFollowingPosts(
+    String tokenId,
+    int page,
+    int limit,
+  ) {
+    return sl<GetFeedRemoteData>().getFollowingPosts(tokenId, page, limit);
   }
 
   @override
   Future<(bool, List<UserEntity>? userStories, String?)> getFollowingStory(
-    String tokenId,int page,int limit
+    String tokenId,
+    int page,
+    int limit,
   ) {
-    return sl<GetFeedRemoteData>().getFollowingStory(tokenId,page,limit);
+    return sl<GetFeedRemoteData>().getFollowingStory(tokenId, page, limit);
   }
 
   @override
-  Future<(bool, List<PostEntity>?, String?)> getAllPosts() {
-    return sl<GetFeedRemoteData>().getAllPosts();
+  Future<(bool, List<PostEntity>?, String?)> getAllPosts(int page, int limit) {
+    return sl<GetFeedRemoteData>().getAllPosts(page, limit);
   }
 
   @override

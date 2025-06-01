@@ -6,7 +6,7 @@ class LoginUsecase {
 
   LoginUsecase({required this.authRepository});
 
-  Future<(bool success, String? tokenId, String? message)> call(
+  Future<(bool success, String? tokenId,String? username, String? message)> call(
     LoginReqModel loginReqModel,
   ) {
     return authRepository.loginUser(loginReqModel);

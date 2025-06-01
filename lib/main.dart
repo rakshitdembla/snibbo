@@ -5,10 +5,13 @@ import 'package:snibbo_app/core/theme/themedata.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/delete_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/get_user_stories_bloc/get_user_stories_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_viewers_bloc/story_viewers_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_story_bloc/view_story_bloc.dart';
@@ -18,8 +21,7 @@ import 'package:snibbo_app/presentation/routes/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/service_locator.dart';
 import 'package:toastification/toastification.dart';
-
-import 'features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
+import 'features/feed/presentation/bloc/posts_bloc/toogle_like_bloc/toogle_like_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +50,10 @@ void main() async {
         BlocProvider<DeleteStoryBloc>(create: (context) => DeleteStoryBloc()),
         BlocProvider<ViewStoryBloc>(create: (context) => ViewStoryBloc()),
         BlocProvider<StoryPaginationBloc>(create: (context) => StoryPaginationBloc()),
-        BlocProvider<LikePostBloc>(create: (context) => LikePostBloc()),
+        BlocProvider<PostPaginationBloc>(create: (context) => PostPaginationBloc()),
+        BlocProvider<ToogleLikeBloc>(create: (context) => ToogleLikeBloc()),
+        BlocProvider<CreatePostBloc>(create: (context) => CreatePostBloc()),
+        BlocProvider<AnimatedLikeBloc>(create: (context) => AnimatedLikeBloc()),
       ],
       child: ToastificationWrapper(child: MyApp()),
     ),

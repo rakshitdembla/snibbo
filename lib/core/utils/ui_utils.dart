@@ -116,6 +116,12 @@ class UiUtils {
     );
   }
 
+  static double bottomNavBar({required BuildContext context}) {
+    return MediaQuery.of(context).padding.bottom +
+        kBottomNavigationBarHeight +
+        UiUtils.screenHeight(context) * 0.02;
+  }
+
   static Widget showShimmerBuilder({
     required wasSynchronouslyLoaded,
     required frame,
@@ -139,5 +145,4 @@ class UiUtils {
       child: Container(color: Colors.grey[300]),
     );
   }
-
 }

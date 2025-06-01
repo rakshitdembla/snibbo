@@ -10,7 +10,6 @@ import 'package:snibbo_app/core/constants/my_keys.dart';
 import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
 import 'package:snibbo_app/core/models/cloud_image_model.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
-import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
@@ -44,17 +43,27 @@ class ServicesUtils {
 
     return await secureStorage.read(key: MyStrings.secureStorageToken);
   }
+  // @Save User Username Helper
+  static Future<void> saveUsername(String username) async {
+    final secureStorage = sl<FlutterSecureStorage>();
+
+    await secureStorage.write(
+      key: MyStrings.secureStorageUsername,
+      value: username,
+    );
+  }
+
+  // @Get User TokenId Helper
+  static Future<String?> getUsername() async {
+    final secureStorage = sl<FlutterSecureStorage>();
+
+    return await secureStorage.read(key: MyStrings.secureStorageUsername);
+  }
 
   //@ DateTime to TimeAgo Format Helper
 
   static String toTimeAgo(DateTime dateTime) {
     return timeago.format(dateTime);
-  }
-
-  //@ BottomNav Bar Size
-  static double bottomNavBar({required BuildContext context}) {
-    return MediaQuery.of(context).padding.bottom + kBottomNavigationBarHeight + 
-    UiUtils.screenHeight(context) * 0.02;
   }
 
   // @Image Picker Helper

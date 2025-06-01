@@ -64,7 +64,12 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
         return;
       }
 
-      final (success, tokenId, message) = await sl<RegisterUsecase>().call(
+      final (
+        success,
+        tokenId,
+        resUsername,
+        message,
+      ) = await sl<RegisterUsecase>().call(
         RegisterReqModel(
           email: email,
           password: password,
@@ -73,9 +78,15 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
         ),
       );
 
-      if (success && tokenId != null && tokenId.isNotEmpty) {
+      if (success &&
+          tokenId != null &&
+          tokenId.isNotEmpty &&
+          resUsername != null &&
+          resUsername.isNotEmpty) {
         debugPrint("token id is $tokenId");
+        debugPrint("username is $resUsername");
         await ServicesUtils.saveTokenId(tokenId);
+        await ServicesUtils.saveUsername(resUsername);
         emit(
           RegisterSuccessState(
             title: "Register Successful",

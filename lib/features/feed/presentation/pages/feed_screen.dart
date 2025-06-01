@@ -10,15 +10,16 @@ import 'package:snibbo_app/features/create/presentation/pages/create_story_sheet
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_states.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/feed_app_bar.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/posts/feed_posts_list.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/stories/feed_stories_list.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
-import 'package:snibbo_app/test_list.dart';
 
 @RoutePage()
 class FeedScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  final testList = TestList.test();
+  final ScrollController controller = ScrollController();
   late StoryPaginationBloc paginationBloc;
 
   @override
@@ -104,6 +105,9 @@ class _FeedScreenState extends State<FeedScreen> {
                     initialStories: feedState.storiesList ?? [],
                   ),
                 );
+                context.read<PostPaginationBloc>().add(
+                  InitializePaginationPosts(initialPosts: feedState.postsList),
+                );
               }
             },
           ),
@@ -120,6 +124,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   context.read<GetFeedBloc>().add(GetFeedData());
                 },
                 widget: CustomScrollView(
+                  controller: controller,
                   slivers: [
                     FeedAppBar(),
                     //# Success State Handling ->
@@ -155,7 +160,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         ),
                       ),
                       //# Feed Posts ->
-                      FeedPostsList(state: state),
+                      FeedPostsList(controller: controller),
                     ]
                     //#Error State Handling ->
                     else if (state is GetFeedErrorState) ...[

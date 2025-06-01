@@ -12,38 +12,34 @@ class GetFeedPostsUsecase {
   /// [tokenId] - Authentication token of the current user
   /// Returns tuple containing success status, list of posts, and optional message
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getFollowingPosts(String tokenId) {
-    return feedRepository.getFollowingPosts(tokenId);
+  getFollowingPosts(String tokenId, int page, int limit) {
+    return feedRepository.getFollowingPosts(tokenId, page, limit);
   }
 
   /// Retrieves all available posts (for discover/explore feed)
   /// [tokenId] - Authentication token of the current user
   /// Returns tuple containing success status, list of posts, and optional message
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getAllPosts(String tokenId) {
-    return feedRepository.getAllPosts();
+  getAllPosts(String tokenId, int page, int limit) {
+    return feedRepository.getAllPosts(page, limit);
   }
 
   /// Retrieves stories from accounts that the current user follows
   /// [tokenId] - Authentication token of the current user
   /// Returns tuple containing success status, list of stories, and optional message
-  Future<
-    (
-      bool success,
-      List<UserEntity>? userStories,
-      String? message,
-    )
-  >
-  getFollowingStories({required String tokenId,required int page,required int limit}) {
-    return feedRepository.getFollowingStory(tokenId,page,limit);
+  Future<(bool success, List<UserEntity>? userStories, String? message)>
+  getFollowingStories({
+    required String tokenId,
+    required int page,
+    required int limit,
+  }) {
+    return feedRepository.getFollowingStory(tokenId, page, limit);
   }
 
   /// Retrieves stories by providing username
   /// [tokenId] - Authentication token of the current user
   /// Returns tuple containing success status, user stories, and optional message
-  Future<(bool, UserStoriesEntity?, String?)> getMyStories(
-    String tokenId,
-  ) {
+  Future<(bool, UserStoriesEntity?, String?)> getMyStories(String tokenId) {
     return feedRepository.getMyStories(tokenId);
   }
 }

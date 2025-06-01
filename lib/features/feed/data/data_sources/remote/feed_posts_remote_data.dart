@@ -101,4 +101,5 @@ class FeedPostsRemoteData {
       return (false, null, "Unexpected error occurred: ${e.toString()}");
     }
   }
+
 }

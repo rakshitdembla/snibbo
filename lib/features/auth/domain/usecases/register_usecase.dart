@@ -6,7 +6,7 @@ class RegisterUsecase {
 
   RegisterUsecase({required this.authRepository});
 
-  Future<(bool success, String? tokenId, String? message)> call(
+  Future<(bool success, String? tokenId,String? username, String? message)> call(
     RegisterReqModel registerReqModel,
   ) {
     return authRepository.registerUser(registerReqModel);

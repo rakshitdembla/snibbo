@@ -46,13 +46,16 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
         return;
       }
 
-      final (success, tokenId, message) = await sl<LoginUsecase>().call(
+      final (success, tokenId,username, message) = await sl<LoginUsecase>().call(
         LoginReqModel(email: email, password: password),
       );
 
-      if (success && tokenId != null && tokenId.isNotEmpty) {
+      if (success && tokenId != null && tokenId.isNotEmpty && username != null && username.isNotEmpty) {
         debugPrint("token id is $tokenId");
+        debugPrint("username is $username");
+        
         await ServicesUtils.saveTokenId(tokenId);
+        await ServicesUtils.saveUsername(username);
         emit(
           LoginSuccessState(
             title: "Login Successful",

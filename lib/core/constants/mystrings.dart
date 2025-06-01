@@ -16,8 +16,12 @@ class MyStrings {
   static const forgotPasswordH2 = "Let's help recover your account";
 
   static const secureStorageToken = "tokenId";
+  static const secureStorageUsername = "username";
 
   static const userIdHeader = "user_id";
 
   static const cloudinaryUrl = "https://api.cloudinary.com/v1_1/${MyKeys.cloudinaryCloudName}/image/upload";
+
+  static const pageParam = "page";
+  static const limitParam = "limit";
 }

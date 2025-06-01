@@ -12,11 +12,15 @@ import 'package:snibbo_app/service_locator.dart';
 class GetFeedRemoteData {
   // Get Followings Posts -->
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getFollowingPosts(String tokenId) async {
+  getFollowingPosts(String tokenId, int page, int limit) async {
     try {
       final response = await sl<ApiService>().get(
         path: ApiRoutes.followingPosts,
         headers: {MyStrings.userIdHeader: tokenId},
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
       );
 
       if (response != null) {
@@ -43,9 +47,15 @@ class GetFeedRemoteData {
 
   // Get All Posts -->
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getAllPosts() async {
+  getAllPosts(int page, int limit) async {
     try {
-      final response = await sl<ApiService>().get(path: ApiRoutes.allPosts);
+      final response = await sl<ApiService>().get(
+        path: ApiRoutes.allPosts,
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+      );
 
       if (response != null) {
         final responseData = await response.data;
@@ -71,15 +81,15 @@ class GetFeedRemoteData {
 
   // Get Followings Stories -->
   Future<(bool success, List<UserEntity>? storyUsers, String? message)>
-  getFollowingStory(String tokenId,int page,int limit) async {
+  getFollowingStory(String tokenId, int page, int limit) async {
     try {
       final response = await sl<ApiService>().get(
         path: ApiRoutes.followingStories,
         headers: {MyStrings.userIdHeader: tokenId},
         queryParameters: {
-          "page" : page,
-          "limit" : limit
-        }
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
       );
 
       if (response != null) {
@@ -109,13 +119,7 @@ class GetFeedRemoteData {
   }
 
   //Get My Stories -->
-  Future<
-    (
-      bool success,
-      UserStoriesEntity? myStories,
-      String? message,
-    )
-  >
+  Future<(bool success, UserStoriesEntity? myStories, String? message)>
   getMyStories(String tokenId) async {
     try {
       final response = await sl<ApiService>().get(

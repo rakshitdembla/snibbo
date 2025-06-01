@@ -3,7 +3,7 @@ class ApiMainUrl {
   // Use this when running on emulator
   static String url = "http://127.0.0.1:3000/api";
 
-  //Jio AirFiber IP
+  //Jio AirFiber IP (Wireless Debugging)
   static String url_ = "http://192.168.31.213:3000/api";
 
   //RailwayWifi IP
@@ -34,6 +34,7 @@ class ApiRoutes {
   static String disLikePost = "$postRoute/dislike";
   static String postComments = "$postRoute/all-comments";
   static String postLikedUsers = "$postRoute/liked-users";
+  static String createPost = "$postRoute/create";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";

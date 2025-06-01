@@ -1,0 +1,1 @@
+enum FeedMode { following, all }

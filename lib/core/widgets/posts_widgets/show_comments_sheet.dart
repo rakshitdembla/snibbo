@@ -41,6 +41,7 @@ class ShowCommentsSheet {
                 ),
                 Expanded(
                   child: ListView.builder(
+                    padding: EdgeInsetsGeometry.only(bottom: UiUtils.bottomNavBar(context: context)),
                     itemCount: 4,
                     itemBuilder: (context, index) {
                       return UserCommentWidget(

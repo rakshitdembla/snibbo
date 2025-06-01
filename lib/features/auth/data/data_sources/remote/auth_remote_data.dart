@@ -5,9 +5,8 @@ import 'package:snibbo_app/features/auth/data/models/register_req_model.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class AuthRemoteData {
-  Future<(bool success, String? tokenId, String? message)> loginUser(
-    LoginReqModel loginReqModel,
-  ) async {
+  Future<(bool success, String? tokenId, String? username, String? message)>
+  loginUser(LoginReqModel loginReqModel) async {
     try {
       final response = await sl<ApiService>().post(
         path: ApiRoutes.login,
@@ -18,21 +17,30 @@ class AuthRemoteData {
         final responseData = await response.data;
         if (response.statusCode == 200) {
           final tokenId = responseData["user"]?["_id"];
+          final username = responseData["user"]?["username"];
           return (
             true,
             tokenId == null ? null : responseData["user"]?["_id"].toString(),
+            username == null
+                ? null
+                : responseData["user"]?["username"].toString(),
             tokenId == null
                 ? "Login failed: Missing user ID in response. Please try again."
                 : responseData["message"].toString(),
           );
         } else {
-          return (false, null, responseData["message"].toString());
+          return (false, null, null, responseData["message"].toString());
         }
       } else {
-        return (false, null, "Something went wrong, please try again later.");
+        return (
+          false,
+          null,
+          null,
+          "Something went wrong, please try again later.",
+        );
       }
     } catch (e) {
-      return (false, null, e.toString());
+      return (false, null, null, e.toString());
     }
   }
 
@@ -58,9 +66,8 @@ class AuthRemoteData {
     }
   }
 
-  Future<(bool success, String? tokenId, String? message)> registerUser(
-    RegisterReqModel registerReqModel,
-  ) async {
+  Future<(bool success, String? tokenId, String? username, String? message)>
+  registerUser(RegisterReqModel registerReqModel) async {
     try {
       final response = await sl<ApiService>().post(
         path: ApiRoutes.register,
@@ -71,21 +78,30 @@ class AuthRemoteData {
         final responseData = await response.data;
         if (response.statusCode == 201) {
           final tokenId = responseData["user"]?["_id"];
+          final username = responseData["user"]?["username"];
           return (
             true,
             tokenId == null ? null : responseData["user"]?["_id"].toString(),
+            username == null
+                ? null
+                : responseData["user"]?["username"].toString(),
             tokenId == null
                 ? "Register failed: Missing user ID in response. Please try again."
                 : responseData["message"].toString(),
           );
         } else {
-          return (false, null, responseData["message"].toString());
+          return (false, null, null, responseData["message"].toString());
         }
       } else {
-        return (false, null, "Something went wrong, please try again later.");
+        return (
+          false,
+          null,
+          null,
+          "Something went wrong, please try again later.",
+        );
       }
     } catch (e) {
-      return (false, null, e.toString());
+      return (false, null, null, e.toString());
     }
   }
 }

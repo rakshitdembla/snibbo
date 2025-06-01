@@ -12,6 +12,7 @@ class MyAssets {
   static String demoUser = "assets/demo.png";
   static String profilePictureHolder = "assets/user_profile.webp";
   static String storyImage = "assets/story_image.jpg";
+  static String postImage = "assets/post.webp";
 
   // Memoji assets (webp format)
   static String chillMemoji = "assets/chill_memoji.webp";

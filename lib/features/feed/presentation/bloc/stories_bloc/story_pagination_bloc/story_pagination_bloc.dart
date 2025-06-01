@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/story_pagination_bloc/story_pagination_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_states.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class StoryPaginationBloc
@@ -20,9 +19,6 @@ class StoryPaginationBloc
       page = 2;
       hasMore = event.initialStories.length == 7;
       emit(StoryPaginationLoaded(storiesList: allStories, hasMore: hasMore));
-      debugPrint(
-        "$allStories,$page,$hasMore,$state"
-      );
     });
 
     on<LoadMoreUserStories>((event, emit) async {

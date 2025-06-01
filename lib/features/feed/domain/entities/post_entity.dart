@@ -5,7 +5,7 @@ class PostEntity {
   UserEntity userId;
   String postContent;
   String? postCaption;
-  List<String> postLikes;
+  List<Map<String,dynamic>> postLikes;
   List<String> postComments;
   DateTime createdAt;
   DateTime updatedAt;
