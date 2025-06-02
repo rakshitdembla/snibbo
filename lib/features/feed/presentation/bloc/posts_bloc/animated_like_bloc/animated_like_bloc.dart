@@ -7,21 +7,33 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_l
 class AnimatedLikeBloc extends Bloc<AnimatedLikeEvents, AnimatedLikeStates> {
   Map<String, bool> showLiked = {};
   AnimatedLikeBloc() : super(AnimatedLikeInitial()) {
+    debugPrint('AnimatedLikeBloc initialized');
+    
     on<DoubleTapLike>((event, emit) async {
-      debugPrint("Double Tapped Liked showLiked status - $showLiked");
+      debugPrint("[DoubleTapLike] Received for postId: ${event.postId}");
+      debugPrint("[DoubleTapLike] Current showLiked status: $showLiked");
+      
       emit(ShowLikeState(postId: event.postId));
       showLiked[event.postId] = true;
+      debugPrint("[DoubleTapLike] Updated showLiked[${event.postId}] to true");
 
+      debugPrint("[DoubleTapLike] Starting 2700ms delay...");
       await Future.delayed(2700.ms);
+      debugPrint("[DoubleTapLike] Delay completed");
 
       emit(HideLikeState(postid: event.postId));
+      debugPrint("[DoubleTapLike] Emitted HideLikeState for postId: ${event.postId}");
     });
 
     on<RemoveShownLike>((event, emit) {
-      debugPrint('Remove shown lik event showLikedStatus $showLiked');
+      debugPrint('[RemoveShownLike] Received for postId: ${event.postId}');
+      debugPrint('[RemoveShownLike] Pre-update showLiked status: $showLiked');
+      
       showLiked[event.postId] = false;
       emit(HideLikeState(postid: event.postId));
-      debugPrint('Remove shown lik event showLikedStatus $showLiked');
+      
+      debugPrint('[RemoveShownLike] Post-update showLiked status: $showLiked');
+      debugPrint('[RemoveShownLike] Emitted HideLikeState for postId: ${event.postId}');
     });
   }
 }

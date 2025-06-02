@@ -35,6 +35,8 @@ class ApiRoutes {
   static String postComments = "$postRoute/all-comments";
   static String postLikedUsers = "$postRoute/liked-users";
   static String createPost = "$postRoute/create";
+  static String savePost = "$postRoute/save";
+  static String removeSavedPost = "$postRoute/remove-saved";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";
@@ -44,4 +46,10 @@ class ApiRoutes {
   static String viewStory = "$storyRoute/view";
   static String deleteStory = "$storyRoute/delete";
   static String storyViewers = "$storyRoute/view-users";
+
+  static String userRoute = "${ApiMainUrl.url}${ApiEndPoints.user}";
+  static String followUser = "$userRoute/follow";
+  static String unfollowUser = "$userRoute/unfollow";
+  static String userProfile = "$userRoute/profile";
+  static String updateProfile = "$userRoute/update-profile";
 }

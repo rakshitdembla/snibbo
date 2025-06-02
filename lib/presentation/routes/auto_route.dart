@@ -20,6 +20,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: SearchScreenRoute.page),
     AutoRoute(page: StoryViewScreenRoute.page),
     AutoRoute(page: FetchStoriesLoadingRoute.page),
+    AutoRoute(page: EditProfileScreenRoute.page),
     CustomRoute(
       page: FetchStoriesLoadingSlidePageRoute.page,
       transitionsBuilder: TransitionsBuilders.slideRight,

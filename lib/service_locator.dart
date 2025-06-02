@@ -22,6 +22,16 @@ import "package:snibbo_app/features/feed/domain/repositories/feed_repository.dar
 import "package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart";
 import "package:snibbo_app/features/feed/domain/usecases/stories_usecase.dart";
 import "package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart";
+import "package:snibbo_app/features/profile/data/data_sources/remote/profile_remote_data.dart";
+import "package:snibbo_app/features/profile/data/repositories/profile_repository_impl.dart";
+import "package:snibbo_app/features/profile/domain/repositories/profile_repository.dart";
+import "package:snibbo_app/features/profile/domain/usecases/update_profile_usecase.dart";
+import "package:snibbo_app/features/user/data/data_sources/remote/user_remote_data.dart";
+import "package:snibbo_app/features/user/data/repositories/user_repository_impl.dart";
+import "package:snibbo_app/features/user/domain/repositories/user_repository.dart";
+import "package:snibbo_app/features/user/domain/usecases/follow_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/unfollow_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/user_profile_usecase.dart";
 
 final sl = GetIt.instance;
 
@@ -89,6 +99,24 @@ void setupServiceLocator() {
   );
 
   sl.registerSingleton<UploadImageUsecase>(
-    UploadImageUsecase(contentCreatorRepository: sl<ContentCreatorRepository>()),
+    UploadImageUsecase(
+      contentCreatorRepository: sl<ContentCreatorRepository>(),
+    ),
   );
+
+  //** --- User ServiceLocators --- */
+
+  sl.registerSingleton<UserRemoteData>(UserRemoteData());
+  sl.registerSingleton<UserRepository>(UserRepositoryImpl());
+  sl.registerSingleton<FollowUsecase>(FollowUsecase());
+
+  sl.registerSingleton<UnfollowUsecase>(UnfollowUsecase());
+
+  sl.registerSingleton<UserProfileUsecase>(UserProfileUsecase());
+
+    //** --- Profile ServiceLocators --- */
+
+      sl.registerSingleton<ProfileRemoteData>(ProfileRemoteData());
+      sl.registerSingleton<ProfileRepository>(ProfileRepositoryImpl());
+      sl.registerSingleton<UpdateProfileUsecase>(UpdateProfileUsecase());
 }

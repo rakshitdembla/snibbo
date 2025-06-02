@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
@@ -13,18 +12,19 @@ import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/toogle_like_bloc/toogle_like_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/toogle_like_bloc/toogle_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_menu_bottom_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
-import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
-  const PostWidget({super.key, required this.postEntity});
+  final bool isLikedByMe;
+  const PostWidget({
+    super.key,
+    required this.postEntity,
+    required this.isLikedByMe,
+  });
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -33,43 +33,26 @@ class PostWidget extends StatefulWidget {
 class _PostWidgetState extends State<PostWidget> {
   late UserEntity postUser;
   late PostEntity post;
-  bool showingLike = false;
-  late String? username;
-  bool _isInitialized = false;
-  late bool alreadyLiked;
-
-  Future<void> _initialize() async {
-    username = await ServicesUtils.getUsername();
-    postUser = widget.postEntity.userId;
-    post = widget.postEntity;
-
-    alreadyLiked = post.postLikes.any((like) => like["username"] == username);
-
-    if (!mounted) return;
-
-    if (alreadyLiked) {
-      context.read<AnimatedLikeBloc>().showLiked = {post.id: true};
-      context.read<ToogleLikeBloc>().likedMap = {post.id: true};
-    }
-    setState(() {
-      _isInitialized = true;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _initialize();
+    postUser = widget.postEntity.userId;
+    post = widget.postEntity;
+
+    if (widget.isLikedByMe) {
+      // context.read<ToogleLikeBloc>().likedMap[post.id] = true;
+      context.read<AnimatedLikeBloc>().showLiked[post.id] = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isInitialized) {
-      return const SizedBox();
-    }
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
+    // final isTooglingState =
+    //     context.read<ToogleLikeBloc>().state is ToogleLikeLoading;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +74,7 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.router.push(UserProfileScreenRoute());
+                  // context.router.push(UserProfileScreenRoute());
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,14 +113,17 @@ class _PostWidgetState extends State<PostWidget> {
         ),
         GestureDetector(
           onDoubleTap: () async {
-            //@ Show Ui Like Animation & Add Like
-            BlocProvider.of<AnimatedLikeBloc>(
-              context,
-            ).add(DoubleTapLike(postId: post.id));
+            // //@ Show Ui Like Animation & Add Like
+            // if (isTooglingState) {
+            //   return;
+            // }
+            // BlocProvider.of<AnimatedLikeBloc>(
+            //   context,
+            // ).add(DoubleTapLike(postId: post.id));
 
-            BlocProvider.of<ToogleLikeBloc>(
-              context,
-            ).add(ToogleLike(postId: post.id, isDislike: false));
+            // BlocProvider.of<ToogleLikeBloc>(
+            //   context,
+            // ).add(ToogleLike(postId: post.id, isDislike: false));
           },
           child: Stack(
             alignment: Alignment.center,
@@ -200,7 +186,7 @@ class _PostWidgetState extends State<PostWidget> {
             ],
           ),
         ),
-        PostActionsRow(post: post),
+        PostActionsRow(post: post,isLikedAlready: widget.isLikedByMe,),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.03),
           child: Column(

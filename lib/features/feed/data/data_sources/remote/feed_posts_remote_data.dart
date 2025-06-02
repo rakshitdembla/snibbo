@@ -8,18 +8,39 @@ import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class FeedPostsRemoteData {
-  // Like/Dislike Post -->
-  Future<(bool success, String? message)> reactToPost(
+  // Like Post -->
+  Future<(bool success, String? message)> likePost(
     String postId,
     String userId,
-    bool isDislike,
   ) async {
     try {
       final response = await sl<ApiService>().post(
-        path:
-            isDislike
-                ? "${ApiRoutes.disLikePost}/$postId"
-                : "${ApiRoutes.likePost}/$postId",
+        path: "${ApiRoutes.likePost}/$postId",
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+        if (response.statusCode == 202) {
+          return (true, responseData["message"].toString());
+        } else {
+          return (false, responseData["message"].toString());
+        }
+      } else {
+        return (false, "No response from server. Please try again later.");
+      }
+    } catch (e) {
+      return (false, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+  // DisLike Post -->
+  Future<(bool success, String? message)> dislikePost(
+    String postId,
+    String userId,
+  ) async {
+    try {
+      final response = await sl<ApiService>().post(
+        path: "${ApiRoutes.disLikePost}/$postId",
         headers: {MyStrings.userIdHeader: userId},
       );
 
@@ -102,4 +123,57 @@ class FeedPostsRemoteData {
     }
   }
 
+  //SavePost
+  Future<(bool success, String? message)> savePost({
+    required String postId,
+    required String userId,
+  }) async {
+    try {
+      final response = await sl<ApiService>().post(
+        path: "${ApiRoutes.savePost}/$postId",
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+
+        if (response.statusCode == 202) {
+          return (true, "Post saved successfully.");
+        } else {
+          return (false, responseData["message"].toString());
+        }
+      } else {
+        return (false, "No response from server. Please try again later.");
+      }
+    } catch (e) {
+      return (false, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  //Remove Saved Post
+  Future<(bool success, String? message)> removeSavedPost({
+    required String postId,
+    required String userId,
+  }) async {
+    try {
+      final response = await sl<ApiService>().post(
+        path: "${ApiRoutes.removeSavedPost}/$postId",
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+
+        if (response.statusCode == 202) {
+          return (true, "Post removed from saved successfully.");
+        } else {
+          return (false, responseData["message"].toString());
+        }
+      } else {
+        return (false, "No response from server. Please try again later.");
+      }
+    } catch (e) {
+      return (false, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
 }

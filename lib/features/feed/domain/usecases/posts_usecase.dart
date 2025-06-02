@@ -7,17 +7,26 @@ class PostsUsecase {
 
   PostsUsecase({required this.feedRepository});
 
-  /// Handles post like/dislike reactions
+  /// Handles post like reaction
   /// [postId] - ID of the post to react to
   /// [userId] - ID of the user reacting
-  /// [isDislike] - Whether the reaction is a dislike (true) or like (false)
   /// Returns tuple with success status and optional message
-  Future<(bool success, String? message)> reactToPost(
-    String postId,
-    String userId,
-    bool isDislike,
-  ) {
-    return feedRepository.reactToPost(postId, userId, isDislike);
+  Future<(bool success, String? message)> likePost({
+    required String postId,
+    required String userId,
+  }) {
+    return feedRepository.likePost(userId: userId, postId: postId);
+  }
+
+  /// Handles post like reaction
+  /// [postId] - ID of the post to react to
+  /// [userId] - ID of the user reacting
+  /// Returns tuple with success status and optional message
+  Future<(bool success, String? message)> disLike({
+    required String postId,
+    required String userId,
+  }) {
+    return feedRepository.disLikepost(userId: userId, postId: postId);
   }
 
   /// Retrieves comments for a specific post
@@ -33,5 +42,25 @@ class PostsUsecase {
   /// Returns tuple with success status, list of users, and optional message
   Future<(bool, List<UserEntity>?, String?)> getPostLikedUsers(String postId) {
     return feedRepository.getPostLikedUsers(postId);
+  }
+
+  /// Saves any post to user saved posts
+  /// [postId] - ID of the post to save
+  /// Returns tuple with success status and optional message
+  Future<(bool success, String? message)> savePost({
+    required String postId,
+    required String userId,
+  }) {
+    return feedRepository.savePost(postId: postId, userId: userId);
+  }
+
+  /// Removes saved post from user saved posts
+  /// [postId] - ID of the post to remove from saved posts
+  /// Returns tuple with success status and optional message
+  Future<(bool success, String? message)> removeSavedPost({
+    required String postId,
+    required String userId,
+  }) {
+    return feedRepository.removeSavedPost(postId: postId, userId: userId);
   }
 }

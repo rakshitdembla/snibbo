@@ -11,7 +11,8 @@ import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class UserCircularProfileWidget extends StatefulWidget {
   final EdgeInsetsGeometry margins;
-  final String profileUrl;
+  final dynamic profileUrl;
+  final bool? isFile;
   final double storySize;
   final String? username;
   final bool showBorder;
@@ -27,6 +28,7 @@ class UserCircularProfileWidget extends StatefulWidget {
     required this.greyBorder,
     required this.showBorder,
     this.storyUsers,
+    this.isFile,
   });
 
   @override
@@ -42,9 +44,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
 
     //Base story widget -->
     final storyWidget = Container(
-      padding: EdgeInsets.all(
-      storyRadius * 0.04,
-      ),
+      padding: EdgeInsets.all(storyRadius * 0.04),
       margin: widget.margins,
       height: storyRadius,
       width: storyRadius,
@@ -64,31 +64,46 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
         shape: BoxShape.circle,
       ),
       child: Container(
-        padding: EdgeInsets.all(
-         storyRadius * 0.03,
-        ),
+        padding: EdgeInsets.all(storyRadius * 0.03),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isDark ? MyColors.darkPrimary : MyColors.primary,
         ),
         child: ClipOval(
-          child: Image.network(
-            widget.profileUrl,
-            fit: BoxFit.cover,
-            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              return UiUtils.showShimmerBuilder(
-                wasSynchronouslyLoaded: wasSynchronouslyLoaded,
-                frame: frame,
-                child: child,
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                MyAssets.profilePictureHolder,
-                fit: BoxFit.cover,
-              );
-            },
-          ),
+          child:
+              widget.isFile != null && widget.isFile!
+                  ? Image.file(
+                    widget.profileUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        MyAssets.profilePictureHolder,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )
+                  : Image.network(
+                    widget.profileUrl,
+                    fit: BoxFit.cover,
+                    frameBuilder: (
+                      context,
+                      child,
+                      frame,
+                      wasSynchronouslyLoaded,
+                    ) {
+                      return UiUtils.showShimmerBuilder(
+                        wasSynchronouslyLoaded: wasSynchronouslyLoaded,
+                        frame: frame,
+                        child: child,
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        MyAssets.profilePictureHolder,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
         ),
       ),
     );
@@ -102,7 +117,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
                   storyUsers: widget.storyUsers,
                   username: widget.username!,
                   isPreviousSlide: false,
-                  profilePicture: widget.profileUrl
+                  profilePicture: widget.profileUrl,
                 ),
               );
             }

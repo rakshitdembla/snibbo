@@ -1,0 +1,125 @@
+import 'dart:io';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
+import 'package:snibbo_app/features/profile/data/models/update_profile_req_model.dart';
+import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_bloc/update_profile_events.dart';
+import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_bloc/update_profile_states.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_events.dart';
+import 'package:snibbo_app/service_locator.dart';
+import '../../../domain/usecases/update_profile_usecase.dart';
+
+class UpdateProfileBloc extends Bloc<UpdateProfileEvent, UpdateProfileState> {
+  UpdateProfileBloc() : super(UpdateProfileInitial()) {
+    on<SubmitProfileUpdate>((event, emit) async {
+      emit(UpdateProfileLoading());
+
+      final String username = event.username;
+      final String name = event.name;
+      final String bio = event.bio;
+      final File? updatedProfile = event.updatedProfile;
+      String? profileUrl;
+
+      if (username.trim().isEmpty || name.trim().isEmpty) {
+        emit(
+          UpdateProfileError(
+            title: "Missing Fields",
+            description: "Name and username cannot be empty.",
+          ),
+        );
+        return;
+      }
+
+      if (name.length < 2) {
+        emit(
+          UpdateProfileError(
+            title: "Name Too Short",
+            description: "Name must be at least 2 characters long.",
+          ),
+        );
+        return;
+      }
+
+      if (username.length < 4) {
+        emit(
+          UpdateProfileError(
+            title: "Username Too Short",
+            description: "Username must be at least 4 characters long.",
+          ),
+        );
+        return;
+      }
+      if (updatedProfile != null) {
+        final fileLength = await updatedProfile.length();
+        if (fileLength > 2000000) {
+          emit(
+            UpdateProfileError(
+              title: "Failed to Upload Image",
+              description: "Image size too large. Maximum 2MB allowed.",
+            ),
+          );
+          return;
+        }
+
+        final (
+          bool cloudSuccess,
+          String? cloudMessage,
+          CloudImageEntity? cloudEntity,
+        ) = await ServicesUtils.uploadToCloud("Image", updatedProfile);
+
+        if (cloudSuccess && cloudEntity != null) {
+          profileUrl = cloudEntity.secureUrl;
+        } else {
+          emit(
+            UpdateProfileError(
+              title: "Failed to update profile",
+              description: cloudMessage.toString(),
+            ),
+          );
+          return;
+        }
+      }
+      final userId = await ServicesUtils.getTokenId();
+      final (success, message) = await sl<UpdateProfileUsecase>().call(
+        userId: userId!,
+        updateProfileReqModel: UpdateProfileReqModel(
+          bio: bio,
+          name: name,
+          username: username,
+          profileUrl: profileUrl,
+        ),
+      );
+
+      if (success) {
+        await ServicesUtils.saveUsername(username);
+        final context = event.context;
+
+        if (context.mounted) {
+                          BlocProvider.of<UserProfileBloc>(
+                    context,
+                  ).add(GetUserProfile(username: username));
+                  context.router.pop();
+        }
+        await Future.delayed(1.seconds);
+        emit(
+          UpdateProfileSuccess(
+            title: "Profile Updated",
+            description:
+                message ?? "Your profile has been successfully updated.",
+          ),
+        );
+      } else {
+        emit(
+          UpdateProfileError(
+            title: "Update Failed",
+            description:
+                message ?? "Could not update profile. Please try again.",
+          ),
+        );
+      }
+    });
+  }
+}

@@ -9,6 +9,8 @@ class MyStrings {
   static const passwordHintText = "•••••••••••";
   static const nameHintText = "John Doe";
   static const usernameHintText = "john_doe_90";
+  static const bioHintText = "Tell us a bit about yourself";
+
 
   static const forgotPassHint = "Email address";
 

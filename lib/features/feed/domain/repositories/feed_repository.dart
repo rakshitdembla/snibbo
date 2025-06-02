@@ -5,32 +5,36 @@ import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dar
 
 /// Abstract contract defining all feed-related data operations
 abstract class FeedRepository {
-
   // -- Feed Content Fetching --
-  
+
   /// Gets posts from accounts the current user follows
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getFollowingPosts(String tokenId,int page,int limit);
+  getFollowingPosts(String tokenId, int page, int limit);
 
   /// Gets all posts available (discover feed)
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getAllPosts(int page,int limit);
+  getAllPosts(int page, int limit);
 
   /// Gets stories from accounts the current user follows
   Future<(bool success, List<UserEntity>? storyUsers, String? message)>
-  getFollowingStory(String tokenId,int page,int limit);
+  getFollowingStory(String tokenId, int page, int limit);
 
   /// Gets stories created by the current user
   Future<(bool success, UserStoriesEntity? myStories, String? message)>
   getMyStories(String tokenId);
 
   // -- Post Interactions --
-  /// Likes or dislikes a post
-  Future<(bool success, String? message)> reactToPost(
-    String postId,
-    String userId,
-    bool isDislike,
-  );
+  /// Likes a post
+  Future<(bool success, String? message)> likePost({
+    required String postId,
+    required String userId,
+  });
+
+  /// DisLikes a post
+  Future<(bool success, String? message)> disLikepost({
+    required String postId,
+    required String userId,
+  });
 
   /// Gets comments for a specific post
   Future<(bool success, List<PostCommentEntity>? postComments, String? message)>
@@ -39,6 +43,18 @@ abstract class FeedRepository {
   /// Gets users who liked a specific post
   Future<(bool success, List<UserEntity>? likedUser, String? message)>
   getPostLikedUsers(String postId);
+
+  /// Saves any post to user saved posts
+  Future<(bool success, String? message)> savePost({
+    required String postId,
+    required String userId,
+  });
+
+  /// Removes saved post from user saved posts
+  Future<(bool success, String? message)> removeSavedPost({
+    required String postId,
+    required String userId,
+  });
 
   // -- Story Interactions --
   /// Gets stories for a specific user by username

@@ -7,9 +7,9 @@ import 'package:snibbo_app/features/activity/presentation/pages/activity_screen.
 import 'package:snibbo_app/features/explore/presentation/pages/explore_screen.dart';
 import 'package:snibbo_app/features/feed/presentation/pages/feed_screen.dart';
 import 'package:snibbo_app/features/create/presentation/pages/create_post_screen.dart';
+import 'package:snibbo_app/features/profile/presentation/pages/profile_screen.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
-import 'package:snibbo_app/features/settings/presentation/pages/settings_page.dart';
 import 'package:snibbo_app/presentation/general/presentation/widgets/bottom_nav_bar_item.dart';
 
 @RoutePage()
@@ -82,7 +82,7 @@ class _GeneralPageState extends State<GeneralPage> {
             ExploreScreen(),
             CreatePostScreen(),
             ActivityScreen(),
-            SettingsScreen(),
+            ProfileScreen(),
           ],
           navBarStyle: NavBarStyle.style6,
         ),

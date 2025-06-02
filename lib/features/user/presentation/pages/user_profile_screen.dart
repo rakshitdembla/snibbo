@@ -4,15 +4,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/tab_bar.dart';
-import 'package:snibbo_app/core/widgets/profile_view.dart';
+import 'package:snibbo_app/features/user/presentation/widgets/profile_view.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/pages/tabs/user_posts_tab.dart';
-
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import '../../../settings/presentation/bloc/theme_bloc.dart';
 
 @RoutePage()
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String profileUrl;
+  final bool showStoryBorder;
+  final bool isStoryViewed;
+  final int posts;
+  final String bio;
+  final int followers;
+  final int followings;
+  final String name;
+  final String username;
+  final bool isMyProfile;
+  const UserProfileScreen({
+    super.key,
+    required this.profileUrl,
+    required this.isStoryViewed,
+    required this.showStoryBorder,
+    required this.name,
+    required this.bio,
+    required this.followers,
+    required this.followings,
+    required this.posts,
+    required this.isMyProfile,
+    required this.username,
+  });
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -29,9 +51,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "@rakshitdembla",
+            "@${widget.username}",
             style: TextStyle(fontWeight: FontWeight.w700),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.router.push(SettingsScreenRoute());
+              },
+              icon: Icon(
+                Icons.settings_outlined,
+                size: width * 0.065,
+                color: isDark ? MyColors.primary : MyColors.darkPrimary,
+              ),
+            ),
+          ],
         ),
         body: NestedScrollView(
           headerSliverBuilder:
@@ -39,7 +73,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: height * 0.02),
-                    child: ProfileView(),
+                    child: ProfileView(
+                      profileUrl: widget.profileUrl,
+                      isStoryViewed: widget.isStoryViewed,
+                      showStoryBorder: widget.showStoryBorder,
+                      name: widget.name,
+                      bio: widget.bio,
+                      followers: widget.followers,
+                      followings: widget.followings,
+                      posts: widget.posts,
+                      isMyProfile: widget.isMyProfile,
+                      username: widget.username,
+                    ),
                   ),
                 ),
                 SliverPersistentHeader(

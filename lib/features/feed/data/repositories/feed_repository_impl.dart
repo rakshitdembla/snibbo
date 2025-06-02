@@ -33,15 +33,6 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<(bool, String?)> reactToPost(
-    String postId,
-    String userId,
-    bool isDislike,
-  ) {
-    return sl<FeedPostsRemoteData>().reactToPost(postId, userId, isDislike);
-  }
-
-  @override
   Future<(bool, List<PostCommentEntity>?, String?)> getPostComments(
     String postId,
   ) {
@@ -94,5 +85,34 @@ class FeedRepositoryImpl implements FeedRepository {
       userId: userId,
       storyId: storyId,
     );
+  }
+
+  @override
+  Future<(bool, String?)> removeSavedPost({
+    required String postId,
+    required String userId,
+  }) {
+    return sl<FeedPostsRemoteData>().removeSavedPost(
+      postId: postId,
+      userId: userId,
+    );
+  }
+
+  @override
+  Future<(bool, String?)> savePost({
+    required String postId,
+    required String userId,
+  }) {
+    return sl<FeedPostsRemoteData>().savePost(postId: postId, userId: userId);
+  }
+  
+  @override
+  Future<(bool, String?)> disLikepost({required String postId, required String userId}) {
+    return sl<FeedPostsRemoteData>().dislikePost(postId, userId);
+  }
+  
+  @override
+  Future<(bool, String?)> likePost({required String postId, required String userId}) {
+    return sl<FeedPostsRemoteData>().likePost(postId, userId);
   }
 }

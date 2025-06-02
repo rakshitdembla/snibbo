@@ -10,7 +10,7 @@ class SocialStatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
         final width = UiUtils.screenWidth(context);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(count,style: TextStyle(
           fontWeight: FontWeight.w600,

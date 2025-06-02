@@ -57,9 +57,6 @@ class GetFeedBloc extends Bloc<GetFeedEvents, GetFeedStates> {
         GetFeedErrorState(
           title: "Failed to Load Feed",
           description:
-              postsMessage ??
-              storiesMessage ??
-              myStoriesMesssage ??
               "An unknown error occurred.",
         ),
       );
