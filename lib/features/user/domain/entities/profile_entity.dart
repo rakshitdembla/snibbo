@@ -13,6 +13,7 @@ class ProfileEntity {
     bool hasActiveStories;
     bool viewedAllStories;
     bool isFollowedByMe;
+    bool isMyProfile;
 
     ProfileEntity({
         required this.username,
@@ -28,5 +29,6 @@ class ProfileEntity {
         required this.userFollowing,
         required this.hasActiveStories,
         required this.viewedAllStories,
-        required this.isFollowedByMe
+        required this.isFollowedByMe,
+        required this.isMyProfile
     });}

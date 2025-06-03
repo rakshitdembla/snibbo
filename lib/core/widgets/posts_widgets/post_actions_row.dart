@@ -14,16 +14,13 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 
 class PostActionsRow extends StatelessWidget {
   final PostEntity post;
-  final bool isLikedAlready;
-  const PostActionsRow({super.key, required this.post,required this.isLikedAlready});
+  const PostActionsRow({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
-    // final isTooglingState =
-    //     context.read<ToogleLikeBloc>().state is ToogleLikeLoading;
     return Padding(
       padding: EdgeInsets.only(
         left: width * 0.023,
@@ -44,49 +41,15 @@ class PostActionsRow extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              final blocLike =
-                  context.read<AnimatedLikeBloc>().showLiked[post.id];
-              final showLiked = blocLike != null && blocLike == true;
-int likeCount = post.postLikes.length;
-
-if (isLikedAlready && !showLiked) {
-  likeCount = post.postLikes.length - 1;
-} else if (!isLikedAlready && showLiked) {
-  likeCount = post.postLikes.length + 1;
-} else {
-  likeCount = post.postLikes.length;
-}
 
               
               return PostActionIcon(
                 onTap: () {
-                  // if (isTooglingState) {
-                  //   return;
-                  // }
-                  // if (showLiked) {
-                  //   //@ Remove Ui Shown Like & DisLike
-                  //   BlocProvider.of<AnimatedLikeBloc>(
-                  //     context,
-                  //   ).add(RemoveShownLike(postId: post.id));
-
-                  //   BlocProvider.of<ToogleLikeBloc>(
-                  //     context,
-                  //   ).add(ToogleLike(postId: post.id, isDislike: true));
-
-                  //   return;
-                  // }
-
-                  // //@ Show Ui Like Animation & Add Like
-                  // BlocProvider.of<AnimatedLikeBloc>(
-                  //   context,
-                  // ).add(DoubleTapLike(postId: post.id));
-                  // BlocProvider.of<ToogleLikeBloc>(
-                  //   context,
-                  // ).add(ToogleLike(postId: post.id, isDislike: false));
+            
                 },
-                count: likeCount.toString(),
+                count: post.likesLength.toString(),
                 icon:
-                    showLiked
+                    post.isLikedByMe
                         ? (state is ShowLikeState && state.postId == post.id)
                             ? CommonIcon._(
                               icon: LineIcons.heartAlt,
@@ -107,7 +70,7 @@ if (isLikedAlready && !showLiked) {
             },
             count: 
             
-            post.postComments.length.toString(),
+            post.commentsLength.toString(),
             icon: CommonIcon._(icon: LineIcons.comments),
           ),
           SizedBox(width: width * 0.04),

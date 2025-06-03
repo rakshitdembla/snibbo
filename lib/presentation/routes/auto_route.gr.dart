@@ -44,6 +44,8 @@ import 'package:snibbo_app/features/settings/presentation/pages/settings_page.da
     as _i15;
 import 'package:snibbo_app/features/settings/presentation/widgets/register_screen.dart'
     as _i13;
+import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart'
+    as _i25;
 import 'package:snibbo_app/features/user/presentation/pages/user_profile_screen.dart'
     as _i19;
 import 'package:snibbo_app/presentation/general/presentation/pages/general_page.dart'
@@ -637,31 +639,13 @@ class UserProfileScreenRoute
     extends _i20.PageRouteInfo<UserProfileScreenRouteArgs> {
   UserProfileScreenRoute({
     _i21.Key? key,
-    required String profileUrl,
-    required bool isStoryViewed,
-    required bool showStoryBorder,
-    required String name,
-    required String bio,
-    required int followers,
-    required int followings,
-    required int posts,
-    required bool isMyProfile,
-    required String username,
+    required _i25.ProfileEntity profileEntity,
     List<_i20.PageRouteInfo>? children,
   }) : super(
          UserProfileScreenRoute.name,
          args: UserProfileScreenRouteArgs(
            key: key,
-           profileUrl: profileUrl,
-           isStoryViewed: isStoryViewed,
-           showStoryBorder: showStoryBorder,
-           name: name,
-           bio: bio,
-           followers: followers,
-           followings: followings,
-           posts: posts,
-           isMyProfile: isMyProfile,
-           username: username,
+           profileEntity: profileEntity,
          ),
          initialChildren: children,
        );
@@ -674,60 +658,21 @@ class UserProfileScreenRoute
       final args = data.argsAs<UserProfileScreenRouteArgs>();
       return _i19.UserProfileScreen(
         key: args.key,
-        profileUrl: args.profileUrl,
-        isStoryViewed: args.isStoryViewed,
-        showStoryBorder: args.showStoryBorder,
-        name: args.name,
-        bio: args.bio,
-        followers: args.followers,
-        followings: args.followings,
-        posts: args.posts,
-        isMyProfile: args.isMyProfile,
-        username: args.username,
+        profileEntity: args.profileEntity,
       );
     },
   );
 }
 
 class UserProfileScreenRouteArgs {
-  const UserProfileScreenRouteArgs({
-    this.key,
-    required this.profileUrl,
-    required this.isStoryViewed,
-    required this.showStoryBorder,
-    required this.name,
-    required this.bio,
-    required this.followers,
-    required this.followings,
-    required this.posts,
-    required this.isMyProfile,
-    required this.username,
-  });
+  const UserProfileScreenRouteArgs({this.key, required this.profileEntity});
 
   final _i21.Key? key;
 
-  final String profileUrl;
-
-  final bool isStoryViewed;
-
-  final bool showStoryBorder;
-
-  final String name;
-
-  final String bio;
-
-  final int followers;
-
-  final int followings;
-
-  final int posts;
-
-  final bool isMyProfile;
-
-  final String username;
+  final _i25.ProfileEntity profileEntity;
 
   @override
   String toString() {
-    return 'UserProfileScreenRouteArgs{key: $key, profileUrl: $profileUrl, isStoryViewed: $isStoryViewed, showStoryBorder: $showStoryBorder, name: $name, bio: $bio, followers: $followers, followings: $followings, posts: $posts, isMyProfile: $isMyProfile, username: $username}';
+    return 'UserProfileScreenRouteArgs{key: $key, profileEntity: $profileEntity}';
   }
 }

@@ -21,7 +21,7 @@ class GetFeedPostsUsecase {
   /// Returns tuple containing success status, list of posts, and optional message
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
   getAllPosts(String tokenId, int page, int limit) {
-    return feedRepository.getAllPosts(page, limit);
+    return feedRepository.getAllPosts(tokenId,page, limit);
   }
 
   /// Retrieves stories from accounts that the current user follows

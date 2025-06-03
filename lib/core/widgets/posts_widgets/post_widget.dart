@@ -19,11 +19,9 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
-  final bool isLikedByMe;
   const PostWidget({
     super.key,
     required this.postEntity,
-    required this.isLikedByMe,
   });
 
   @override
@@ -39,11 +37,6 @@ class _PostWidgetState extends State<PostWidget> {
     super.initState();
     postUser = widget.postEntity.userId;
     post = widget.postEntity;
-
-    if (widget.isLikedByMe) {
-      // context.read<ToogleLikeBloc>().likedMap[post.id] = true;
-      context.read<AnimatedLikeBloc>().showLiked[post.id] = true;
-    }
   }
 
   @override
@@ -51,8 +44,6 @@ class _PostWidgetState extends State<PostWidget> {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
-    // final isTooglingState =
-    //     context.read<ToogleLikeBloc>().state is ToogleLikeLoading;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,17 +104,6 @@ class _PostWidgetState extends State<PostWidget> {
         ),
         GestureDetector(
           onDoubleTap: () async {
-            // //@ Show Ui Like Animation & Add Like
-            // if (isTooglingState) {
-            //   return;
-            // }
-            // BlocProvider.of<AnimatedLikeBloc>(
-            //   context,
-            // ).add(DoubleTapLike(postId: post.id));
-
-            // BlocProvider.of<ToogleLikeBloc>(
-            //   context,
-            // ).add(ToogleLike(postId: post.id, isDislike: false));
           },
           child: Stack(
             alignment: Alignment.center,
@@ -186,7 +166,7 @@ class _PostWidgetState extends State<PostWidget> {
             ],
           ),
         ),
-        PostActionsRow(post: post,isLikedAlready: widget.isLikedByMe,),
+        PostActionsRow(post: post),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.03),
           child: Column(

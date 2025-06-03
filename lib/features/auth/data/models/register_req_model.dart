@@ -1,17 +1,22 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'register_req_model.g.dart';
-
-@JsonSerializable()
 class RegisterReqModel {
-
   final String email;
   final String name;
   final String username;
   final String password;
 
   RegisterReqModel({
-    required this.email,required this.name,required this.password,required this.username
+    required this.email,
+    required this.name,
+    required this.username,
+    required this.password,
   });
 
-  Map<String,dynamic> toJson() => _$RegisterReqModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'name': name,
+      'username': username,
+      'password': password,
+    };
+  }
 }

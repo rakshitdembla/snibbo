@@ -13,7 +13,7 @@ abstract class FeedRepository {
 
   /// Gets all posts available (discover feed)
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getAllPosts(int page, int limit);
+  getAllPosts(String userId,int page, int limit);
 
   /// Gets stories from accounts the current user follows
   Future<(bool success, List<UserEntity>? storyUsers, String? message)>

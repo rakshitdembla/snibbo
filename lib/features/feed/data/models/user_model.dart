@@ -5,23 +5,26 @@ class UserModel {
   String name;
   String? profilePicture;
   bool isVerified;
-  bool? storiesSeen;
+  bool? hasActiveStories;
+  bool? isAllStoriesViewed;
 
   UserModel({
     required this.username,
     required this.name,
     this.profilePicture,
     required this.isVerified,
-    this.storiesSeen,
+    this.hasActiveStories,
+    this.isAllStoriesViewed,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    username: json["username"],
-    name: json["name"],
-    profilePicture: json["profilePicture"] ?? "",
-    isVerified: json["isVerified"],
-    storiesSeen: json["storiesSeen"],
-  );
+        username: json["username"],
+        name: json["name"],
+        profilePicture: json["profilePicture"],
+        isVerified: json["isVerified"],
+        hasActiveStories: json["hasActiveStories"],
+        isAllStoriesViewed: json["isAllStoriesViewed"],
+      );
 
   UserEntity toEntity() {
     return UserEntity(
@@ -29,7 +32,8 @@ class UserModel {
       name: name,
       profilePicture: profilePicture,
       isVerified: isVerified,
-      storiesSeen: storiesSeen,
+      hasActiveStories: hasActiveStories,
+      isAllStoriesViewed: isAllStoriesViewed,
     );
   }
 }

@@ -5,21 +5,26 @@ class PostEntity {
   UserEntity userId;
   String postContent;
   String? postCaption;
-  List<Map<String,dynamic>> postLikes;
-  List<String> postComments;
+  int likesLength;
+  int commentsLength;
   DateTime createdAt;
   DateTime updatedAt;
-  int v;
+  bool isLikedByMe;
+  bool isSavedByMe;
+  bool isMyPost;
 
   PostEntity({
     required this.id,
     required this.userId,
     required this.postContent,
-    required this.postCaption,
-    required this.postLikes,
-    required this.postComments,
+    this.postCaption,
+    required this.likesLength,
+    required this.commentsLength,
     required this.createdAt,
     required this.updatedAt,
-    required this.v,
+    required this.isLikedByMe,
+    required this.isSavedByMe,
+    required this.isMyPost,
   });
 }
+

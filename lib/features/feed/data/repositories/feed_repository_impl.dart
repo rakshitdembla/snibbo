@@ -28,8 +28,8 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<(bool, List<PostEntity>?, String?)> getAllPosts(int page, int limit) {
-    return sl<GetFeedRemoteData>().getAllPosts(page, limit);
+  Future<(bool, List<PostEntity>?, String?)> getAllPosts(String userId,int page, int limit) {
+    return sl<GetFeedRemoteData>().getAllPosts(userId,page, limit);
   }
 
   @override

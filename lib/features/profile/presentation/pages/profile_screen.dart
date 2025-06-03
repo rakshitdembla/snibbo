@@ -56,18 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       builder: (context, state) {
         if (state is UserProfileSuccess) {
-          final user = state.profileEntity;
           return UserProfileScreen(
-            profileUrl: user.profilePicture,
-            isStoryViewed: user.viewedAllStories,
-            showStoryBorder: user.hasActiveStories,
-            name: user.name,
-            bio: user.bio,
-            followers: user.userFollowers,
-            followings: user.userFollowing,
-            posts: user.posts,
-            isMyProfile: user.username == username,
-            username: user.username,
+            profileEntity: state.profileEntity,
           );
         } else if (state is UserProfileError) {
           return Center(child: Text("Failed to load user profile"));

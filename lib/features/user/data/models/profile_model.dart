@@ -15,6 +15,7 @@ class ProfileModel {
   bool hasActiveStories;
   bool viewedAllStories;
   bool isFollowedByMe;
+  bool isMyProfile;
 
   ProfileModel({
     required this.username,
@@ -31,6 +32,7 @@ class ProfileModel {
     required this.hasActiveStories,
     required this.viewedAllStories,
     required this.isFollowedByMe,
+    required this.isMyProfile,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
@@ -48,6 +50,7 @@ class ProfileModel {
     hasActiveStories: json["hasActiveStories"],
     viewedAllStories: json["viewedAllStories"],
     isFollowedByMe: json["isFollowedByMe"],
+    isMyProfile: json["isMyProfile"],
   );
 
   ProfileEntity toEntity() {
@@ -66,6 +69,7 @@ class ProfileModel {
       hasActiveStories: hasActiveStories,
       viewedAllStories: viewedAllStories,
       isFollowedByMe: isFollowedByMe,
+      isMyProfile: isMyProfile,
     );
   }
 }

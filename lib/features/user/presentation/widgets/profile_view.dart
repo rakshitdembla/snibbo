@@ -4,32 +4,15 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/elevated_outlined_cta.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
+import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/social_stats_widget.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class ProfileView extends StatelessWidget {
-  final String profileUrl;
-  final bool showStoryBorder;
-  final bool isStoryViewed;
-  final int posts;
-  final String bio;
-  final int followers;
-  final int followings;
-  final String name;
-  final bool isMyProfile;
-  final String username;
+final ProfileEntity profileEntity;
   const ProfileView({
     super.key,
-    required this.profileUrl,
-    required this.isStoryViewed,
-    required this.showStoryBorder,
-    required this.name,
-    required this.bio,
-    required this.followers,
-    required this.followings,
-    required this.posts,
-    required this.isMyProfile,
-    required this.username,
+required this.profileEntity
   });
 
   @override
@@ -44,9 +27,9 @@ class ProfileView extends StatelessWidget {
           Row(
             children: [
               UserCircularProfileWidget(
-                showBorder: showStoryBorder,
-                greyBorder: isStoryViewed,
-                profileUrl: profileUrl,
+                showBorder: profileEntity.hasActiveStories,
+                greyBorder: profileEntity.viewedAllStories,
+                profileUrl: profileEntity.profilePicture,
                 storySize: 0.11,
                 margins: EdgeInsets.zero,
               ),
@@ -57,19 +40,19 @@ class ProfileView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style: TextStyle(fontWeight: FontWeight.w600,fontSize: width * 0.035)),
+                    Text(profileEntity.name, style: TextStyle(fontWeight: FontWeight.w600,fontSize: width * 0.035)),
                     SizedBox(
                       width: width * 0.60,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SocialStatsWidget(count: "$posts", title: "posts"),
+                          SocialStatsWidget(count: "${profileEntity.posts}", title: "posts"),
                           SocialStatsWidget(
-                            count: "$followers",
+                            count: "${profileEntity.userFollowers}",
                             title: "followers",
                           ),
                           SocialStatsWidget(
-                            count: "$followings",
+                            count: "${profileEntity.userFollowing}",
                             title: "following",
                           ),
                         ],
@@ -83,7 +66,7 @@ class ProfileView extends StatelessWidget {
           SizedBox(
             width: width * 0.9,
             child: Text(
-              bio,
+              profileEntity.bio,
               // "Chasing Gains & Some Good Vibes\nSad Boi Llalalalala\nCake Murderer\nBirthday 14-pril-2025",
             ),
           ),
@@ -93,15 +76,15 @@ class ProfileView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                isMyProfile
+                profileEntity.isMyProfile
                     ? ElevatedOutlinedCTA(
                       onPressed: () {
                         context.router.push(
                           EditProfileScreenRoute(
-                            bio: bio,
-                            name: name,
-                            profileUrl: profileUrl,
-                            username: username,
+                            bio: profileEntity.bio,
+                            name: profileEntity.name,
+                            profileUrl: profileEntity.profilePicture,
+                            username: profileEntity.username,
                           ),
                         );
                       },
@@ -113,7 +96,7 @@ class ProfileView extends StatelessWidget {
                       buttonName: "Follow",
                       isShort: true,
                     ),
-                isMyProfile
+                profileEntity.isMyProfile
                     ? ElevatedOutlinedCTA(
                       onPressed: () {},
                       buttonName: "Share Profile",

@@ -47,10 +47,11 @@ class GetFeedRemoteData {
 
   // Get All Posts -->
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
-  getAllPosts(int page, int limit) async {
+  getAllPosts(String userId,int page, int limit) async {
     try {
       final response = await sl<ApiService>().get(
         path: ApiRoutes.allPosts,
+        headers: {MyStrings.userIdHeader: userId},
         queryParameters: {
           MyStrings.pageParam: page,
           MyStrings.limitParam: limit,

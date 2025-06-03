@@ -37,6 +37,8 @@ class ApiRoutes {
   static String createPost = "$postRoute/create";
   static String savePost = "$postRoute/save";
   static String removeSavedPost = "$postRoute/remove-saved";
+  static String myPosts = "$postRoute/my-posts";
+  static String savedPosts = "$postRoute/saved-posts";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";

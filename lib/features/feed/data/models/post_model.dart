@@ -1,57 +1,61 @@
 import 'package:snibbo_app/features/feed/data/models/user_model.dart';
-import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';   
 
 class PostModel {
   String id;
   UserModel userId;
   String postContent;
   String? postCaption;
-  List<Map<String,dynamic>> postLikes;
-  List<String> postComments;
+  int likesLength;
+  int commentsLength;
   DateTime createdAt;
   DateTime updatedAt;
-  int v;
+  bool isLikedByMe;
+  bool isSavedByMe;
+  bool isMyPost;
 
   PostModel({
     required this.id,
     required this.userId,
     required this.postContent,
-    required this.postCaption,
-    required this.postLikes,
-    required this.postComments,
+    this.postCaption,
+    required this.likesLength,
+    required this.commentsLength,
     required this.createdAt,
     required this.updatedAt,
-    required this.v,
+    required this.isLikedByMe,
+    required this.isSavedByMe,
+    required this.isMyPost,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-    id: json["_id"],
-    userId: UserModel.fromJson(json["userId"]),
-    postContent: json["postContent"],
-    postCaption: json["postCaption"] ?? "",
-    postLikes: List<Map<String,dynamic>>.from(json["postLikes"]),
-    postComments: List<String>.from(json["postComments"]),
-    createdAt: DateTime.parse(json["createdAt"]),
-    updatedAt: DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-  );
+        id: json["_id"],
+        userId: UserModel.fromJson(json["userId"]),
+        postContent: json["postContent"],
+        postCaption: json["postCaption"] ?? "",
+        likesLength: json["likesLength"],
+        commentsLength: json["commentsLength"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+        isLikedByMe: json["isLikedByMe"],
+        isSavedByMe: json["isSavedByMe"],
+        isMyPost: json["isMyPost"],
+      );
 
   PostEntity toEntity() {
     return PostEntity(
       id: id,
-      userId: UserEntity(
-        username: userId.username,
-        name: userId.name,
-        isVerified: userId.isVerified,
-      ),
+      userId: userId.toEntity(),
       postContent: postContent,
       postCaption: postCaption,
-      postLikes: postLikes,
-      postComments: postComments,
+      likesLength: likesLength,
+      commentsLength: commentsLength,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      v: v,
+      isLikedByMe: isLikedByMe,
+      isSavedByMe: isSavedByMe,
+      isMyPost: isMyPost,
     );
   }
 }
+

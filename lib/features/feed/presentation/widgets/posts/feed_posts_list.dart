@@ -97,10 +97,7 @@ class _FeedPostsListState extends State<FeedPostsList> {
                       : const SizedBox.shrink();
                 } else {
                   final post = paginationBloc.allposts[index];
-                  bool isLikedByMe = post.postLikes.any(
-                    (like) => like["username"] == username,
-                  );
-                  return PostWidget(postEntity: post, isLikedByMe: isLikedByMe);
+                  return PostWidget(postEntity: post);
                 }
               },
             ),
