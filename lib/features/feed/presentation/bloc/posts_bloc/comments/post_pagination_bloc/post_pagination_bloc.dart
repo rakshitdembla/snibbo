@@ -2,9 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/feed_mode_enums.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/feed_mode_enums.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_states.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class PostPaginationBloc

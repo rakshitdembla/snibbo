@@ -7,10 +7,13 @@ import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/dislike_post_bloc/dislike_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/dislike_post_bloc/dislike_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_animation_bloc/save_post_animation_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_bloc/save_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/delete_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/story_pagination_bloc/story_pagination_bloc.dart';
@@ -68,8 +71,19 @@ void main() async {
         ),
         BlocProvider<LikePostBloc>(create: (context) => LikePostBloc()),
         BlocProvider<DislikePostBloc>(create: (context) => DislikePostBloc()),
-        BlocProvider<UserPostsPaginationBloc>(create: (context) => UserPostsPaginationBloc()),
-        BlocProvider<UserSavedPostsPaginationBloc>(create: (context) => UserSavedPostsPaginationBloc()),
+        BlocProvider<UserPostsPaginationBloc>(
+          create: (context) => UserPostsPaginationBloc(),
+        ),
+        BlocProvider<UserSavedPostsPaginationBloc>(
+          create: (context) => UserSavedPostsPaginationBloc(),
+        ),
+        BlocProvider<SavePostAnimationBloc>(
+          create: (context) => SavePostAnimationBloc(),
+        ),
+        BlocProvider<SavePostBloc>(create: (context) => SavePostBloc()),
+        BlocProvider<RemoveSavedPostBloc>(
+          create: (context) => RemoveSavedPostBloc(),
+        ),
       ],
       child: ToastificationWrapper(child: MyApp()),
     ),

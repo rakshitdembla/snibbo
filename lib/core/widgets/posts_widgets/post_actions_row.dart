@@ -8,13 +8,20 @@ import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.d
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/dislike_post_bloc/dislike_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/dislike_post_bloc/dislike_post_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/dislike_post_bloc/dislike_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/dislike_post_bloc/dislike_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_animation_bloc/save_post_animation_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_animation_bloc/save_post_animation_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_animation_bloc/save_post_animation_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_bloc/save_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_bloc/save_post_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
@@ -29,7 +36,7 @@ class PostActionsRow extends StatelessWidget {
     final width = UiUtils.screenWidth(context);
     return Padding(
       padding: EdgeInsets.only(
-        left: width * 0.023,
+        left: width * 0.025,
         right: width * 0.02,
         top: height * 0.008,
         bottom: height * 0.01,
@@ -50,32 +57,32 @@ class PostActionsRow extends StatelessWidget {
               return PostActionIcon(
                 onTap: () {
                   if (PostInteractionManager.likeStatus[post.id] == true) {
-                    BlocProvider.of<DislikePostBloc>(
-                      context,
-                    ).add(DislikePostPressed(postId: post.id));
-
                     PostInteractionManager.likeStatus[post.id] = false;
                     PostInteractionManager.likeCount[post.id] =
                         (PostInteractionManager.likeCount[post.id] ?? 0) - 1;
+                    BlocProvider.of<DislikePostBloc>(
+                      context,
+                    ).add(DislikePostPressed(postId: post.id));
 
                     BlocProvider.of<AnimatedLikeBloc>(
                       context,
                     ).add(TappedDislike(postId: post.id));
                   } else {
-                    BlocProvider.of<LikePostBloc>(
-                      context,
-                    ).add(LikePostPressed(postId: post.id));
-
                     PostInteractionManager.likeStatus[post.id] = true;
                     PostInteractionManager.likeCount[post.id] =
                         (PostInteractionManager.likeCount[post.id] ?? 0) + 1;
+
+                    BlocProvider.of<LikePostBloc>(
+                      context,
+                    ).add(LikePostPressed(postId: post.id));
 
                     BlocProvider.of<AnimatedLikeBloc>(
                       context,
                     ).add(DoubleTapLike(postId: post.id));
                   }
                 },
-                count: (PostInteractionManager.likeCount[post.id] ?? 0).toString(),
+                count:
+                    (PostInteractionManager.likeCount[post.id] ?? 0).toString(),
                 icon:
                     PostInteractionManager.likeStatus[post.id] == true
                         ? (state is ShowLikeState && state.postId == post.id)
@@ -107,10 +114,54 @@ class PostActionsRow extends StatelessWidget {
             icon: CommonIcon._(icon: LineIcons.telegramPlane),
           ),
           Spacer(),
-          PostActionIcon(
-            onTap: () {},
-            count: "",
-            icon: CommonIcon._(icon: LineIcons.bookmark),
+          BlocBuilder<SavePostAnimationBloc, SavePostAnimationStates>(
+            buildWhen: (previous, current) {
+              if (current is ShowSaveAnimationState) {
+                return current.postId == post.id;
+              } else if (current is HideSaveAnimationState) {
+                return current.postId == post.id;
+              } else {
+                return false;
+              }
+            },
+            builder: (context, state) {
+              return PostActionIcon(
+                onTap: () {
+                  if (PostInteractionManager.savedStatus[post.id] == true) {
+                    PostInteractionManager.savedStatus[post.id] = false;
+                    BlocProvider.of<SavePostAnimationBloc>(
+                      context,
+                    ).add(TapUnsavePost(postId: post.id));
+                    BlocProvider.of<RemoveSavedPostBloc>(
+                      context,
+                    ).add(RemoveSavedPostRequested(postId: post.id));
+                  } else {
+                    PostInteractionManager.savedStatus[post.id] = true;
+                    BlocProvider.of<SavePostAnimationBloc>(
+                      context,
+                    ).add(TapSavePost(postId: post.id));
+                    BlocProvider.of<SavePostBloc>(
+                      context,
+                    ).add(SavePostRequested(postId: post.id));
+                  }
+                },
+                count: "",
+                icon:
+                    PostInteractionManager.savedStatus[post.id] == true
+                        ? (state is ShowSaveAnimationState &&
+                                state.postId == post.id)
+                            ? CommonIcon._(
+                              icon: Icons.bookmark_sharp
+                            ).animate().scale(
+                              duration: 400.ms,
+                              curve: Curves.elasticOut,
+                              begin: Offset(0.9, 0.9),
+                              end: Offset(1.2, 1.2),
+                            )
+                            : CommonIcon._(icon: Icons.bookmark_sharp)
+                        : CommonIcon._(icon:Icons.bookmark_outline_sharp),
+              );
+            },
           ),
         ],
       ),
@@ -136,7 +187,7 @@ class CommonIcon extends StatelessWidget {
                   ? MyColors.white
                   : MyColors.black
               : iconColor,
-      size: width * 0.075,
+      size: width * 0.07,
     );
   }
 }

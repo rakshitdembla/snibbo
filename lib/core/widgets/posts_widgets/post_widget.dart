@@ -12,11 +12,11 @@ import 'package:snibbo_app/core/widgets/posts_widgets/post_captions.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_events.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_menu_bottom_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
@@ -122,13 +122,12 @@ class _PostWidgetState extends State<PostWidget> {
             ).add(DoubleTapLike(postId: widget.postEntity.id));
 
             if (PostInteractionManager.likeStatus[post.id] == false) {
-              BlocProvider.of<LikePostBloc>(
-                context,
-              ).add(LikePostPressed(postId: widget.postEntity.id));
-
               PostInteractionManager.likeStatus[post.id] = true;
               PostInteractionManager.likeCount[post.id] =
                   (PostInteractionManager.likeCount[post.id] ?? 0) + 1;
+              BlocProvider.of<LikePostBloc>(
+                context,
+              ).add(LikePostPressed(postId: widget.postEntity.id));
             }
           },
           child: Stack(

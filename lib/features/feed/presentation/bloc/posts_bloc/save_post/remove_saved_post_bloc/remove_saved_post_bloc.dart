@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/remove_saved_post_bloc/remove_saved_post_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/remove_saved_post_bloc/remove_saved_post_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_states.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class RemoveSavedPostBloc
