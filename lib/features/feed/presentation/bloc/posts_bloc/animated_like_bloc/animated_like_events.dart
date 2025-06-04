@@ -6,8 +6,10 @@ class DoubleTapLike extends AnimatedLikeEvents{
   DoubleTapLike({required this.postId});
 }
 
-class RemoveShownLike extends AnimatedLikeEvents{
+class TappedDislike extends AnimatedLikeEvents{
   final String postId;
 
-  RemoveShownLike({required this.postId});
+  TappedDislike({
+    required this.postId
+  });
 }

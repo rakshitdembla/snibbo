@@ -1,5 +1,5 @@
 import 'package:snibbo_app/features/feed/data/models/user_model.dart';
-import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';   
+import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 
 class PostModel {
   String id;
@@ -29,18 +29,18 @@ class PostModel {
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-        id: json["_id"],
-        userId: UserModel.fromJson(json["userId"]),
-        postContent: json["postContent"],
-        postCaption: json["postCaption"] ?? "",
-        likesLength: json["likesLength"],
-        commentsLength: json["commentsLength"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        isLikedByMe: json["isLikedByMe"],
-        isSavedByMe: json["isSavedByMe"],
-        isMyPost: json["isMyPost"],
-      );
+    id: json["_id"],
+    userId: UserModel.fromJson(json["userId"]),
+    postContent: json["postContent"],
+    postCaption: json["postCaption"] ?? "",
+    likesLength: json["likesLength"],
+    commentsLength: json["commentsLength"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+    isLikedByMe: json["isLikedByMe"],
+    isSavedByMe: json["isSavedByMe"],
+    isMyPost: json["isMyPost"],
+  );
 
   PostEntity toEntity() {
     return PostEntity(
@@ -58,4 +58,3 @@ class PostModel {
     );
   }
 }
-

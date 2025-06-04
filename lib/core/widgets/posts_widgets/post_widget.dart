@@ -6,23 +6,24 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/animated_like.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_actions_row.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_captions.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_events.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_menu_bottom_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
-  const PostWidget({
-    super.key,
-    required this.postEntity,
-  });
+  const PostWidget({super.key, required this.postEntity});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -37,6 +38,18 @@ class _PostWidgetState extends State<PostWidget> {
     super.initState();
     postUser = widget.postEntity.userId;
     post = widget.postEntity;
+    PostInteractionManager.likeStatus.putIfAbsent(
+      post.id,
+      () => post.isLikedByMe,
+    );
+    PostInteractionManager.likeCount.putIfAbsent(
+      post.id,
+      () => post.likesLength,
+    );
+    PostInteractionManager.savedStatus.putIfAbsent(
+      post.id,
+      () => post.isSavedByMe,
+    );
   }
 
   @override
@@ -104,6 +117,19 @@ class _PostWidgetState extends State<PostWidget> {
         ),
         GestureDetector(
           onDoubleTap: () async {
+            BlocProvider.of<AnimatedLikeBloc>(
+              context,
+            ).add(DoubleTapLike(postId: widget.postEntity.id));
+
+            if (PostInteractionManager.likeStatus[post.id] == false) {
+              BlocProvider.of<LikePostBloc>(
+                context,
+              ).add(LikePostPressed(postId: widget.postEntity.id));
+
+              PostInteractionManager.likeStatus[post.id] = true;
+              PostInteractionManager.likeCount[post.id] =
+                  (PostInteractionManager.likeCount[post.id] ?? 0) + 1;
+            }
           },
           child: Stack(
             alignment: Alignment.center,

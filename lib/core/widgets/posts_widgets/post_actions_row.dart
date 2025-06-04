@@ -4,11 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/animated_like_bloc/animated_like_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/dislike_post_bloc/dislike_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/dislike_post_bloc/dislike_post_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post_bloc/like_post_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
@@ -41,15 +47,37 @@ class PostActionsRow extends StatelessWidget {
               }
             },
             builder: (context, state) {
-
-              
               return PostActionIcon(
                 onTap: () {
-            
+                  if (PostInteractionManager.likeStatus[post.id] == true) {
+                    BlocProvider.of<DislikePostBloc>(
+                      context,
+                    ).add(DislikePostPressed(postId: post.id));
+
+                    PostInteractionManager.likeStatus[post.id] = false;
+                    PostInteractionManager.likeCount[post.id] =
+                        (PostInteractionManager.likeCount[post.id] ?? 0) - 1;
+
+                    BlocProvider.of<AnimatedLikeBloc>(
+                      context,
+                    ).add(TappedDislike(postId: post.id));
+                  } else {
+                    BlocProvider.of<LikePostBloc>(
+                      context,
+                    ).add(LikePostPressed(postId: post.id));
+
+                    PostInteractionManager.likeStatus[post.id] = true;
+                    PostInteractionManager.likeCount[post.id] =
+                        (PostInteractionManager.likeCount[post.id] ?? 0) + 1;
+
+                    BlocProvider.of<AnimatedLikeBloc>(
+                      context,
+                    ).add(DoubleTapLike(postId: post.id));
+                  }
                 },
-                count: post.likesLength.toString(),
+                count: (PostInteractionManager.likeCount[post.id] ?? 0).toString(),
                 icon:
-                    post.isLikedByMe
+                    PostInteractionManager.likeStatus[post.id] == true
                         ? (state is ShowLikeState && state.postId == post.id)
                             ? CommonIcon._(
                               icon: LineIcons.heartAlt,
@@ -68,9 +96,7 @@ class PostActionsRow extends StatelessWidget {
             onTap: () {
               ShowCommentsSheet.show(context: context, isDark: isDark);
             },
-            count: 
-            
-            post.commentsLength.toString(),
+            count: post.commentsLength.toString(),
             icon: CommonIcon._(icon: LineIcons.comments),
           ),
           SizedBox(width: width * 0.04),
