@@ -117,81 +117,83 @@ class _FeedScreenState extends State<FeedScreen> {
         child: Scaffold(
           body:
           //@ --> Get Feed BLoc Builder
-          BlocBuilder<GetFeedBloc, GetFeedStates>(
-            builder: (context, state) {
-              return MyRefreshBar(
-                onRefresh: () async {
-                  context.read<GetFeedBloc>().add(GetFeedData());
-                },
-                widget: CustomScrollView(
-                  controller: controller,
-                  slivers: [
-                    FeedAppBar(),
-                    //# Success State Handling ->
-                    if (state is GetFeedSuccessState) ...[
-                      SliverToBoxAdapter(
-                        //$ Story Pagination BLoc Consumer
-                        child: BlocConsumer<
-                          StoryPaginationBloc,
-                          StoryPaginationStates
-                        >(
-                          //Story Pagination Listener
-                          listener: (context, paginationState) {
-                            if (paginationState is StoryPaginationError) {
-                              UiUtils.showToast(
-                                title: paginationState.title,
-                                isDark: isDark,
-                                description: paginationState.description,
-                                context: context,
-                                isSuccess: false,
-                                isWarning: false,
+          SafeArea(
+            child: BlocBuilder<GetFeedBloc, GetFeedStates>(
+              builder: (context, state) {
+                return MyRefreshBar(
+                  onRefresh: () async {
+                    context.read<GetFeedBloc>().add(GetFeedData());
+                  },
+                  widget: CustomScrollView(
+                    controller: controller,
+                    slivers: [
+                      FeedAppBar(),
+                      //# Success State Handling ->
+                      if (state is GetFeedSuccessState) ...[
+                        SliverToBoxAdapter(
+                          //$ Story Pagination BLoc Consumer
+                          child: BlocConsumer<
+                            StoryPaginationBloc,
+                            StoryPaginationStates
+                          >(
+                            //Story Pagination Listener
+                            listener: (context, paginationState) {
+                              if (paginationState is StoryPaginationError) {
+                                UiUtils.showToast(
+                                  title: paginationState.title,
+                                  isDark: isDark,
+                                  description: paginationState.description,
+                                  context: context,
+                                  isSuccess: false,
+                                  isWarning: false,
+                                );
+                              }
+                            },
+                            //Story Pagination Builder
+                            builder: (context, paginationState) {
+                              final allStories = paginationBloc.allStories;
+                              //Feed Stories
+                              return FeedStoriesList(
+                                allStories: allStories,
+                                state: state,
                               );
-                            }
-                          },
-                          //Story Pagination Builder
-                          builder: (context, paginationState) {
-                            final allStories = paginationBloc.allStories;
-                            //Feed Stories
-                            return FeedStoriesList(
-                              allStories: allStories,
-                              state: state,
-                            );
-                          },
+                            },
+                          ),
                         ),
-                      ),
-                      //# Feed Posts ->
-                      FeedPostsList(controller: controller),
-                    ]
-                    //#Error State Handling ->
-                    else if (state is GetFeedErrorState) ...[
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height:
-                              height -
-                              kBottomNavigationBarHeight -
-                              height * 0.16,
-                          width: width,
-                          child: Center(child: Text("No Posts Found")),
+                        //# Feed Posts ->
+                        FeedPostsList(controller: controller),
+                      ]
+                      //#Error State Handling ->
+                      else if (state is GetFeedErrorState) ...[
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height:
+                                height -
+                                kBottomNavigationBarHeight -
+                                height * 0.16,
+                            width: width,
+                            child: Center(child: Text("No Posts Found")),
+                          ),
                         ),
-                      ),
-                    ]
-                    //#Null State Handling ->
-                    else ...[
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height:
-                              height -
-                              kBottomNavigationBarHeight -
-                              height * 0.16,
-                          width: width,
-                          child: Center(child: CircularProgressLoading()),
+                      ]
+                      //#Null State Handling ->
+                      else ...[
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height:
+                                height -
+                                kBottomNavigationBarHeight -
+                                height * 0.16,
+                            width: width,
+                            child: Center(child: CircularProgressLoading()),
+                          ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
-                ),
-              );
-            },
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

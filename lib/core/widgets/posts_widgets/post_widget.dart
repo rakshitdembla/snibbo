@@ -65,7 +65,7 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  // context.router.push(UserProfileScreenRoute());
+                  // context.router.push(ProfileViewRoute());
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

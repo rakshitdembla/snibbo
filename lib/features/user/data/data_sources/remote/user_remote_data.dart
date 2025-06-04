@@ -99,6 +99,7 @@ class UserRemoteData {
     required int page,
     required int limit,
     required String username,
+    required String userId,
   }) async {
     try {
       final response = await sl<ApiService>().get(
@@ -107,6 +108,7 @@ class UserRemoteData {
           MyStrings.pageParam: page,
           MyStrings.limitParam: limit,
         },
+        headers: {MyStrings.userIdHeader: userId},
       );
 
       if (response != null) {
@@ -137,6 +139,7 @@ class UserRemoteData {
     required int page,
     required int limit,
     required String username,
+    required String userId
   }) async {
     try {
       final response = await sl<ApiService>().get(
@@ -145,6 +148,7 @@ class UserRemoteData {
           MyStrings.pageParam: page,
           MyStrings.limitParam: limit,
         },
+        headers: {MyStrings.userIdHeader: userId},
       );
 
       if (response != null) {

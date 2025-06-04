@@ -28,67 +28,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
           "Settings and activity",
         ),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: height * 0.01),
-        child: Column(
-          children: [
-            BlocBuilder<ThemeBloc, ThemeStates>(
-              builder: (context, state) {
-                final value = state is DarkThemeState;
-
-                return MyListtile(
-                  leadingTitle: "Dark Theme",
-                  trailingWidget: MyAdaptiveSwitch(
-                    onChanged: (value) {
-                      context.read<ThemeBloc>().add(ToogleTheme(isDark: value));
-                    },
-                    value: value,
-                  ),
-                );
-              },
-            ),
-            MyListtile(
-              leadingTitle: "About",
-              trailingWidget: Icon(Icons.info_outline, size: width * 0.07),
-            ),
-            MyListtile(
-              leadingTitle: "Report a Bug",
-              trailingWidget: Icon(
-                Icons.bug_report_outlined,
-                size: width * 0.07,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: height * 0.01),
+          child: Column(
+            children: [
+              BlocBuilder<ThemeBloc, ThemeStates>(
+                builder: (context, state) {
+                  final value = state is DarkThemeState;
+        
+                  return MyListtile(
+                    leadingTitle: "Dark Theme",
+                    trailingWidget: MyAdaptiveSwitch(
+                      onChanged: (value) {
+                        context.read<ThemeBloc>().add(ToogleTheme(isDark: value));
+                      },
+                      value: value,
+                    ),
+                  );
+                },
               ),
-            ),
-            MyListtile(
-              leadingTitle: "Terms & Conditions",
-              trailingWidget: Icon(Icons.article_outlined, size: width * 0.07),
-            ),
-            MyListtile(
-              leadingTitle: "Privacy Policy",
-              trailingWidget: Icon(
-                Icons.privacy_tip_outlined,
-                size: width * 0.07,
+              MyListtile(
+                leadingTitle: "About",
+                trailingWidget: Icon(Icons.info_outline, size: width * 0.07),
               ),
-            ),
-            MyListtile(
-              leadingTitle: "Logout",
-              trailingWidget: Icon(Icons.logout_outlined, size: width * 0.07),
-            ),
-            MyListtile(
-              leadingTitle: "Invite Friends",
-              trailingWidget: Icon(
-                Icons.group_add_outlined,
-                size: width * 0.07,
+              MyListtile(
+                leadingTitle: "Report a Bug",
+                trailingWidget: Icon(
+                  Icons.bug_report_outlined,
+                  size: width * 0.07,
+                ),
               ),
-            ),
-            MyListtile(
-              leadingTitle: "Request Account Deletion",
-              trailingWidget: Icon(
-                Icons.cancel_outlined,
-                size: width * 0.07,
-                color: Colors.redAccent,
+              MyListtile(
+                leadingTitle: "Terms & Conditions",
+                trailingWidget: Icon(Icons.article_outlined, size: width * 0.07),
               ),
-            ),
-          ],
+              MyListtile(
+                leadingTitle: "Privacy Policy",
+                trailingWidget: Icon(
+                  Icons.privacy_tip_outlined,
+                  size: width * 0.07,
+                ),
+              ),
+              MyListtile(
+                leadingTitle: "Logout",
+                trailingWidget: Icon(Icons.logout_outlined, size: width * 0.07),
+              ),
+              MyListtile(
+                leadingTitle: "Invite Friends",
+                trailingWidget: Icon(
+                  Icons.group_add_outlined,
+                  size: width * 0.07,
+                ),
+              ),
+              MyListtile(
+                leadingTitle: "Request Account Deletion",
+                trailingWidget: Icon(
+                  Icons.cancel_outlined,
+                  size: width * 0.07,
+                  color: Colors.redAccent,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

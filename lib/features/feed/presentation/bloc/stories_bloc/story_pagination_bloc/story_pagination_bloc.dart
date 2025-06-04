@@ -43,9 +43,7 @@ class StoryPaginationBloc
         if (storiesSuccess && stories != null) {
           page++;
 
-          if (stories.length < 7) {
-            hasMore = false;
-          }
+          hasMore = stories.length == 7;
 
           allStories.addAll(stories);
           emit(

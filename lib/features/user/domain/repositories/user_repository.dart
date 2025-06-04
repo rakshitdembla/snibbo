@@ -19,6 +19,7 @@ abstract class UserRepository {
     required int page,
     required int limit,
     required String username,
+    required String userId
   });
 
   Future<(bool success, List<PostEntity>? postEntity, String? message)>
@@ -26,5 +27,6 @@ abstract class UserRepository {
     required int page,
     required int limit,
     required String username,
+    required String userId,
   });
 }

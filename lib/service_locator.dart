@@ -30,6 +30,8 @@ import "package:snibbo_app/features/user/data/data_sources/remote/user_remote_da
 import "package:snibbo_app/features/user/data/repositories/user_repository_impl.dart";
 import "package:snibbo_app/features/user/domain/repositories/user_repository.dart";
 import "package:snibbo_app/features/user/domain/usecases/follow_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/get_user_posts_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/get_user_saved_posts.dart";
 import "package:snibbo_app/features/user/domain/usecases/unfollow_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/user_profile_usecase.dart";
 
@@ -119,4 +121,6 @@ void setupServiceLocator() {
       sl.registerSingleton<ProfileRemoteData>(ProfileRemoteData());
       sl.registerSingleton<ProfileRepository>(ProfileRepositoryImpl());
       sl.registerSingleton<UpdateProfileUsecase>(UpdateProfileUsecase());
+      sl.registerSingleton<GetUserPostsUsecase>(GetUserPostsUsecase());
+      sl.registerSingleton<GetUserSavedPostsUsecase>(GetUserSavedPostsUsecase());
 }

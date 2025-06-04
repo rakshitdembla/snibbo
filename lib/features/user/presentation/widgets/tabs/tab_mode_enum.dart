@@ -1,0 +1,1 @@
+enum TabModeEnum {userPosts,userSavedPosts}

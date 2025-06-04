@@ -20,6 +20,8 @@ import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_sto
 import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/get_user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_bloc.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +68,8 @@ void main() async {
         ),
         BlocProvider<LikePostBloc>(create: (context) => LikePostBloc()),
         BlocProvider<DislikePostBloc>(create: (context) => DislikePostBloc()),
+        BlocProvider<UserPostsPaginationBloc>(create: (context) => UserPostsPaginationBloc()),
+        BlocProvider<UserSavedPostsPaginationBloc>(create: (context) => UserSavedPostsPaginationBloc()),
       ],
       child: ToastificationWrapper(child: MyApp()),
     ),

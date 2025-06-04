@@ -40,11 +40,12 @@ class UserRepositoryImpl implements UserRepository {
     required int page,
     required int limit,
     required String username,
+    required String userId
   }) {
     return sl<UserRemoteData>().getUserPosts(
       username: username,
       page: page,
-      limit: limit,
+      limit: limit, userId: userId ,
     );
   }
 
@@ -53,11 +54,13 @@ class UserRepositoryImpl implements UserRepository {
     required int page,
     required int limit,
     required String username,
+    required String userId
   }) {
     return sl<UserRemoteData>().getUserSavedPosts(
       username: username,
       page: page,
       limit: limit,
+      userId: userId
     );
   }
 }

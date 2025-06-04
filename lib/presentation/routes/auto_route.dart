@@ -15,7 +15,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: FeedScreenRoute.page),
     AutoRoute(page: OnboardScreenRoute.page),
-    AutoRoute(page: UserProfileScreenRoute.page),
+    AutoRoute(page: ProfileViewRoute.page),
     AutoRoute(page: PostsViewScreenRoute.page),
     AutoRoute(page: SearchScreenRoute.page),
     AutoRoute(page: StoryViewScreenRoute.page),

@@ -8,7 +8,8 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 
 class TabBarWidget extends StatelessWidget {
   final List<Widget> tabs;
-  const TabBarWidget({super.key, required this.tabs});
+  final TabController tabcontroller;
+  const TabBarWidget({super.key, required this.tabs,required this.tabcontroller});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class TabBarWidget extends StatelessWidget {
     return Container(
       color: isDark ? MyColors.darkPrimary :  MyColors.primary,
       child: TabBar(
+        controller: tabcontroller,
         splashFactory: NoSplash.splashFactory,
         dividerColor: MyColors.lowOpacitySecondary,
         dividerHeight: height * 0.00060,

@@ -3,11 +3,17 @@ import 'package:snibbo_app/features/user/domain/repositories/user_repository.dar
 import 'package:snibbo_app/service_locator.dart';
 
 class GetUserPostsUsecase {
-    Future<(bool, List<PostEntity>?, String?)> call({
+  Future<(bool, List<PostEntity>?, String?)> call({
     required int page,
     required int limit,
     required String username,
+    required String userId,
   }) {
-    return sl<UserRepository>().getUserPosts(page: page, limit: limit, username: username);
+    return sl<UserRepository>().getUserPosts(
+      page: page,
+      limit: limit,
+      username: username,
+      userId: userId,
+    );
   }
 }
