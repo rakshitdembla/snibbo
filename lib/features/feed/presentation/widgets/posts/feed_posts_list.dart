@@ -4,9 +4,9 @@ import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_widget.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_events.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_states.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_states.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 

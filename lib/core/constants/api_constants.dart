@@ -39,6 +39,14 @@ class ApiRoutes {
   static String removeSavedPost = "$postRoute/remove-saved";
   static String myPosts = "$postRoute/user-posts";
   static String savedPosts = "$postRoute/saved-posts";
+  static String addComment = "$postRoute/add-comment";
+  static String addReply = "$postRoute/add-reply";
+  static String deleteComment = "$postRoute/remove-comment";
+  static String deleteReply = "$postRoute/remove-reply";
+  static String likeComment = "$postRoute/like-comment";
+  static String dislikeComment = "$postRoute/dislike-comment";
+  static String likeReply = "$postRoute/like-reply";
+  static String dislikeReply = "$postRoute/dislike-reply";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";

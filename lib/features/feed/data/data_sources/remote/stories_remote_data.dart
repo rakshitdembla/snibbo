@@ -7,7 +7,7 @@ import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
 
-class FeedStoriesRemoteData {
+class StoriesRemoteData {
   // Get User Stories By Username -->
   Future<(bool success, UserStoriesEntity? userStories, String? message)>
   getUserStories(String username) async {

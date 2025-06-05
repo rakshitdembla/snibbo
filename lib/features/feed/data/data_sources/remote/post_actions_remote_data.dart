@@ -7,7 +7,7 @@ import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dar
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
 
-class FeedPostsRemoteData {
+class PostActionsRemoteData {
   // Like Post -->
   Future<(bool success, String? message)> likePost(
     String postId,

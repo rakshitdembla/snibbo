@@ -14,13 +14,22 @@ import "package:snibbo_app/features/create/domain/repositories/content_creator_r
 import "package:snibbo_app/features/create/domain/usecases/create_post_usecase.dart";
 import "package:snibbo_app/features/create/domain/usecases/create_story_usecase.dart";
 import "package:snibbo_app/features/create/domain/usecases/upload_image_usecase.dart";
-import "package:snibbo_app/features/feed/data/data_sources/remote/feed_posts_remote_data.dart";
-import "package:snibbo_app/features/feed/data/data_sources/remote/feed_stories_remote_data.dart";
+import "package:snibbo_app/features/explore/data/data_sources/remote/explore_remote_data.dart";
+import "package:snibbo_app/features/explore/data/repositories/explore_repositories_impl.dart";
+import "package:snibbo_app/features/explore/domain/repositories/explore_repositories.dart";
+import "package:snibbo_app/features/explore/domain/use_cases/get_explore_posts.dart";
+import "package:snibbo_app/features/feed/data/data_sources/remote/post_actions_remote_data.dart";
+import "package:snibbo_app/features/feed/data/data_sources/remote/post_comments_remote_data.dart";
+import "package:snibbo_app/features/feed/data/data_sources/remote/stories_remote_data.dart";
 import "package:snibbo_app/features/feed/data/data_sources/remote/get_feed_remote_data.dart";
 import "package:snibbo_app/features/feed/data/repositories/feed_repository_impl.dart";
+import "package:snibbo_app/features/feed/data/repositories/post_comments_repository_impl.dart";
+import "package:snibbo_app/features/feed/data/repositories/post_interactions_repository_impl.dart";
+import "package:snibbo_app/features/feed/data/repositories/stories_repository_impl.dart";
 import "package:snibbo_app/features/feed/domain/repositories/feed_repository.dart";
-import "package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart";
-import "package:snibbo_app/features/feed/domain/usecases/stories_usecase.dart";
+import "package:snibbo_app/features/feed/domain/repositories/post_comments_repository.dart";
+import "package:snibbo_app/features/feed/domain/repositories/post_interactions_repository.dart";
+import "package:snibbo_app/features/feed/domain/repositories/stories_repository.dart";
 import "package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart";
 import "package:snibbo_app/features/profile/data/data_sources/remote/profile_remote_data.dart";
 import "package:snibbo_app/features/profile/data/repositories/profile_repository_impl.dart";
@@ -38,12 +47,11 @@ import "package:snibbo_app/features/user/domain/usecases/user_profile_usecase.da
 final sl = GetIt.instance;
 
 void setupServiceLocator() {
-  //** --- Common ServiceLocators --- */
+
   sl.registerSingleton<ApiService>(ApiService());
 
   sl.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
 
-  //** --- Auth ServiceLocators --- */
   sl.registerSingleton<AuthRemoteData>(AuthRemoteData());
 
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
@@ -60,12 +68,11 @@ void setupServiceLocator() {
     ForgetPasswordUsecase(authRepository: sl<AuthRepository>()),
   );
 
-  //** --- Feed ServiceLocators --- */
   sl.registerSingleton<GetFeedRemoteData>(GetFeedRemoteData());
 
-  sl.registerSingleton<FeedPostsRemoteData>(FeedPostsRemoteData());
+  sl.registerSingleton<PostActionsRemoteData>(PostActionsRemoteData());
 
-  sl.registerSingleton<FeedStoriesRemoteData>(FeedStoriesRemoteData());
+  sl.registerSingleton<StoriesRemoteData>(StoriesRemoteData());
 
   sl.registerSingleton<FeedRepository>(FeedRepositoryImpl());
 
@@ -73,17 +80,10 @@ void setupServiceLocator() {
     GetFeedPostsUsecase(feedRepository: sl<FeedRepository>()),
   );
 
-  sl.registerSingleton<PostsUsecase>(
-    PostsUsecase(feedRepository: sl<FeedRepository>()),
-  );
-
-  sl.registerSingleton<StoriesUsecase>(
-    StoriesUsecase(feedRepository: sl<FeedRepository>()),
-  );
-
   sl.registerSingleton<ImagePicker>(ImagePicker());
 
-  //** --- Create ServiceLocators --- */
+  sl.registerSingleton<PostCommentsRemoteData>(PostCommentsRemoteData());
+
   sl.registerSingleton<ContentCreatorRemoteData>(ContentCreatorRemoteData());
 
   sl.registerSingleton<ContentCreatorRepository>(
@@ -106,8 +106,6 @@ void setupServiceLocator() {
     ),
   );
 
-  //** --- User ServiceLocators --- */
-
   sl.registerSingleton<UserRemoteData>(UserRemoteData());
   sl.registerSingleton<UserRepository>(UserRepositoryImpl());
   sl.registerSingleton<FollowUsecase>(FollowUsecase());
@@ -116,11 +114,17 @@ void setupServiceLocator() {
 
   sl.registerSingleton<UserProfileUsecase>(UserProfileUsecase());
 
-    //** --- Profile ServiceLocators --- */
-
       sl.registerSingleton<ProfileRemoteData>(ProfileRemoteData());
       sl.registerSingleton<ProfileRepository>(ProfileRepositoryImpl());
       sl.registerSingleton<UpdateProfileUsecase>(UpdateProfileUsecase());
       sl.registerSingleton<GetUserPostsUsecase>(GetUserPostsUsecase());
       sl.registerSingleton<GetUserSavedPostsUsecase>(GetUserSavedPostsUsecase());
+
+      sl.registerSingleton<ExploreRepositories>(ExploreRepositoriesImpl());
+      sl.registerSingleton<ExploreRemoteData>(ExploreRemoteData());
+      sl.registerSingleton<GetExplorePostsUsecase>(GetExplorePostsUsecase());
+
+      sl.registerSingleton<PostInteractionsRepository>(PostInteractionsRepositoryImpl());
+      sl.registerSingleton<StoriesRepository>(StoriesRepositoryImpl());
+      sl.registerSingleton<PostCommentsRepository>(PostCommentsRepositoryImpl());
 }

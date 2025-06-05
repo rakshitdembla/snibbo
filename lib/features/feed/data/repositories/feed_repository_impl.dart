@@ -1,7 +1,4 @@
-import 'package:snibbo_app/features/feed/data/data_sources/remote/feed_posts_remote_data.dart';
-import 'package:snibbo_app/features/feed/data/data_sources/remote/feed_stories_remote_data.dart';
 import 'package:snibbo_app/features/feed/data/data_sources/remote/get_feed_remote_data.dart';
-import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
@@ -33,86 +30,10 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<(bool, List<PostCommentEntity>?, String?)> getPostComments(
-    String postId,
-  ) {
-    return sl<FeedPostsRemoteData>().getPostComments(postId);
-  }
-
-  @override
-  Future<(bool, List<UserEntity>?, String?)> getPostLikedUsers(String postId) {
-    return sl<FeedPostsRemoteData>().getPostLikedUsers(postId);
-  }
-
-  @override
-  Future<(bool, UserStoriesEntity?, String?)> getUserStories(String username) {
-    return sl<FeedStoriesRemoteData>().getUserStories(username);
-  }
-
-  @override
   Future<(bool, UserStoriesEntity?, String?)> getMyStories(String tokenId) {
     return sl<GetFeedRemoteData>().getMyStories(tokenId);
   }
 
-  @override
-  Future<(bool, String?)> deleteStory({
-    required String userId,
-    required String storyId,
-  }) {
-    return sl<FeedStoriesRemoteData>().deleteStory(
-      userId: userId,
-      storyId: storyId,
-    );
-  }
 
-  @override
-  Future<(bool, List<UserEntity>?, String?)> storyViewers({
-    required String userId,
-    required String storyId,
-  }) {
-    return sl<FeedStoriesRemoteData>().storyViewers(
-      userId: userId,
-      storyId: storyId,
-    );
-  }
 
-  @override
-  Future<(bool, String?)> viewStory({
-    required String userId,
-    required String storyId,
-  }) {
-    return sl<FeedStoriesRemoteData>().viewStory(
-      userId: userId,
-      storyId: storyId,
-    );
-  }
-
-  @override
-  Future<(bool, String?)> removeSavedPost({
-    required String postId,
-    required String userId,
-  }) {
-    return sl<FeedPostsRemoteData>().removeSavedPost(
-      postId: postId,
-      userId: userId,
-    );
-  }
-
-  @override
-  Future<(bool, String?)> savePost({
-    required String postId,
-    required String userId,
-  }) {
-    return sl<FeedPostsRemoteData>().savePost(postId: postId, userId: userId);
-  }
-  
-  @override
-  Future<(bool, String?)> disLikepost({required String postId, required String userId}) {
-    return sl<FeedPostsRemoteData>().dislikePost(postId, userId);
-  }
-  
-  @override
-  Future<(bool, String?)> likePost({required String postId, required String userId}) {
-    return sl<FeedPostsRemoteData>().likePost(postId, userId);
-  }
 }

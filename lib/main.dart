@@ -7,10 +7,11 @@ import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
+import 'package:snibbo_app/features/explore/presentation/bloc/explore_posts_bloc/explore_posts_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/dislike_post_bloc/dislike_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/post_pagination_bloc/post_pagination_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_animation_bloc/save_post_animation_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_bloc/save_post_bloc.dart';
@@ -83,6 +84,9 @@ void main() async {
         BlocProvider<SavePostBloc>(create: (context) => SavePostBloc()),
         BlocProvider<RemoveSavedPostBloc>(
           create: (context) => RemoveSavedPostBloc(),
+        ),
+        BlocProvider<ExplorePostsBloc>(
+          create: (context) => ExplorePostsBloc(),
         ),
       ],
       child: ToastificationWrapper(child: MyApp()),

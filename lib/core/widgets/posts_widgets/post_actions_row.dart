@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
@@ -151,15 +152,15 @@ class PostActionsRow extends StatelessWidget {
                         ? (state is ShowSaveAnimationState &&
                                 state.postId == post.id)
                             ? CommonIcon._(
-                              icon: Icons.bookmark_sharp
+                              icon: Icons.bookmark_rounded
                             ).animate().scale(
                               duration: 400.ms,
                               curve: Curves.elasticOut,
                               begin: Offset(0.9, 0.9),
                               end: Offset(1.2, 1.2),
                             )
-                            : CommonIcon._(icon: Icons.bookmark_sharp)
-                        : CommonIcon._(icon:Icons.bookmark_outline_sharp),
+                            : CommonIcon._(icon: Icons.bookmark_rounded)
+                        : CommonIcon._(icon: LucideIcons.bookmark,iconSize: width * 0.065,),
               );
             },
           ),
@@ -172,7 +173,8 @@ class PostActionsRow extends StatelessWidget {
 class CommonIcon extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
-  const CommonIcon._({required this.icon, this.iconColor});
+  final double? iconSize;
+  const CommonIcon._({required this.icon, this.iconColor,this.iconSize});
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +189,7 @@ class CommonIcon extends StatelessWidget {
                   ? MyColors.white
                   : MyColors.black
               : iconColor,
-      size: width * 0.07,
+      size: iconSize ?? width * 0.07,
     );
   }
 }

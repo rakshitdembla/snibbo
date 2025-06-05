@@ -26,4 +26,6 @@ class MyStrings {
 
   static const pageParam = "page";
   static const limitParam = "limit";
+  static const commentContent = "commentContent";
+  static const replyContent = "replyContent";
 }

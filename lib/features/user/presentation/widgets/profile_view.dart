@@ -38,9 +38,8 @@ class _ProfileViewState extends State<ProfileView>
   void _controllerListener() {
     final hasMoreUserPosts = userPostsBloc.hasMore;
     final hasMoreSavedPosts = userSavedPostsBloc.hasMore;
-    debugPrint("$tabMode");
 
-    if (controller.position.pixels == controller.position.maxScrollExtent) {
+ {
       if (tabMode == TabModeEnum.userPosts) {
         if (hasMoreUserPosts && !userPostsBloc.isLoading) {
           context.read<UserPostsPaginationBloc>().add(

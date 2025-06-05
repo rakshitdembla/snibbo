@@ -44,6 +44,7 @@ dependencies:
   shimmer: ^3.0.0
   timeago: ^3.7.1
   line_icons: ^2.0.3
+  lucide_icons: ^0.257.0
 
 dev_dependencies:
   flutter_test:
