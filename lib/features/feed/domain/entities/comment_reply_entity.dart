@@ -1,25 +1,23 @@
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 
-class PostCommentEntity {
+class CommentReplyEntity {
   String id;
-  bool isMyComment;
+  bool isMyReply;
   bool isLikedByMe;
   UserEntity userId;
-  String commentContent;
-  int commentLikes;
-  int commentReplies;
+  String replyContent;
+  int replyLikes;
   DateTime createdAt;
   DateTime updatedAt;
   int v;
 
-  PostCommentEntity({
+  CommentReplyEntity({
     required this.id,
-    required this.isMyComment,
+    required this.isMyReply,
     required this.isLikedByMe,
     required this.userId,
-    required this.commentContent,
-    required this.commentLikes,
-    required this.commentReplies,
+    required this.replyContent,
+    required this.replyLikes,
     required this.createdAt,
     required this.updatedAt,
     required this.v,

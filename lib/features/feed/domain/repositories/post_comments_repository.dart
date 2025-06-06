@@ -1,3 +1,6 @@
+import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
+
 abstract class PostCommentsRepository {
   Future<(bool success, String? message)> createComment({
     required String postId,
@@ -39,5 +42,25 @@ abstract class PostCommentsRepository {
   Future<(bool success, String? message)> dislikeReply({
     required String replyId,
     required String userId,
+  });
+
+  Future<
+    ({bool success, List<PostCommentEntity>? postComments, String? message})
+  >
+  getPostComments({
+    required String postId,
+    required String userId,
+    required int page,
+    required int limit,
+  });
+
+  Future<
+    ({bool success, List<CommentReplyEntity>? commentReplies, String? message})
+  >
+  getCommentReplies({
+    required String commentId,
+    required String userId,
+    required int page,
+    required int limit,
   });
 }

@@ -1,6 +1,11 @@
 import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
+import 'package:snibbo_app/features/feed/data/models/post_comment_model.dart';
+import 'package:snibbo_app/features/feed/data/models/comment_reply_model.dart';
+import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
+
 import 'package:snibbo_app/service_locator.dart';
 
 class PostCommentsRemoteData {
@@ -59,6 +64,123 @@ class PostCommentsRemoteData {
       }
     } catch (e) {
       return (false, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  // Get Posts Comments -->
+  Future<
+    ({bool success, List<PostCommentEntity>? postComments, String? message})
+  >
+  getPostComments({
+    required String postId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await sl<ApiService>().get(
+        path: "${ApiRoutes.postComments}/$postId",
+        headers: {MyStrings.userIdHeader: userId},
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+
+        if (response.statusCode == 200) {
+          List postComments = responseData["comments"];
+          List<PostCommentEntity> comments =
+              postComments
+                  .map((x) => PostCommentModel.fromJson(x).toEntity())
+                  .toList();
+
+          return (
+            success: true,
+            postComments: comments,
+            message: "Data fetched successfully.",
+          );
+        } else {
+          return (
+            success: false,
+            postComments: null,
+            message: responseData["message"].toString(),
+          );
+        }
+      } else {
+        return (
+          success: false,
+          postComments: null,
+          message: "No response from server. Please try again later.",
+        );
+      }
+    } catch (e) {
+      return (
+        success: false,
+        postComments: null,
+        message: "Unexpected error occurred: ${e.toString()}",
+      );
+    }
+  }
+
+  // Get Comment Replies -->
+
+  Future<
+    ({bool success, List<CommentReplyEntity>? commentReplies, String? message})
+  >
+  getCommentReplies({
+    required String commentId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await sl<ApiService>().get(
+        path: "${ApiRoutes.commentReplies}/$commentId",
+        headers: {MyStrings.userIdHeader: userId},
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+
+        if (response.statusCode == 200) {
+          List replies = responseData["replies"];
+          List<CommentReplyEntity> replyEntities =
+              replies
+                  .map((x) => CommentReplyModel.fromJson(x).toEntity())
+                  .toList();
+
+          return (
+            success: true,
+            commentReplies: replyEntities,
+            message: "Replies fetched successfully.",
+          );
+        } else {
+          return (
+            success: false,
+            commentReplies: null,
+            message: responseData["message"].toString(),
+          );
+        }
+      } else {
+        return (
+          success: false,
+          commentReplies: null,
+          message: "No response from server. Please try again later.",
+        );
+      }
+    } catch (e) {
+      return (
+        success: false,
+        commentReplies: null,
+        message: "Unexpected error occurred: ${e.toString()}",
+      );
     }
   }
 

@@ -1,16 +1,9 @@
 import 'package:snibbo_app/features/feed/data/data_sources/remote/post_actions_remote_data.dart';
-import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/repositories/post_interactions_repository.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class PostInteractionsRepositoryImpl extends PostInteractionsRepository {
-  @override
-  Future<(bool, List<PostCommentEntity>?, String?)> getPostComments(
-    String postId,
-  ) {
-    return sl<PostActionsRemoteData>().getPostComments(postId);
-  }
 
   @override
   Future<(bool, List<UserEntity>?, String?)> getPostLikedUsers(String postId) {

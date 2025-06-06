@@ -33,6 +33,7 @@ class ApiRoutes {
   static String likePost = "$postRoute/like";
   static String disLikePost = "$postRoute/dislike";
   static String postComments = "$postRoute/all-comments";
+  static String commentReplies = "$postRoute/all-replies";
   static String postLikedUsers = "$postRoute/liked-users";
   static String createPost = "$postRoute/create";
   static String savePost = "$postRoute/save";

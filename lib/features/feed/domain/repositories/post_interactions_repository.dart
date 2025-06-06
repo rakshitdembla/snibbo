@@ -1,4 +1,3 @@
-import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 
 abstract class PostInteractionsRepository {
@@ -14,10 +13,6 @@ abstract class PostInteractionsRepository {
     required String postId,
     required String userId,
   });
-
-  /// Gets comments for a specific post
-  Future<(bool success, List<PostCommentEntity>? postComments, String? message)>
-  getPostComments(String postId);
 
   /// Gets users who liked a specific post
   Future<(bool success, List<UserEntity>? likedUser, String? message)>

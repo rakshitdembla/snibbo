@@ -1,3 +1,4 @@
+import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/repositories/post_comments_repository.dart';
@@ -34,9 +35,41 @@ class PostsUsecase {
   /// Retrieves comments for a specific post
   /// [postId] - ID of the post to fetch comments for
   /// Returns tuple with success status, list of comments, and optional message
-  Future<(bool success, List<PostCommentEntity>? postComments, String? message)>
-  getPostComments(String postId) {
-    return postInteractionsRepo.getPostComments(postId);
+  Future<
+    ({String? message, List<PostCommentEntity>? postComments, bool success})
+  >
+  getPostComments({
+    required String postId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) {
+    return postCommentsRepo.getPostComments(
+      postId: postId,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
+  }
+
+  /// Retrieves replies for a specific comment
+  /// [commentId] - ID of the comment to fetch replies for
+  /// Returns tuple with success status, list of replies, and optional message
+  Future<
+    ({List<CommentReplyEntity>? commentReplies, String? message, bool success})
+  >
+  getCommentReplies({
+    required String commentId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) {
+    return postCommentsRepo.getCommentReplies(
+      commentId: commentId,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
   }
 
   /// Retrieves users who liked a specific post
