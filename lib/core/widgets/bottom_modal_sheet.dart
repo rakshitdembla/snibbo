@@ -10,7 +10,7 @@ class MyBottomModalSheet {
     required WidgetBuilder builder,
   }) async{
     await showModalBottomSheet(
-      isScrollControlled: true,
+      isScrollControlled: false,
       backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
       isDismissible: true,
       context: context,

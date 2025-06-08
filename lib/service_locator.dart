@@ -31,6 +31,7 @@ import "package:snibbo_app/features/feed/domain/repositories/post_comments_repos
 import "package:snibbo_app/features/feed/domain/repositories/post_interactions_repository.dart";
 import "package:snibbo_app/features/feed/domain/repositories/stories_repository.dart";
 import "package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart";
+import "package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart";
 import "package:snibbo_app/features/profile/data/data_sources/remote/profile_remote_data.dart";
 import "package:snibbo_app/features/profile/data/repositories/profile_repository_impl.dart";
 import "package:snibbo_app/features/profile/domain/repositories/profile_repository.dart";
@@ -127,4 +128,5 @@ void setupServiceLocator() {
       sl.registerSingleton<PostInteractionsRepository>(PostInteractionsRepositoryImpl());
       sl.registerSingleton<StoriesRepository>(StoriesRepositoryImpl());
       sl.registerSingleton<PostCommentsRepository>(PostCommentsRepositoryImpl());
+      sl.registerSingleton<PostsUsecase>(PostsUsecase());
 }

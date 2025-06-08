@@ -8,6 +8,12 @@ import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/registe
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/explore/presentation/bloc/explore_posts_bloc/explore_posts_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_comment_bloc/delete_comment_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_reply_bloc/delete_reply_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_reply_like_bloc/toogle_reply_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/dislike_post_bloc/dislike_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
@@ -87,6 +93,24 @@ void main() async {
         ),
         BlocProvider<ExplorePostsBloc>(
           create: (context) => ExplorePostsBloc(),
+        ),
+        BlocProvider<GetPostCommentsBloc>(
+          create: (context) => GetPostCommentsBloc(),
+        ),
+        BlocProvider<GetCommentRepliesBloc>(
+          create: (context) => GetCommentRepliesBloc(),
+        ),
+        BlocProvider<ToggleCommentLikeBloc>(
+          create: (context) => ToggleCommentLikeBloc(),
+        ),
+        BlocProvider<ToggleReplyLikeBloc>(
+          create: (context) => ToggleReplyLikeBloc(),
+        ),
+        BlocProvider<DeleteCommentBloc>(
+          create: (context) => DeleteCommentBloc(),
+        ),
+        BlocProvider<DeleteReplyBloc>(
+          create: (context) => DeleteReplyBloc(),
         ),
       ],
       child: ToastificationWrapper(child: MyApp()),

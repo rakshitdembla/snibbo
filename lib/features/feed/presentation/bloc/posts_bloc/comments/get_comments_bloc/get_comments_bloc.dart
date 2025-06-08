@@ -15,6 +15,11 @@ class GetPostCommentsBloc
 
   GetPostCommentsBloc() : super(GetPostCommentsInitial()) {
     on<FetchPostComments>((event, emit) async {
+      emit(GetPostCommentsLoading(postId: event.postId));
+      page = 1;
+      hasMore = true;
+      isLoading = false;
+      allComments = [];
       final userId = await ServicesUtils.getTokenId();
       final result = await sl<PostsUsecase>().getPostComments(
         postId: event.postId,
@@ -28,7 +33,12 @@ class GetPostCommentsBloc
         hasMore = result.postComments?.length == 8;
         page = 2;
 
-        emit(GetPostCommentsLoaded(comments: result.postComments ?? []));
+        emit(
+          GetPostCommentsLoaded(
+            comments: result.postComments ?? [],
+            postId: event.postId,
+          ),
+        );
         return;
       }
 
@@ -36,6 +46,7 @@ class GetPostCommentsBloc
         GetPostCommentsError(
           title: "Failed to Load Comments",
           description: result.message ?? "An unknown error occurred",
+          postId: event.postId,
         ),
       );
     });
@@ -58,7 +69,12 @@ class GetPostCommentsBloc
         page++;
 
         isLoading = false;
-        emit(GetPostCommentsPaginationSuccess(comments: result.postComments ?? []));
+        emit(
+          GetPostCommentsLoaded(
+            comments: result.postComments ?? [],
+            postId: event.postId,
+          ),
+        );
         return;
       }
 
@@ -66,6 +82,7 @@ class GetPostCommentsBloc
         GetPostCommentsPaginationError(
           title: "Failed to load more comments",
           description: result.message ?? "Something went wrong",
+          postId: event.postId
         ),
       );
 

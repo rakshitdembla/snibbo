@@ -9,6 +9,8 @@ import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.d
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_states.dart';
@@ -102,7 +104,8 @@ class PostActionsRow extends StatelessWidget {
           SizedBox(width: width * 0.04),
           PostActionIcon(
             onTap: () {
-              ShowCommentsSheet.show(context: context, isDark: isDark);
+              BlocProvider.of<GetPostCommentsBloc>(context).add(FetchPostComments(postId: post.id));
+              ShowCommentsSheet.show(context: context, isDark: isDark,postId: post.id);
             },
             count: post.commentsLength.toString(),
             icon: CommonIcon._(icon: LineIcons.comments),

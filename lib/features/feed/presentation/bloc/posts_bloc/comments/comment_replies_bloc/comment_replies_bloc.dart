@@ -15,38 +15,11 @@ class GetCommentRepliesBloc
 
   GetCommentRepliesBloc() : super(GetCommentRepliesInitial()) {
     on<FetchCommentReplies>((event, emit) async {
-      final userId = await ServicesUtils.getTokenId();
-
-      final result = await sl<PostsUsecase>().getCommentReplies(
-        commentId: event.commentId,
-        userId: userId!,
-        page: page,
-        limit: 4,
-      );
-
-      if (result.success && result.commentReplies != null) {
-        allReplies.addAll(result.commentReplies!);
-        hasMore = result.commentReplies!.length == 4;
-        page = 2;
-
-        emit(GetCommentRepliesLoaded(replies: allReplies));
-        return;
-      }
-
-      emit(
-        GetCommentRepliesError(
-          title: "Failed to Load Replies",
-          description: result.message ?? "An unknown error occurred",
-        ),
-      );
-    });
-
-    on<LoadMoreCommentReplies>((event, emit) async {
       if (isLoading || !hasMore) return;
 
       isLoading = true;
-      final userId = await ServicesUtils.getTokenId();
 
+      final userId = await ServicesUtils.getTokenId();
       final result = await sl<PostsUsecase>().getCommentReplies(
         commentId: event.commentId,
         userId: userId!,
@@ -55,23 +28,32 @@ class GetCommentRepliesBloc
       );
 
       if (result.success && result.commentReplies != null) {
-        allReplies.addAll(result.commentReplies!);
-        hasMore = result.commentReplies!.length == 4;
+        final fetchedReplies = result.commentReplies!;
+        allReplies.addAll(fetchedReplies);
+
+        hasMore = fetchedReplies.length == 4;
         page++;
 
-        isLoading = false;
-        emit(GetCommentRepliesPaginationSuccess(replies: allReplies));
-        return;
+        emit(GetCommentRepliesLoaded(
+          replies: result.commentReplies ?? [],
+          commentId: event.commentId,
+        ));
+      } else {
+        emit(GetCommentRepliesError(
+          title: "Failed to Load Replies",
+          description: result.message ?? "An unknown error occurred",
+          commentId: event.commentId,
+        ));
       }
-
-      emit(
-        GetCommentRepliesPaginationError(
-          title: "Failed to load more replies",
-          description: result.message ?? "Something went wrong",
-        ),
-      );
 
       isLoading = false;
     });
+
+    on<ResetCommentsReplies>((event, emit) {
+      page = 1;
+      allReplies = [];
+      isLoading = false;
+      hasMore = true;
+    },);
   }
 }

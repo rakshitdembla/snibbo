@@ -8,7 +8,7 @@ import 'package:snibbo_app/service_locator.dart';
 class DeleteCommentBloc extends Bloc<DeleteCommentEvent, DeleteCommentState> {
   DeleteCommentBloc() : super(DeleteCommentInitial()) {
     on<SubmitDeleteCommentEvent>((event, emit) async {
-      emit(DeleteCommentLoading());
+      emit(DeleteCommentLoading(commentId: event.commentId));
 
       final userId = await ServicesUtils.getTokenId();
       final (success, message) = await sl<PostCommentsRepository>()
@@ -18,11 +18,13 @@ class DeleteCommentBloc extends Bloc<DeleteCommentEvent, DeleteCommentState> {
         emit(DeleteCommentSuccess(
           title: 'Comment deleted successfully.',
           description: message.toString(),
+          commentId: event.commentId
         ));
       } else {
         emit(DeleteCommentFailure(
           title: 'Failed to delete comment.',
           description: message.toString(),
+          commentId: event.commentId
         ));
       }
     });

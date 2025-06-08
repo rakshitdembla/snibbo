@@ -8,7 +8,7 @@ import 'package:snibbo_app/service_locator.dart';
 class DeleteReplyBloc extends Bloc<DeleteReplyEvent, DeleteReplyState> {
   DeleteReplyBloc() : super(DeleteReplyInitial()) {
     on<SubmitDeleteReplyEvent>((event, emit) async {
-      emit(DeleteReplyLoading());
+      emit(DeleteReplyLoading(replyId: event.replyId));
 
       final userId = await ServicesUtils.getTokenId();
       final (success, message) = await sl<PostCommentsRepository>().deleteReply(
@@ -21,6 +21,7 @@ class DeleteReplyBloc extends Bloc<DeleteReplyEvent, DeleteReplyState> {
           DeleteReplySuccess(
             title: 'Reply deleted successfully.',
             description: message.toString(),
+            replyId: event.replyId
           ),
         );
       } else {
@@ -28,6 +29,7 @@ class DeleteReplyBloc extends Bloc<DeleteReplyEvent, DeleteReplyState> {
           DeleteReplyFailure(
             title: 'Failed to delete reply.',
             description: message.toString(),
+            replyId: event.replyId
           ),
         );
       }

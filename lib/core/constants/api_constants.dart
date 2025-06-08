@@ -1,10 +1,13 @@
 class ApiMainUrl {
   ApiMainUrl._();
   // Use this when running on emulator
-  static String url = "http://127.0.0.1:3000/api";
+  static String url_ = "http://127.0.0.1:3000/api";
 
   //Jio AirFiber IP (Wireless Debugging)
-  static String url_ = "http://192.168.31.213:3000/api";
+  static String urlp = "http://192.168.31.213:3000/api";
+
+  // Use this IP for iPhone to access local server on your Mac
+  static String url = "http://192.168.31.63:3000/api";
 
   //RailwayWifi IP
   

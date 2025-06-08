@@ -26,7 +26,8 @@ class _CircularProgressLoadingState extends State<CircularProgressLoading> {
 }
 
 class SecondaryCircularProgress extends StatefulWidget {
-  const SecondaryCircularProgress({super.key});
+    final double? scaleSize;
+  const SecondaryCircularProgress({super.key,this.scaleSize});
 
   @override
   State<SecondaryCircularProgress> createState() =>
@@ -34,11 +35,12 @@ class SecondaryCircularProgress extends StatefulWidget {
 }
 
 class _SecondaryCircularProgressState extends State<SecondaryCircularProgress> {
+
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
     return Transform.scale(
-      scale: width * 0.0035,
+      scale: widget.scaleSize  ??  width * 0.0035,
       child: CircularProgressIndicator.adaptive(
         valueColor: AlwaysStoppedAnimation<Color>(MyColors.white),
       ),

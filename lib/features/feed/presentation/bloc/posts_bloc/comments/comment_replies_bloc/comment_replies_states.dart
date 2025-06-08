@@ -12,44 +12,29 @@ class GetCommentRepliesInitial extends GetCommentRepliesStates {}
 
 class GetCommentRepliesLoaded extends GetCommentRepliesStates {
   final List<CommentReplyEntity> replies;
+  final String commentId;
 
-  const GetCommentRepliesLoaded({required this.replies});
-
-  @override
-  List<Object?> get props => [replies];
-}
-
-class GetCommentRepliesPaginationSuccess extends GetCommentRepliesStates {
-  final List<CommentReplyEntity> replies;
-
-  const GetCommentRepliesPaginationSuccess({required this.replies});
+  const GetCommentRepliesLoaded({
+    required this.replies,
+    required this.commentId,
+  });
 
   @override
-  List<Object?> get props => [replies];
+  List<Object?> get props => [replies, commentId];
 }
 
 class GetCommentRepliesError extends GetCommentRepliesStates {
   final String title;
   final String description;
+  final String commentId;
 
   const GetCommentRepliesError({
     required this.title,
     required this.description,
+    required this.commentId,
   });
 
   @override
-  List<Object?> get props => [title, description];
+  List<Object?> get props => [title, description, commentId];
 }
 
-class GetCommentRepliesPaginationError extends GetCommentRepliesStates {
-  final String title;
-  final String description;
-
-  const GetCommentRepliesPaginationError({
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  List<Object?> get props => [title, description];
-}

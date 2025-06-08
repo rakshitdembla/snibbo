@@ -14,7 +14,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ForgotPasswordScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: FeedScreenRoute.page),
-    AutoRoute(page: OnboardScreenRoute.page, path: "/", initial: true),
+    AutoRoute(page: OnboardScreenRoute.page),
     AutoRoute(page: ProfileViewRoute.page),
     AutoRoute(page: PostsViewScreenRoute.page),
     AutoRoute(page: SearchScreenRoute.page),
@@ -31,7 +31,7 @@ class AppRouter extends RootStackRouter {
       transitionsBuilder: TransitionsBuilders.slideRight,
       duration: Duration(milliseconds: 300),
     ),
-    AutoRoute(page: GeneralPageRoute.page),
+    AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
   ];
   @override
   List<AutoRouteGuard> get guards => [];

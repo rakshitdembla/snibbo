@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
 
-abstract class DeleteReplyState extends Equatable {
-  const DeleteReplyState();
+abstract class ToggleReplyLikeState extends Equatable {
+  const ToggleReplyLikeState();
 
   @override
   List<Object> get props => [];
 }
 
-class DeleteReplyInitial extends DeleteReplyState {}
+class ToggleReplyLikeInitial extends ToggleReplyLikeState {}
 
-class DeleteReplyLoading extends DeleteReplyState {
+class ToggleReplyLikeLoading extends ToggleReplyLikeState {
   final String replyId;
 
-  const DeleteReplyLoading({required this.replyId});
+  const ToggleReplyLikeLoading({required this.replyId});
 
   @override
   List<Object> get props => [replyId];
 }
 
-class DeleteReplySuccess extends DeleteReplyState {
+class ToggleReplyLikeSuccess extends ToggleReplyLikeState {
   final String title;
   final String description;
   final String replyId;
 
-  const DeleteReplySuccess({
+  const ToggleReplyLikeSuccess({
     required this.title,
     required this.description,
     required this.replyId,
@@ -33,12 +33,12 @@ class DeleteReplySuccess extends DeleteReplyState {
   List<Object> get props => [title, description, replyId];
 }
 
-class DeleteReplyFailure extends DeleteReplyState {
+class ToggleReplyLikeFailure extends ToggleReplyLikeState {
   final String title;
   final String description;
   final String replyId;
 
-  const DeleteReplyFailure({
+  const ToggleReplyLikeFailure({
     required this.title,
     required this.description,
     required this.replyId,
@@ -47,3 +47,4 @@ class DeleteReplyFailure extends DeleteReplyState {
   @override
   List<Object> get props => [title, description, replyId];
 }
+

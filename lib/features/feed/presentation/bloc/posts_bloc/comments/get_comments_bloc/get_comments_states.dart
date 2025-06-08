@@ -10,43 +10,51 @@ abstract class GetPostCommentsStates extends Equatable {
 
 class GetPostCommentsInitial extends GetPostCommentsStates {}
 
-class GetPostCommentsLoaded extends GetPostCommentsStates {
-  final List<PostCommentEntity> comments;
+class GetPostCommentsLoading extends GetPostCommentsStates {
+  final String postId;
 
-  const GetPostCommentsLoaded({required this.comments});
+  const GetPostCommentsLoading({required this.postId});
 
   @override
-  List<Object?> get props => [comments];
+  List<Object?> get props => [postId];
 }
 
-class GetPostCommentsPaginationSuccess extends GetPostCommentsStates {
+class GetPostCommentsLoaded extends GetPostCommentsStates {
   final List<PostCommentEntity> comments;
+  final String postId;
 
-  const GetPostCommentsPaginationSuccess({required this.comments});
+  const GetPostCommentsLoaded({required this.comments, required this.postId});
 
   @override
-  List<Object?> get props => [comments];
+  List<Object?> get props => [comments, postId];
 }
 
 class GetPostCommentsError extends GetPostCommentsStates {
   final String title;
   final String description;
+  final String postId;
 
-  const GetPostCommentsError({required this.title, required this.description});
+  const GetPostCommentsError({
+    required this.title,
+    required this.description,
+    required this.postId,
+  });
 
   @override
-  List<Object?> get props => [title, description];
+  List<Object?> get props => [title, description, postId];
 }
 
 class GetPostCommentsPaginationError extends GetPostCommentsStates {
   final String title;
   final String description;
+  final String postId;
 
   const GetPostCommentsPaginationError({
     required this.title,
     required this.description,
+    required this.postId,
   });
 
   @override
-  List<Object?> get props => [title, description];
+  List<Object?> get props => [title, description, postId];
 }
