@@ -7,7 +7,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/show_comments_sheet.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/comments/show_comments_sheet.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
@@ -105,7 +105,7 @@ class PostActionsRow extends StatelessWidget {
           PostActionIcon(
             onTap: () {
               BlocProvider.of<GetPostCommentsBloc>(context).add(FetchPostComments(postId: post.id));
-              ShowCommentsSheet.show(context: context, isDark: isDark,postId: post.id);
+              ShowCommentsSheet.show(context: context, isDark: isDark,post: post);
             },
             count: post.commentsLength.toString(),
             icon: CommonIcon._(icon: LineIcons.comments),

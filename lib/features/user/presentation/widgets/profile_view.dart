@@ -15,7 +15,6 @@ import 'package:snibbo_app/features/user/presentation/widgets/tabs/tab_mode_enum
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/tabs/user_posts_tab.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/user_info_header.dart';
-import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import '../../../settings/presentation/bloc/theme_bloc.dart';
 
 @RoutePage()
@@ -39,7 +38,7 @@ class _ProfileViewState extends State<ProfileView>
     final hasMoreUserPosts = userPostsBloc.hasMore;
     final hasMoreSavedPosts = userSavedPostsBloc.hasMore;
 
- {
+    {
       if (tabMode == TabModeEnum.userPosts) {
         if (hasMoreUserPosts && !userPostsBloc.isLoading) {
           context.read<UserPostsPaginationBloc>().add(
@@ -93,143 +92,123 @@ class _ProfileViewState extends State<ProfileView>
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "@${widget.profileEntity.username}",
-          style: TextStyle(fontWeight: FontWeight.w700),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<UserPostsPaginationBloc, UserPostsPaginationStates>(
+          listener: (context, state) {
+            if (state is UserPostsPaginationError) {
+              UiUtils.showToast(
+                title: state.title,
+                isDark: isDark,
+                description: state.description,
+                context: context,
+                isSuccess: false,
+                isWarning: false,
+              );
+            }
+          },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.router.push(SettingsScreenRoute());
-            },
-            icon: Icon(
-              Icons.settings_outlined,
-              size: width * 0.065,
-              color: isDark ? MyColors.primary : MyColors.darkPrimary,
-            ),
-          ),
-        ],
-      ),
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<UserPostsPaginationBloc, UserPostsPaginationStates>(
-            listener: (context, state) {
-              if (state is UserPostsPaginationError) {
-                UiUtils.showToast(
-                  title: state.title,
-                  isDark: isDark,
-                  description: state.description,
-                  context: context,
-                  isSuccess: false,
-                  isWarning: false,
-                );
-              }
-            },
-          ),
-          BlocListener<
-            UserSavedPostsPaginationBloc,
-            UserSavedPostsPaginationStates
-          >(
-            listener: (context, state) {
-              if (state is UserSavedPostsPaginationError) {
-                UiUtils.showToast(
-                  title: state.title,
-                  isDark: isDark,
-                  description: state.description,
-                  context: context,
-                  isSuccess: false,
-                  isWarning: false,
-                );
-              }
-            },
-          ),
-        ],
-        child: NestedScrollView(
-          controller: controller,
-          headerSliverBuilder:
-              (context, innerBoxIsScrolled) => [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: height * 0.02),
-                    child: UserInfoHeader(profileEntity: widget.profileEntity),
-                  ),
+        BlocListener<
+          UserSavedPostsPaginationBloc,
+          UserSavedPostsPaginationStates
+        >(
+          listener: (context, state) {
+            if (state is UserSavedPostsPaginationError) {
+              UiUtils.showToast(
+                title: state.title,
+                isDark: isDark,
+                description: state.description,
+                context: context,
+                isSuccess: false,
+                isWarning: false,
+              );
+            }
+          },
+        ),
+      ],
+      child: NestedScrollView(
+        controller: controller,
+        headerSliverBuilder:
+            (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.02),
+                  child: UserInfoHeader(profileEntity: widget.profileEntity),
                 ),
-                SliverPersistentHeader(
-                  floating: true,
-                  pinned: true,
-                  delegate: _TabBarDelegate(
-                    TabBarWidget(
-                      tabcontroller: tabController,
-                      tabs: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: height * 0.01),
-                          child: Icon(
-                            Icons.grid_view,
-                            size: width * 0.07,
-                            color: isDark ? MyColors.white : MyColors.grey,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: height * 0.01),
-                          child: Icon(
-                            Icons.bookmark_add_outlined,
-                            size: width * 0.07,
-                            color: isDark ? MyColors.white : MyColors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-          body: TabBarView(
-            controller: tabController,
-            children: [
-              BlocBuilder<UserPostsPaginationBloc, UserPostsPaginationStates>(
-                buildWhen: (previous, current) {
-                  if (current is UserPostsPaginationLoaded) {
-                    return current.username == widget.profileEntity.username;
-                  } else {
-                    return false;
-                  }
-                },
-                builder: (context, state) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _controllerListener();
-                  });
-
-                  return UserPostsTab(
-                    posts: userPostsBloc.allUserPosts,
-                    hasMore: userPostsBloc.hasMore,
-                  );
-                },
               ),
-              BlocBuilder<
-                UserSavedPostsPaginationBloc,
-                UserSavedPostsPaginationStates
-              >(
-                buildWhen: (previous, current) {
-                  if (current is UserSavedPostsPaginationLoaded) {
-                    return current.username == widget.profileEntity.username;
-                  } else {
-                    return false;
-                  }
-                },
-
-                builder: (context, state) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _controllerListener();
-                  });
-                  return UserPostsTab(
-                    posts: userSavedPostsBloc.allSavedPosts,
-                    hasMore: userSavedPostsBloc.hasMore,
-                  );
-                },
+              SliverPersistentHeader(
+                floating: true,
+                pinned: true,
+                delegate: _TabBarDelegate(
+                  TabBarWidget(
+                    tabcontroller: tabController,
+                    tabs: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: height * 0.01),
+                        child: Icon(
+                          Icons.grid_view,
+                          size: width * 0.07,
+                          color: isDark ? MyColors.white : MyColors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: height * 0.01),
+                        child: Icon(
+                          Icons.bookmark_add_outlined,
+                          size: width * 0.07,
+                          color: isDark ? MyColors.white : MyColors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
-          ),
+        body: TabBarView(
+          controller: tabController,
+          children: [
+            BlocBuilder<UserPostsPaginationBloc, UserPostsPaginationStates>(
+              buildWhen: (previous, current) {
+                if (current is UserPostsPaginationLoaded) {
+                  return current.username == widget.profileEntity.username;
+                } else {
+                  return false;
+                }
+              },
+              builder: (context, state) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _controllerListener();
+                });
+
+                return UserPostsTab(
+                  posts: userPostsBloc.allUserPosts,
+                  hasMore: userPostsBloc.hasMore,
+                );
+              },
+            ),
+            BlocBuilder<
+              UserSavedPostsPaginationBloc,
+              UserSavedPostsPaginationStates
+            >(
+              buildWhen: (previous, current) {
+                if (current is UserSavedPostsPaginationLoaded) {
+                  return current.username == widget.profileEntity.username;
+                } else {
+                  return false;
+                }
+              },
+
+              builder: (context, state) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _controllerListener();
+                });
+                return UserPostsTab(
+                  posts: userSavedPostsBloc.allSavedPosts,
+                  hasMore: userSavedPostsBloc.hasMore,
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

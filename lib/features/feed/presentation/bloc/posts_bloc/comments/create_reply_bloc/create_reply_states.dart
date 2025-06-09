@@ -9,23 +9,39 @@ abstract class CreateReplyState extends Equatable {
 
 class CreateReplyInitial extends CreateReplyState {}
 
-class CreateReplyLoading extends CreateReplyState {}
+class CreateReplyLoading extends CreateReplyState {
+  final String commentId;
+
+  const CreateReplyLoading({required this.commentId});
+  @override
+  List<Object> get props => [commentId];
+}
 
 class CreateReplySuccess extends CreateReplyState {
   final String title;
   final String description;
+  final String commentId;
 
-  const CreateReplySuccess({required this.description, required this.title});
+  const CreateReplySuccess({
+    required this.description,
+    required this.title,
+    required this.commentId,
+  });
 
   @override
-  List<Object> get props => [title, description];
+  List<Object> get props => [title, description, commentId];
 }
 
 class CreateReplyFailure extends CreateReplyState {
   final String title;
   final String description;
+  final String commentId;
 
-  const CreateReplyFailure({required this.description, required this.title});
+  const CreateReplyFailure({
+    required this.description,
+    required this.title,
+    required this.commentId,
+  });
 
   @override
   List<Object> get props => [title, description];

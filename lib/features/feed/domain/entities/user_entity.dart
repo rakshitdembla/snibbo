@@ -5,6 +5,8 @@ class UserEntity {
   bool isVerified;
   bool? hasActiveStories;
   bool? isAllStoriesViewed;
+  bool? isMyself;
+  bool? isFollowedByMe;
 
   UserEntity({
     required this.username,
@@ -13,5 +15,7 @@ class UserEntity {
     required this.isVerified,
     this.hasActiveStories,
     this.isAllStoriesViewed,
+    this.isMyself,
+    this.isFollowedByMe,
   });
 }

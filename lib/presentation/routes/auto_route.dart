@@ -32,6 +32,7 @@ class AppRouter extends RootStackRouter {
       duration: Duration(milliseconds: 300),
     ),
     AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
+    AutoRoute(page: UserProfileScreenRoute.page),
   ];
   @override
   List<AutoRouteGuard> get guards => [];

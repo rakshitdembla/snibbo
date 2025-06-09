@@ -4,12 +4,15 @@ import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/comment_delete_icon.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/comments/comment_delete_icon.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/replies_list_widget.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/comments/replies_list_widget.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/input_field_mode_bloc/input_field_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/input_field_mode_bloc/input_field_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_states.dart';
@@ -18,8 +21,12 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 
 class UserCommentWidget extends StatefulWidget {
   final PostCommentEntity commentEntity;
-  final String postId;
-  const UserCommentWidget({super.key, required this.commentEntity,required this.postId});
+  final PostEntity post;
+  const UserCommentWidget({
+    super.key,
+    required this.commentEntity,
+    required this.post,
+  });
 
   @override
   State<UserCommentWidget> createState() => _UserCommentWidgetState();
@@ -102,11 +109,12 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                             fontSize: height * 0.011,
                           ),
                         ),
-                        SizedBox(width: width * 0.01,),
+                        SizedBox(width: width * 0.01),
 
                         CommentDeleteIcon(
                           isMyComment: widget.commentEntity.isMyComment,
-                          commentId: widget.commentEntity.id,postId: widget.postId ,
+                          commentId: widget.commentEntity.id,
+                          postId: widget.post.id,
                         ),
                       ],
                     ),
@@ -121,12 +129,19 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                     ),
                     SizedBox(height: height * 0.003),
                     // -> Reply Button
-                    Text(
-                      "Reply",
-                      style: TextStyle(
-                        color: MyColors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: height * 0.012,
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<InputFieldBloc>(
+                          context,
+                        ).add(ShowReplyField(comment: widget.commentEntity));
+                      },
+                      child: Text(
+                        "Reply",
+                        style: TextStyle(
+                          color: MyColors.grey,
+                          fontWeight: FontWeight.w400,
+                          fontSize: height * 0.012,
+                        ),
                       ),
                     ),
                   ],
@@ -250,7 +265,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
             ],
           ),
           RepliesListWidget(
-            postId: widget.postId,
+            postId: widget.post.id,
             replies: widget.commentEntity.commentReplies,
             commentId: widget.commentEntity.id,
             getCommentRepliesBloc: getCommentRepliesBloc,

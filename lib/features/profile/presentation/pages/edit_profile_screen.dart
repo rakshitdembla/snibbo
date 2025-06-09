@@ -74,12 +74,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Profile"),
+        title: Text(
+          "My Profile",
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            overflow: TextOverflow.ellipsis,
+            fontSize: height * 0.021,
+          ),
+        ),
         automaticallyImplyLeading: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.03,vertical: height * 0.01),
+          padding: EdgeInsets.symmetric(
+            horizontal: width * 0.03,
+            vertical: height * 0.01,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,7 +100,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ImageSource.gallery,
                     context,
                   );
-        
+
                   if (pickedImage != null) {
                     setState(() {
                       updatedProfile = File(pickedImage.path);
@@ -112,7 +122,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ImageSource.gallery,
                     context,
                   );
-        
+
                   if (pickedImage != null) {
                     setState(() {
                       updatedProfile = File(pickedImage.path);
@@ -157,7 +167,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 hintText: MyStrings.usernameHintText,
               ),
               SizedBox(height: height * 0.02),
-        
+
               MyTextField(
                 hintText: MyStrings.bioHintText,
                 label: "Bio",
@@ -205,8 +215,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           bio: _bioController.text.trim(),
                           name: _nameController.text.trim(),
                           updatedProfile: updatedProfile,
-                          username: _usernameController.text.trim().toLowerCase(),
-                          context: context
+                          username:
+                              _usernameController.text.trim().toLowerCase(),
+                          context: context,
                         ),
                       );
                     },

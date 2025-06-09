@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
@@ -20,6 +21,7 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/
 import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_menu_bottom_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
@@ -78,7 +80,11 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                  // context.router.push(ProfileViewRoute());
+                  context.router.push(
+                    UserProfileScreenRoute(
+                      username: widget.postEntity.userId.username,
+                    ),
+                  );
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

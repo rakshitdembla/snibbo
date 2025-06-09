@@ -15,6 +15,7 @@ class StoryViewersSheet {
     required StoryController controller,
   }) async {
      MyBottomModalSheet.show(
+      isScrollControlled: false,
       context: context,
       isDark: isDark,
       controller: controller,

@@ -8,9 +8,11 @@ class MyBottomModalSheet {
     required bool isDark,
     StoryController? controller,
     required WidgetBuilder builder,
+    required bool isScrollControlled
   }) async{
+    
     await showModalBottomSheet(
-      isScrollControlled: false,
+      isScrollControlled: isScrollControlled,
       backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
       isDismissible: true,
       context: context,
@@ -20,3 +22,4 @@ class MyBottomModalSheet {
     controller?.play();
   }
 }
+

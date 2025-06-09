@@ -10,6 +10,7 @@ class PostMenuBottomSheet {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
     MyBottomModalSheet.show(
+      isScrollControlled: true,
       context: context,
       isDark: isDark,
       builder: (context) {

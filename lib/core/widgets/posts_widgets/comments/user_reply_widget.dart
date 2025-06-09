@@ -5,7 +5,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/reply_delete_icon.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/comments/reply_delete_icon.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_reply_like_bloc/toogle_reply_like_events.dart';

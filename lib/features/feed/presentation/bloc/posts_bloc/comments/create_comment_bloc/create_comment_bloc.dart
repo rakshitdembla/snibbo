@@ -8,7 +8,18 @@ import 'package:snibbo_app/service_locator.dart';
 class CreateCommentBloc extends Bloc<CreateCommentEvent, CreateCommentState> {
   CreateCommentBloc() : super(CreateCommentInitial()) {
     on<SubmitCommentEvent>((event, emit) async {
-      emit(CreateCommentLoading());
+      emit(CreateCommentLoading(postId: event.postId));
+
+      if (event.commentContent.isEmpty) {
+    emit(
+ CreateCommentFailure(
+            title: 'Failed to add comment.',
+            description: "Comment is empty.",
+            postId: event.postId
+          )
+    ) ;  
+          return;
+      }
 
       final userId = await ServicesUtils.getTokenId();
       final (success, message) = await sl<PostCommentsRepository>()
@@ -23,6 +34,7 @@ class CreateCommentBloc extends Bloc<CreateCommentEvent, CreateCommentState> {
           CreateCommentSuccess(
             title: 'Comment added successfully.',
             description: message.toString(),
+            postId: event.postId
           ),
         );
       } else {
@@ -30,6 +42,7 @@ class CreateCommentBloc extends Bloc<CreateCommentEvent, CreateCommentState> {
           CreateCommentFailure(
             title: 'Failed to add comment.',
             description: message.toString(),
+            postId: event.postId
           ),
         );
       }

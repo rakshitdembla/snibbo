@@ -17,6 +17,7 @@ class CreateBottomModalSheet {
     final width = UiUtils.screenWidth(context);
 
     return await MyBottomModalSheet.show(
+      isScrollControlled: true,
       context: context,
       isDark: isDark,
       builder: (context) {

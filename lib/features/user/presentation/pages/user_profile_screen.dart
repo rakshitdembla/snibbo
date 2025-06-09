@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snibbo_app/core/theme/mycolors.dart';
-import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
@@ -15,67 +13,40 @@ import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/use
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_states.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/profile_view.dart';
-import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 @RoutePage()
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class UserProfileScreen extends StatefulWidget {
+  final String username;
+
+  const UserProfileScreen({super.key, required this.username});
 
   @override
-  State<ProfileScreen> createState() => ProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen> {
-  String? username;
-
-  void initialize() async {
-    username = await ServicesUtils.getUsername();
-    if (mounted && username != null) {
-      BlocProvider.of<UserProfileBloc>(
-        context,
-      ).add(GetUserProfile(username: username!));
-    }
-    setState(() {});
-  }
-
+class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
-    initialize();
     super.initState();
+    BlocProvider.of<UserProfileBloc>(context).add(
+      GetUserProfile(username: widget.username),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
-    return username == null
-        ? Center(child: Center(child: CircularProgressLoading()))
-        : SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                "@$username",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: height * 0.021,
+    return  Scaffold(
+             appBar: AppBar(
+                title: Text(
+                  "@${widget.username}",
+                  style: TextStyle(fontWeight: FontWeight.w700,     overflow: TextOverflow.ellipsis,fontSize: height * 0.021),
                 ),
+                automaticallyImplyLeading: true,
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    context.router.push(SettingsScreenRoute());
-                  },
-                  icon: Icon(
-                    Icons.settings_outlined,
-                    size: width * 0.065,
-                    color: isDark ? MyColors.primary : MyColors.darkPrimary,
-                  ),
-                ),
-              ],
-            ),
-            body: BlocConsumer<UserProfileBloc, UserProfileStates>(
+        body: SafeArea(
+          child: BlocConsumer<UserProfileBloc, UserProfileStates>(
               listener: (context, state) {
                 if (state is UserProfileError) {
                   UiUtils.showToast(
@@ -91,29 +62,33 @@ class ProfileScreenState extends State<ProfileScreen> {
                   BlocProvider.of<UserPostsPaginationBloc>(context).add(
                     InitializeUserPosts(
                       initialPosts: state.userPosts,
-                      username: username!,
+                      username: widget.username,
                     ),
                   );
-
+                
                   BlocProvider.of<UserSavedPostsPaginationBloc>(context).add(
                     InitializeUserSavedPosts(
                       initialPosts: state.userSavedPosts,
-                      username: username!,
+                      username: widget.username,
                     ),
                   );
                 }
               },
               builder: (context, state) {
                 if (state is UserProfileSuccess) {
-                  return ProfileView(profileEntity: state.profileEntity);
+                  return ProfileView(
+                    profileEntity: state.profileEntity,
+                  );
                 } else if (state is UserProfileError) {
-                  return Center(child: Text("Failed to load user profile"));
+                  return const Center(child: Text("Failed to load user profile"));
                 } else {
-                  return Center(child: CircularProgressLoading());
+                  return const Center(child: CircularProgressLoading());
                 }
               },
             ),
-          ),
-        );
+        ),
+       
+      );
+    
   }
 }

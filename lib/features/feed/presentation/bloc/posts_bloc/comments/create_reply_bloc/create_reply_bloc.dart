@@ -8,7 +8,18 @@ import 'package:snibbo_app/service_locator.dart';
 class CreateReplyBloc extends Bloc<CreateReplyEvent, CreateReplyState> {
   CreateReplyBloc() : super(CreateReplyInitial()) {
     on<SubmitReplyEvent>((event, emit) async {
-      emit(CreateReplyLoading());
+      emit(CreateReplyLoading(commentId: event.commentId));
+
+      if (event.replyContent.isEmpty) {
+      emit(
+CreateReplyFailure(
+          title: 'Failed to add comment.',
+          description: "Comment is empty.",
+          commentId: event.commentId,
+        )
+      )  ;
+        return;
+      }
 
       final userId = await ServicesUtils.getTokenId();
       final (success, message) = await sl<PostCommentsRepository>().createReply(
@@ -18,15 +29,21 @@ class CreateReplyBloc extends Bloc<CreateReplyEvent, CreateReplyState> {
       );
 
       if (success) {
-        emit(CreateReplySuccess(
-          title: "Reply added successfully.",
-          description: message.toString(),
-        ));
+        emit(
+          CreateReplySuccess(
+            title: "Reply added successfully.",
+            description: message.toString(),
+            commentId: event.commentId,
+          ),
+        );
       } else {
-        emit(CreateReplyFailure(
-          title: "Failed to add reply.",
-          description: message.toString(),
-        ));
+        emit(
+          CreateReplyFailure(
+            title: "Failed to add reply.",
+            description: message.toString(),
+            commentId: event.commentId,
+          ),
+        );
       }
     });
   }

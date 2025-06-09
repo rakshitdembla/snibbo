@@ -7,6 +7,8 @@ class UserModel {
   bool isVerified;
   bool? hasActiveStories;
   bool? isAllStoriesViewed;
+  bool? isMyself;
+  bool? isFollowedByMe;
 
   UserModel({
     required this.username,
@@ -15,6 +17,8 @@ class UserModel {
     required this.isVerified,
     this.hasActiveStories,
     this.isAllStoriesViewed,
+    this.isMyself,
+    this.isFollowedByMe,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -24,6 +28,8 @@ class UserModel {
         isVerified: json["isVerified"],
         hasActiveStories: json["hasActiveStories"],
         isAllStoriesViewed: json["isAllStoriesViewed"],
+        isMyself: json["isMyself"],
+        isFollowedByMe: json["isFollowedByMe"],
       );
 
   UserEntity toEntity() {
@@ -34,6 +40,9 @@ class UserModel {
       isVerified: isVerified,
       hasActiveStories: hasActiveStories,
       isAllStoriesViewed: isAllStoriesViewed,
+      isMyself: isMyself,
+      isFollowedByMe: isFollowedByMe,
     );
   }
 }
+

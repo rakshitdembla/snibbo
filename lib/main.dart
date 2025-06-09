@@ -9,9 +9,12 @@ import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/cr
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/explore/presentation/bloc/explore_posts_bloc/explore_posts_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_comment_bloc/create_comment_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_comment_bloc/delete_comment_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_reply_bloc/delete_reply_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/input_field_mode_bloc/input_field_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_reply_like_bloc/toogle_reply_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
@@ -30,9 +33,12 @@ import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_sto
 import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/follow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/get_user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_bloc.dart';
+import 'package:snibbo_app/presentation/general/presentation/bloc/hide_bottom_nav_bloc/hide_bottom_nav_bloc.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/service_locator.dart';
@@ -112,7 +118,26 @@ void main() async {
         BlocProvider<DeleteReplyBloc>(
           create: (context) => DeleteReplyBloc(),
         ),
+        BlocProvider<HideBottomNavBloc>(
+          create: (context) => HideBottomNavBloc(),
+        ),
+                BlocProvider<CreateCommentBloc>(
+          create: (context) => CreateCommentBloc(),
+        ),
+                BlocProvider<CreateReplyBloc>(
+          create: (context) => CreateReplyBloc(),
+        ),
+                BlocProvider<InputFieldBloc>(
+          create: (context) => InputFieldBloc(),
+        ),
+                BlocProvider<FollowUserBloc>(
+          create: (context) => FollowUserBloc(),
+        ),
+                BlocProvider<UnfollowUserBloc>(
+          create: (context) => UnfollowUserBloc(),
+        ),
       ],
+
       child: ToastificationWrapper(child: MyApp()),
     ),
   );
