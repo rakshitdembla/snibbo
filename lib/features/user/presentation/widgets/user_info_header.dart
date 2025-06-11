@@ -76,14 +76,31 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SocialStatsWidget(
+                              onTap: () {},
                               count: "${widget.profileEntity.posts}",
                               title: "posts",
                             ),
                             SocialStatsWidget(
+                              onTap: () {
+                                context.router.push(
+                                  UserConnectionsScreenRoute(
+                                    username: widget.profileEntity.username,
+                                    initialIndex: 0,
+                                  ),
+                                );
+                              },
                               count: "${widget.profileEntity.userFollowers}",
                               title: "followers",
                             ),
                             SocialStatsWidget(
+                              onTap: () {
+                                context.router.push(
+                                  UserConnectionsScreenRoute(
+                                    username: widget.profileEntity.username,
+                                    initialIndex: 1,
+                                  ),
+                                );
+                              },
                               count: "${widget.profileEntity.userFollowing}",
                               title: "following",
                             ),
@@ -98,7 +115,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
           ),
           widget.profileEntity.bio.isNotEmpty
               ? Padding(
-              padding: EdgeInsetsGeometry.only(top: height * 0.01),
+                padding: EdgeInsetsGeometry.only(top: height * 0.01),
                 child: SizedBox(
                   width: width * 0.9,
                   child: Text(widget.profileEntity.bio),

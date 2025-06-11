@@ -24,3 +24,11 @@ class InitializeUserSavedPosts extends UserSavedPostsPaginationEvents {
   @override
   List<Object?> get props => [initialPosts];
 }
+
+
+class ReloadInitialUserSavedPosts extends UserSavedPostsPaginationEvents {
+  final String username;
+  ReloadInitialUserSavedPosts({required this.username});
+  @override
+  List<Object?> get props => [username];
+}

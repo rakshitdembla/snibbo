@@ -8,6 +8,7 @@ import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/registe
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/explore/presentation/bloc/explore_posts_bloc/explore_posts_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_liked_users_bloc/comment_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_comment_bloc/create_comment_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_bloc.dart';
@@ -15,11 +16,13 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/d
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_reply_bloc/delete_reply_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/input_field_mode_bloc/input_field_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/reply_liked_users_bloc/reply_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_reply_like_bloc/toogle_reply_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/dislike_post_bloc/dislike_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_liked_users/post_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_pagination_bloc/post_pagination_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/remove_saved_post_bloc/remove_saved_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/save_post/save_post_animation_bloc/save_post_animation_bloc.dart';
@@ -34,7 +37,9 @@ import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_blo
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/follow_user_bloc.dart';
-import 'package:snibbo_app/features/user/presentation/bloc/get_user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_followers_bloc/user_followers_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_followings_bloc/user_followings_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_bloc.dart';
@@ -97,9 +102,7 @@ void main() async {
         BlocProvider<RemoveSavedPostBloc>(
           create: (context) => RemoveSavedPostBloc(),
         ),
-        BlocProvider<ExplorePostsBloc>(
-          create: (context) => ExplorePostsBloc(),
-        ),
+        BlocProvider<ExplorePostsBloc>(create: (context) => ExplorePostsBloc()),
         BlocProvider<GetPostCommentsBloc>(
           create: (context) => GetPostCommentsBloc(),
         ),
@@ -115,26 +118,31 @@ void main() async {
         BlocProvider<DeleteCommentBloc>(
           create: (context) => DeleteCommentBloc(),
         ),
-        BlocProvider<DeleteReplyBloc>(
-          create: (context) => DeleteReplyBloc(),
-        ),
+        BlocProvider<DeleteReplyBloc>(create: (context) => DeleteReplyBloc()),
         BlocProvider<HideBottomNavBloc>(
           create: (context) => HideBottomNavBloc(),
         ),
-                BlocProvider<CreateCommentBloc>(
+        BlocProvider<CreateCommentBloc>(
           create: (context) => CreateCommentBloc(),
         ),
-                BlocProvider<CreateReplyBloc>(
-          create: (context) => CreateReplyBloc(),
+        BlocProvider<CreateReplyBloc>(create: (context) => CreateReplyBloc()),
+        BlocProvider<InputFieldBloc>(create: (context) => InputFieldBloc()),
+        BlocProvider<FollowUserBloc>(create: (context) => FollowUserBloc()),
+        BlocProvider<UnfollowUserBloc>(create: (context) => UnfollowUserBloc()),
+        BlocProvider<UserFollowersBloc>(
+          create: (context) => UserFollowersBloc(),
         ),
-                BlocProvider<InputFieldBloc>(
-          create: (context) => InputFieldBloc(),
+        BlocProvider<UserFollowingsBloc>(
+          create: (context) => UserFollowingsBloc(),
         ),
-                BlocProvider<FollowUserBloc>(
-          create: (context) => FollowUserBloc(),
+        BlocProvider<PostLikedUsersBloc>(
+          create: (context) => PostLikedUsersBloc(),
         ),
-                BlocProvider<UnfollowUserBloc>(
-          create: (context) => UnfollowUserBloc(),
+        BlocProvider<CommentLikedUsersBloc>(
+          create: (context) => CommentLikedUsersBloc(),
+        ),
+        BlocProvider<ReplyLikedUsersBloc>(
+          create: (context) => ReplyLikedUsersBloc(),
         ),
       ],
 

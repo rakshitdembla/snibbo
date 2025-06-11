@@ -33,6 +33,11 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
     AutoRoute(page: UserProfileScreenRoute.page),
+    AutoRoute(page: UserConnectionsScreenRoute.page),
+    AutoRoute(page: ProfileScreenRoute.page),
+    AutoRoute(page: PostLikedUsersScreenRoute.page),
+    AutoRoute(page: CommentLikedUsersScreenRoute.page),
+    AutoRoute(page: ReplyLikedUsersScreenRoute.page),
   ];
   @override
   List<AutoRouteGuard> get guards => [];

@@ -32,6 +32,7 @@ import "package:snibbo_app/features/feed/domain/repositories/post_interactions_r
 import "package:snibbo_app/features/feed/domain/repositories/stories_repository.dart";
 import "package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart";
 import "package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart";
+import "package:snibbo_app/features/feed/domain/usecases/stories_usecase.dart";
 import "package:snibbo_app/features/profile/data/data_sources/remote/profile_remote_data.dart";
 import "package:snibbo_app/features/profile/data/repositories/profile_repository_impl.dart";
 import "package:snibbo_app/features/profile/domain/repositories/profile_repository.dart";
@@ -43,6 +44,8 @@ import "package:snibbo_app/features/user/domain/usecases/follow_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/get_user_posts_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/get_user_saved_posts.dart";
 import "package:snibbo_app/features/user/domain/usecases/unfollow_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/user_followers_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/user_followings_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/user_profile_usecase.dart";
 
 final sl = GetIt.instance;
@@ -129,4 +132,7 @@ void setupServiceLocator() {
       sl.registerSingleton<StoriesRepository>(StoriesRepositoryImpl());
       sl.registerSingleton<PostCommentsRepository>(PostCommentsRepositoryImpl());
       sl.registerSingleton<PostsUsecase>(PostsUsecase());
+      sl.registerSingleton<UserFollowersUsecase>(UserFollowersUsecase());
+      sl.registerSingleton<UserFollowingsUsecase>(UserFollowingsUsecase());
+      sl.registerSingleton<StoriesUsecase>(StoriesUsecase());
 }

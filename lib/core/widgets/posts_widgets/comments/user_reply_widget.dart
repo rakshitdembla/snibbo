@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
@@ -13,6 +14,7 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/t
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_reply_like_bloc/toogle_reply_like_bloc.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class UserReplyWidget extends StatefulWidget {
   final CommentReplyEntity replyEntity;
@@ -23,7 +25,7 @@ class UserReplyWidget extends StatefulWidget {
     super.key,
     required this.replyEntity,
     required this.commendId,
-    required this.postId
+    required this.postId,
   });
 
   @override
@@ -63,12 +65,8 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
             profileUrl: widget.replyEntity.userId.profilePicture,
             margins: EdgeInsets.only(right: width * 0.012),
             storySize: 0.035,
-            greyBorder:
-                widget.replyEntity.userId.isAllStoriesViewed != null &&
-                widget.replyEntity.userId.isAllStoriesViewed == true,
-            showBorder:
-                widget.replyEntity.userId.hasActiveStories != null &&
-                widget.replyEntity.userId.hasActiveStories == true,
+            greyBorder: widget.replyEntity.userId.isAllStoriesViewed == true,
+            showBorder: widget.replyEntity.userId.hasActiveStories == true,
           ),
           Expanded(
             child: Column(
@@ -91,13 +89,13 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
                         fontSize: height * 0.010,
                       ),
                     ),
-                  SizedBox(width: width * 0.005,),
-                                    ReplyDeleteIcon(
-                  isMyReply: widget.replyEntity.isMyReply,
-                  commentId: widget.commendId,
-                  replyId: widget.replyEntity.id,
-                  postId: widget.postId,
-                ),
+                    SizedBox(width: width * 0.005),
+                    ReplyDeleteIcon(
+                      isMyReply: widget.replyEntity.isMyReply,
+                      commentId: widget.commendId,
+                      replyId: widget.replyEntity.id,
+                      postId: widget.postId,
+                    ),
                   ],
                 ),
                 SizedBox(height: height * 0.0015),
@@ -111,6 +109,7 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
               ],
             ),
           ),
+
           // Toggle Reply Like Bloc Builder
           BlocBuilder<ToggleReplyLikeBloc, ToggleReplyLikeState>(
             buildWhen: (previous, current) {
@@ -127,88 +126,95 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.only(top: height * 0.005),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        final isReplyLiked =
-                            PostInteractionManager.replyLikeStatus[widget
-                                .replyEntity
-                                .id] ==
-                            true;
-                        final toggleLikeBloc =
-                            context.read<ToggleReplyLikeBloc>();
-
-                        if (isReplyLiked) {
-                          PostInteractionManager.replyLikeCount[widget
+                child: GestureDetector(
+                  onLongPress: () {
+                    context.router.push(
+                      ReplyLikedUsersScreenRoute(reply: widget.replyEntity),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          final isReplyLiked =
+                              PostInteractionManager.replyLikeStatus[widget
                                   .replyEntity
-                                  .id] =
-                              (PostInteractionManager.replyLikeCount[widget
-                                      .replyEntity
-                                      .id] ??
-                                  1) -
-                              1;
-                          PostInteractionManager.replyLikeStatus[widget
-                                  .replyEntity
-                                  .id] =
-                              false;
-                          toggleLikeBloc.add(
-                            SubmitToggleReplyLikeEvent(
-                              replyId: widget.replyEntity.id,
-                              isDislike: true,
-                            ),
-                          );
-                        } else {
-                          PostInteractionManager.replyLikeCount[widget
-                                  .replyEntity
-                                  .id] =
-                              (PostInteractionManager.replyLikeCount[widget
-                                      .replyEntity
-                                      .id] ??
-                                  0) +
-                              1;
-                          PostInteractionManager.replyLikeStatus[widget
-                                  .replyEntity
-                                  .id] =
+                                  .id] ==
                               true;
-                          toggleLikeBloc.add(
-                            SubmitToggleReplyLikeEvent(
-                              replyId: widget.replyEntity.id,
-                              isDislike: false,
-                            ),
-                          );
-                        }
-                      },
-                      child: Icon(
-                        PostInteractionManager.replyLikeStatus[widget
+                          final toggleLikeBloc =
+                              context.read<ToggleReplyLikeBloc>();
+
+                          if (isReplyLiked) {
+                            PostInteractionManager.replyLikeCount[widget
                                     .replyEntity
-                                    .id] ==
-                                true
-                            ? LineIcons.heartAlt
-                            : LineIcons.heart,
-                        color:
-                            PostInteractionManager.replyLikeStatus[widget
+                                    .id] =
+                                (PostInteractionManager.replyLikeCount[widget
                                         .replyEntity
-                                        .id] ==
-                                    true
-                                ? Colors.red
-                                : isDark
-                                ? MyColors.primary
-                                : MyColors.darkPrimary,
-                        size: height * 0.017,
+                                        .id] ??
+                                    1) -
+                                1;
+                            PostInteractionManager.replyLikeStatus[widget
+                                    .replyEntity
+                                    .id] =
+                                false;
+                            toggleLikeBloc.add(
+                              SubmitToggleReplyLikeEvent(
+                                replyId: widget.replyEntity.id,
+                                isDislike: true,
+                              ),
+                            );
+                          } else {
+                            PostInteractionManager.replyLikeCount[widget
+                                    .replyEntity
+                                    .id] =
+                                (PostInteractionManager.replyLikeCount[widget
+                                        .replyEntity
+                                        .id] ??
+                                    0) +
+                                1;
+                            PostInteractionManager.replyLikeStatus[widget
+                                    .replyEntity
+                                    .id] =
+                                true;
+                            toggleLikeBloc.add(
+                              SubmitToggleReplyLikeEvent(
+                                replyId: widget.replyEntity.id,
+                                isDislike: false,
+                              ),
+                            );
+                          }
+                        },
+                        child: Icon(
+                          PostInteractionManager.replyLikeStatus[widget
+                                      .replyEntity
+                                      .id] ==
+                                  true
+                              ? LineIcons.heartAlt
+                              : LineIcons.heart,
+                          color:
+                              PostInteractionManager.replyLikeStatus[widget
+                                          .replyEntity
+                                          .id] ==
+                                      true
+                                  ? Colors.red
+                                  : isDark
+                                  ? MyColors.primary
+                                  : MyColors.darkPrimary,
+                          size: height * 0.017,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: height * 0.005),
-                    Text(
-                      PostInteractionManager
-                          .replyLikeCount[widget.replyEntity.id]
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: width * 0.023,
-                        color: MyColors.grey,
+                      SizedBox(height: height * 0.005),
+                      Text(
+                        PostInteractionManager
+                            .replyLikeCount[widget.replyEntity.id]
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: width * 0.023,
+                          color: MyColors.grey,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },

@@ -35,7 +35,7 @@ class ElevatedOutlinedCTA extends StatelessWidget {
               color: isDark ? MyColors.white : MyColors.black,
               strokeAlign: BorderSide.strokeAlignCenter,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
           backgroundColor: Colors.transparent,
         ),

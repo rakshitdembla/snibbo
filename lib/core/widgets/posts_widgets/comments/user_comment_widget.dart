@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
@@ -18,6 +19,7 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/t
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/toogle_comment_like_bloc/toogle_comment_like_states.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class UserCommentWidget extends StatefulWidget {
   final PostCommentEntity commentEntity;
@@ -72,14 +74,11 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                 margins: EdgeInsets.only(right: width * 0.016),
                 storySize: 0.04,
                 greyBorder:
-                    widget.commentEntity.userId.isAllStoriesViewed != null &&
-                            widget.commentEntity.userId.isAllStoriesViewed ==
-                                true
+                    widget.commentEntity.userId.isAllStoriesViewed == true
                         ? true
                         : false,
                 showBorder:
-                    widget.commentEntity.userId.hasActiveStories != null &&
-                            widget.commentEntity.userId.hasActiveStories == true
+                    widget.commentEntity.userId.hasActiveStories == true
                         ? true
                         : false,
               ),
@@ -147,6 +146,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                   ],
                 ),
               ),
+
               // -> Toogle Comment Like Builder
               BlocBuilder<ToggleCommentLikeBloc, ToggleCommentLikeState>(
                 buildWhen: (previous, current) {
@@ -168,96 +168,107 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                       right: width * 0.01,
                       left: width * 0.05,
                     ),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            final isCommentLiked =
-                                PostInteractionManager.commentLikeStatus[widget
-                                    .commentEntity
-                                    .id] ==
-                                true;
-                            final toogleLikeBloc =
-                                context.read<ToggleCommentLikeBloc>();
-
-                            // -> Dispatch like or dislike event based on current status
-                            if (isCommentLiked) {
-                              // -> Decrease like count and update cache
-                              PostInteractionManager.commentLikeCount[widget
+                    child: GestureDetector(
+                      onLongPress: () {
+                        context.router.push(
+                          CommentLikedUsersScreenRoute(
+                            comment: widget.commentEntity,
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              final isCommentLiked =
+                                  PostInteractionManager
+                                      .commentLikeStatus[widget
                                       .commentEntity
-                                      .id] =
-                                  (PostInteractionManager
-                                          .commentLikeCount[widget
-                                          .commentEntity
-                                          .id] ??
-                                      1) -
-                                  1;
-                              PostInteractionManager.commentLikeStatus[widget
-                                      .commentEntity
-                                      .id] =
-                                  false;
-                              toogleLikeBloc.add(
-                                SubmitToggleCommentLikeEvent(
-                                  commentId: widget.commentEntity.id,
-                                  isDislike: true,
-                                ),
-                              );
-                            } else {
-                              // -> Increase like count and update cache
-                              PostInteractionManager.commentLikeCount[widget
-                                      .commentEntity
-                                      .id] =
-                                  (PostInteractionManager
-                                          .commentLikeCount[widget
-                                          .commentEntity
-                                          .id] ??
-                                      0) +
-                                  1;
-                              PostInteractionManager.commentLikeStatus[widget
-                                      .commentEntity
-                                      .id] =
+                                      .id] ==
                                   true;
+                              final toogleLikeBloc =
+                                  context.read<ToggleCommentLikeBloc>();
 
-                              toogleLikeBloc.add(
-                                SubmitToggleCommentLikeEvent(
-                                  commentId: widget.commentEntity.id,
-                                  isDislike: false,
-                                ),
-                              );
-                            }
-                          },
-                          child: Icon(
-                            // -> Show liked icon if comment is liked
-                            PostInteractionManager.commentLikeStatus[widget
+                              // -> Dispatch like or dislike event based on current status
+                              if (isCommentLiked) {
+                                // -> Decrease like count and update cache
+                                PostInteractionManager.commentLikeCount[widget
                                         .commentEntity
-                                        .id] ==
-                                    true
-                                ? LineIcons.heartAlt
-                                : LineIcons.heart,
-                            color:
-                                PostInteractionManager.commentLikeStatus[widget
+                                        .id] =
+                                    (PostInteractionManager
+                                            .commentLikeCount[widget
                                             .commentEntity
-                                            .id] ==
-                                        true
-                                    ? Colors.red
-                                    : isDark
-                                    ? MyColors.primary
-                                    : MyColors.darkPrimary,
-                            size: height * 0.018,
+                                            .id] ??
+                                        1) -
+                                    1;
+                                PostInteractionManager.commentLikeStatus[widget
+                                        .commentEntity
+                                        .id] =
+                                    false;
+                                toogleLikeBloc.add(
+                                  SubmitToggleCommentLikeEvent(
+                                    commentId: widget.commentEntity.id,
+                                    isDislike: true,
+                                  ),
+                                );
+                              } else {
+                                // -> Increase like count and update cache
+                                PostInteractionManager.commentLikeCount[widget
+                                        .commentEntity
+                                        .id] =
+                                    (PostInteractionManager
+                                            .commentLikeCount[widget
+                                            .commentEntity
+                                            .id] ??
+                                        0) +
+                                    1;
+                                PostInteractionManager.commentLikeStatus[widget
+                                        .commentEntity
+                                        .id] =
+                                    true;
+
+                                toogleLikeBloc.add(
+                                  SubmitToggleCommentLikeEvent(
+                                    commentId: widget.commentEntity.id,
+                                    isDislike: false,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Icon(
+                              // -> Show liked icon if comment is liked
+                              PostInteractionManager.commentLikeStatus[widget
+                                          .commentEntity
+                                          .id] ==
+                                      true
+                                  ? LineIcons.heartAlt
+                                  : LineIcons.heart,
+                              color:
+                                  PostInteractionManager
+                                              .commentLikeStatus[widget
+                                              .commentEntity
+                                              .id] ==
+                                          true
+                                      ? Colors.red
+                                      : isDark
+                                      ? MyColors.primary
+                                      : MyColors.darkPrimary,
+                              size: height * 0.018,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: height * 0.006),
-                        // -> Display number of likes on comment
-                        Text(
-                          PostInteractionManager
-                              .commentLikeCount[widget.commentEntity.id]
-                              .toString(),
-                          style: TextStyle(
-                            fontSize: width * 0.025,
-                            color: MyColors.grey,
+                          SizedBox(height: height * 0.006),
+                          // -> Display number of likes on comment
+                          Text(
+                            PostInteractionManager
+                                .commentLikeCount[widget.commentEntity.id]
+                                .toString(),
+                            style: TextStyle(
+                              fontSize: width * 0.025,
+                              color: MyColors.grey,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },

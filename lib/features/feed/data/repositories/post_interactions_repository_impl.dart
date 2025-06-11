@@ -6,8 +6,14 @@ import 'package:snibbo_app/service_locator.dart';
 class PostInteractionsRepositoryImpl extends PostInteractionsRepository {
 
   @override
-  Future<(bool, List<UserEntity>?, String?)> getPostLikedUsers(String postId) {
-    return sl<PostActionsRemoteData>().getPostLikedUsers(postId);
+Future<(bool success, List<UserEntity>? users, String? message)>
+getPostLikedUsers({
+  required String postId,
+  required String userId,
+  required int page,
+  required int limit,
+}) {
+    return sl<PostActionsRemoteData>().getPostLikedUsers(postId: postId, userId: userId, page: page, limit: limit);
   }
 
   @override

@@ -87,7 +87,7 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
                   showBorder: true,
                   username: story.username,
                   greyBorder:
-                      story.isAllStoriesViewed != null && story.isAllStoriesViewed == true
+                     story.isAllStoriesViewed == true
                           ? true
                           : false,
                   profileUrl: story.profilePicture.toString(),

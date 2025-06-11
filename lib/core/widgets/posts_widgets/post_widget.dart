@@ -82,6 +82,7 @@ class _PostWidgetState extends State<PostWidget> {
                 onTap: () {
                   context.router.push(
                     UserProfileScreenRoute(
+                      onPopRefreshUsername: null,
                       username: widget.postEntity.userId.username,
                     ),
                   );
@@ -135,6 +136,9 @@ class _PostWidgetState extends State<PostWidget> {
                 context,
               ).add(LikePostPressed(postId: widget.postEntity.id));
             }
+          },
+          onLongPress: () {
+            context.router.push(PostLikedUsersScreenRoute(post: post));
           },
           child: Stack(
             alignment: Alignment.center,

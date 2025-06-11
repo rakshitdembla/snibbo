@@ -12,7 +12,7 @@ import 'package:snibbo_app/service_locator.dart';
 class UserProfileBloc extends Bloc<UserProfileEvents, UserProfileStates> {
   UserProfileBloc() : super(UserProfileInitial()) {
     on<GetUserProfile>((event, emit) async {
-      emit(UserProfileLoading());
+      emit(UserProfileLoading(username: event.username));
       final userId = await ServicesUtils.getTokenId();
 
       //@ --- Get User Profile Details ---
@@ -31,7 +31,7 @@ class UserProfileBloc extends Bloc<UserProfileEvents, UserProfileStates> {
         String? userPostsMessage,
       ) = await sl<GetUserPostsUsecase>().call(
         page: 1,
-        limit: 12,
+        limit: 15,
         username: event.username,
         userId: userId,
       );
@@ -43,7 +43,7 @@ class UserProfileBloc extends Bloc<UserProfileEvents, UserProfileStates> {
         String? userSavedPostsMessage,
       ) = await sl<GetUserSavedPostsUsecase>().call(
         page: 1,
-        limit: 12,
+        limit: 15,
         username: event.username,
         userId: userId,
       );
@@ -62,6 +62,7 @@ class UserProfileBloc extends Bloc<UserProfileEvents, UserProfileStates> {
             profileEntity: profileEntity,
             userPosts: userPosts,
             userSavedPosts: userSavedPosts,
+            username: event.username
           ),
         );
         return;
@@ -71,6 +72,7 @@ class UserProfileBloc extends Bloc<UserProfileEvents, UserProfileStates> {
         UserProfileError(
           description: "Oops! something went wrong",
           title: "Failed to load user profile",
+          username: event.username
         ),
       );
     });

@@ -7,7 +7,7 @@ import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/un
 class UnfollowUserBloc extends Bloc<UnfollowUserEvents, UnfollowUserStates> {
   UnfollowUserBloc() : super(UnfollowUserInitial()) {
     on<UnfollowRequested>((event, emit) async {
-      emit(UnfollowUserLoading());
+      emit(UnfollowUserLoading(username: event.username));
 
       final userId = await ServicesUtils.getTokenId();
 
@@ -21,6 +21,7 @@ class UnfollowUserBloc extends Bloc<UnfollowUserEvents, UnfollowUserStates> {
           UnfollowUserSuccess(
             title: 'User unfollowed successfully.',
             description: message.toString(),
+            username: event.username,
           ),
         );
       } else {
@@ -28,6 +29,7 @@ class UnfollowUserBloc extends Bloc<UnfollowUserEvents, UnfollowUserStates> {
           UnfollowUserError(
             title: "Unfollow Failed",
             description: message ?? "Unknown error occurred",
+            username: event.username,
           ),
         );
       }

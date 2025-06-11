@@ -95,7 +95,7 @@ class GeneralPageState extends State<GeneralPage> {
                 ExploreScreen(),
                 CreatePostScreen(),
                 ActivityScreen(),
-                ProfileScreen(key: _profileKey,),
+                ProfileScreen(key: _profileKey,onPopRefreshUsername: null,),
               ],
               navBarStyle: NavBarStyle.style6,
             );

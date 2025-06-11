@@ -75,8 +75,19 @@ class PostsUsecase {
   /// Retrieves users who liked a specific post
   /// [postId] - ID of the post to fetch likers for
   /// Returns tuple with success status, list of users, and optional message
-  Future<(bool, List<UserEntity>?, String?)> getPostLikedUsers(String postId) {
-    return postInteractionsRepo.getPostLikedUsers(postId);
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getPostLikedUsers({
+    required String postId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) {
+    return postInteractionsRepo.getPostLikedUsers(
+      postId: postId,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
   }
 
   /// Saves any post to user saved posts
@@ -200,5 +211,47 @@ class PostsUsecase {
     required String userId,
   }) {
     return postCommentsRepo.dislikeReply(replyId: replyId, userId: userId);
+  }
+
+  /// Fetches the list of users who liked a specific reply
+  /// [replyId] - ID of the reply
+  /// [userId] - ID of the current user making the request
+  /// [page] - Pagination page number
+  /// [limit] - Number of users per page
+  /// Returns a tuple with success status, list of users, and optional message
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getReplyLikedUsers({
+    required String replyId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) {
+    return postCommentsRepo.getReplyLikedUsers(
+      replyId: replyId,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
+  }
+
+  /// Fetches the list of users who liked a specific comment
+  /// [commentId] - ID of the comment
+  /// [userId] - ID of the current user making the request
+  /// [page] - Pagination page number
+  /// [limit] - Number of users per page
+  /// Returns a tuple with success status, list of users, and optional message
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getCommentLikedUsers({
+    required String commentId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) {
+    return postCommentsRepo.getCommentLikedUsers(
+      commentId: commentId,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
   }
 }

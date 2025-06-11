@@ -15,8 +15,13 @@ abstract class PostInteractionsRepository {
   });
 
   /// Gets users who liked a specific post
-  Future<(bool success, List<UserEntity>? likedUser, String? message)>
-  getPostLikedUsers(String postId);
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getPostLikedUsers({
+    required String postId,
+    required String userId,
+    required int page,
+    required int limit,
+  });
 
   /// Saves any post to user saved posts
   Future<(bool success, String? message)> savePost({
@@ -29,5 +34,4 @@ abstract class PostInteractionsRepository {
     required String postId,
     required String userId,
   });
-
 }

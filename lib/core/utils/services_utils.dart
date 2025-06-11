@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -10,6 +11,10 @@ import 'package:snibbo_app/core/constants/my_keys.dart';
 import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
 import 'package:snibbo_app/core/models/cloud_image_model.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_events.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_events.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
@@ -172,4 +177,11 @@ class ServicesUtils {
       return (false, e.toString(), null);
     }
   }
+
+  //Refresh UserPosts & UserSavedPosts on Pop;
+
+static void onPopRefreshPosts({required BuildContext context,required String onPopRefreshUsername}) {
+  BlocProvider.of<UserPostsPaginationBloc>(context).add(ReloadInitialUserPosts(username: onPopRefreshUsername));
+  BlocProvider.of<UserSavedPostsPaginationBloc>(context).add(ReloadInitialUserSavedPosts(username: onPopRefreshUsername));
+}
 }

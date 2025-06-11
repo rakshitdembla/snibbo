@@ -1,0 +1,19 @@
+import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/features/user/domain/repositories/user_repository.dart';
+import 'package:snibbo_app/service_locator.dart';
+
+class UserFollowersUsecase {
+  Future<(bool success, List<UserEntity>? users, String? message)> call({
+    required String username,
+    required String userId,
+    required int page,
+    required int limit,
+  }) {
+    return sl<UserRepository>().getUserFollowers(
+      username: username,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
+  }
+}

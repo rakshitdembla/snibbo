@@ -9,7 +9,8 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 class TabBarWidget extends StatelessWidget {
   final List<Widget> tabs;
   final TabController tabcontroller;
-  const TabBarWidget({super.key, required this.tabs,required this.tabcontroller});
+  final EdgeInsetsGeometry padding;
+  const TabBarWidget({super.key, required this.tabs,required this.tabcontroller,required this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class TabBarWidget extends StatelessWidget {
             color: MyColors.secondary,
             width: width * 0.0070,
           ),
-          insets: EdgeInsets.symmetric(horizontal: width * 0.20),
+          insets: padding
         ),
         tabs: tabs,
       ),

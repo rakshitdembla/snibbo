@@ -2,21 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 
 abstract class UserPostsPaginationStates extends Equatable {
-
   @override
   List<Object?> get props => [];
 }
 
 class UserPostsPaginationInitial extends UserPostsPaginationStates {}
 
-class UserPostsPaginationLoading extends UserPostsPaginationStates {}
-
 class UserPostsPaginationLoaded extends UserPostsPaginationStates {
   final List<PostEntity> postLists;
   final String username;
 
-  UserPostsPaginationLoaded({required this.postLists,required this.username});
-
+  UserPostsPaginationLoaded({required this.postLists, required this.username});
 
   @override
   List<Object?> get props => [postLists];
@@ -25,10 +21,18 @@ class UserPostsPaginationLoaded extends UserPostsPaginationStates {
 class UserPostsPaginationError extends UserPostsPaginationStates {
   final String title;
   final String description;
-  
-  UserPostsPaginationError({required this.title, required this.description});
+  final String username;
 
+  UserPostsPaginationError({required this.title, required this.description,required this.username});
 
   @override
-  List<Object?> get props => [title,description];
+  List<Object?> get props => [title, description,username];
+}
+
+class ReloadUserPostsLoading extends UserPostsPaginationStates {
+  final String username;
+
+  ReloadUserPostsLoading({required this.username});
+  @override
+  List<Object?> get props => [username];
 }

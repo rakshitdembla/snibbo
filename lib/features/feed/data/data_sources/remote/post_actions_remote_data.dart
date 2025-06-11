@@ -58,36 +58,45 @@ class PostActionsRemoteData {
   }
 
 
-  // Get Post Liked User -->
-  Future<(bool success, List<UserEntity>? likedUser, String? message)>
-  getPostLikedUsers(String postId) async {
-    try {
-      final response = await sl<ApiService>().get(
-        path: "${ApiRoutes.postLikedUsers}/$postId",
-      );
+// @ ----- Get Post Liked Users -----
+Future<(bool success, List<UserEntity>? users, String? message)>
+getPostLikedUsers({
+  required String postId,
+  required String userId,
+  required int page,
+  required int limit,
+}) async {
+  try {
+    final response = await sl<ApiService>().get(
+      path: "${ApiRoutes.postLikedUsers}/$postId",
+      queryParameters: {
+        MyStrings.pageParam: page,
+        MyStrings.limitParam: limit,
+      },
+      headers: {MyStrings.userIdHeader: userId},
+    );
 
-      if (response != null) {
-        final responseData = response.data;
-
-        if (response.statusCode == 200) {
-          List postLikes = responseData["users"]?["postLikes"];
-          List<UserEntity> likedUsers =
-              postLikes.map((x) => UserModel.fromJson(x).toEntity()).toList();
-          return (true, likedUsers, "Data fetched successfully.");
-        } else {
-          return (false, null, responseData["message"].toString());
-        }
+    if (response != null) {
+      final responseData = response.data;
+      if (response.statusCode == 200) {
+        final usersJson = responseData["users"] as List;
+        final users =
+            usersJson.map((x) => UserModel.fromJson(x).toEntity()).toList();
+        return (true, users, "Post liked users fetched successfully.");
       } else {
-        return (
-          false,
-          null,
-          "No response from server. Please try again later.",
-        );
+        return (false, null, responseData["message"].toString());
       }
-    } catch (e) {
-      return (false, null, "Unexpected error occurred: ${e.toString()}");
+    } else {
+      return (
+        false,
+        null,
+        "No response from server. Please try again later.",
+      );
     }
+  } catch (e) {
+    return (false, null, "Unexpected error occurred: ${e.toString()}");
   }
+}
 
   //SavePost
   Future<(bool success, String? message)> savePost({
@@ -142,4 +151,6 @@ class PostActionsRemoteData {
       return (false, "Unexpected error occurred: ${e.toString()}");
     }
   }
+
+  
 }

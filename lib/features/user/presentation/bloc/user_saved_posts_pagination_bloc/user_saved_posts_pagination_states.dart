@@ -8,13 +8,14 @@ abstract class UserSavedPostsPaginationStates extends Equatable {
 
 class UserSavedPostsPaginationInitial extends UserSavedPostsPaginationStates {}
 
-class UserSavedPostsPaginationLoading extends UserSavedPostsPaginationStates {}
-
 class UserSavedPostsPaginationLoaded extends UserSavedPostsPaginationStates {
   final String username;
   final List<PostEntity> postLists;
 
-  UserSavedPostsPaginationLoaded({required this.postLists,required this.username});
+  UserSavedPostsPaginationLoaded({
+    required this.postLists,
+    required this.username,
+  });
 
   @override
   List<Object?> get props => [postLists];
@@ -23,9 +24,22 @@ class UserSavedPostsPaginationLoaded extends UserSavedPostsPaginationStates {
 class UserSavedPostsPaginationError extends UserSavedPostsPaginationStates {
   final String title;
   final String description;
+  final String username;
 
-  UserSavedPostsPaginationError({required this.title, required this.description});
+  UserSavedPostsPaginationError({
+    required this.title,
+    required this.description,
+    required this.username
+  });
 
   @override
-  List<Object?> get props => [title, description];
+  List<Object?> get props => [title, description,username];
+}
+
+class ReloadUserSavedLoading extends UserSavedPostsPaginationStates {
+  final String username;
+
+  ReloadUserSavedLoading({required this.username});
+  @override
+  List<Object?> get props => [username];
 }

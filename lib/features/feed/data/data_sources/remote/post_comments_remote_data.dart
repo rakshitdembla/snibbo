@@ -3,8 +3,10 @@ import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
 import 'package:snibbo_app/features/feed/data/models/post_comment_model.dart';
 import 'package:snibbo_app/features/feed/data/models/comment_reply_model.dart';
+import 'package:snibbo_app/features/feed/data/models/user_model.dart';
 import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 
 import 'package:snibbo_app/service_locator.dart';
 
@@ -331,6 +333,86 @@ class PostCommentsRemoteData {
       }
     } catch (e) {
       return (false, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  // Get Comment Liked Users
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getCommentLikedUsers({
+    required String commentId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await sl<ApiService>().get(
+        path: "${ApiRoutes.commentLikedUsers}/$commentId",
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+        if (response.statusCode == 200) {
+          final usersJson = responseData["users"] as List;
+          final users =
+              usersJson.map((x) => UserModel.fromJson(x).toEntity()).toList();
+          return (true, users, "Comment liked users fetched successfully.");
+        } else {
+          return (false, null, responseData["message"].toString());
+        }
+      } else {
+        return (
+          false,
+          null,
+          "No response from server. Please try again later.",
+        );
+      }
+    } catch (e) {
+      return (false, null, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  // Get Reply Liked Users
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getReplyLikedUsers({
+    required String replyId,
+    required String userId,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await sl<ApiService>().get(
+        path: "${ApiRoutes.replyLikedUsers}/$replyId",
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+        if (response.statusCode == 200) {
+          final usersJson = responseData["users"] as List;
+          final users =
+              usersJson.map((x) => UserModel.fromJson(x).toEntity()).toList();
+          return (true, users, "Reply liked users fetched successfully.");
+        } else {
+          return (false, null, responseData["message"].toString());
+        }
+      } else {
+        return (
+          false,
+          null,
+          "No response from server. Please try again later.",
+        );
+      }
+    } catch (e) {
+      return (false, null, "Unexpected error occurred: ${e.toString()}");
     }
   }
 }

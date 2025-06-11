@@ -17,7 +17,7 @@ class UserPostsPaginationBloc
     on<InitializeUserPosts>((event, emit) {
       allUserPosts = event.initialPosts;
       page = 2;
-      hasMore = event.initialPosts.length >= 12;
+      hasMore = event.initialPosts.length == 15;
       emit(
         UserPostsPaginationLoaded(
           postLists: allUserPosts,
@@ -31,7 +31,6 @@ class UserPostsPaginationBloc
         return;
       }
       isLoading = true;
-      emit(UserPostsPaginationLoading());
       final tokenId = await ServicesUtils.getTokenId();
 
       try {
@@ -39,24 +38,25 @@ class UserPostsPaginationBloc
           userId: tokenId!,
           username: event.username,
           page: page,
-          limit: 9,
+          limit: 15,
         );
 
         if (success && posts != null) {
           page++;
 
-          hasMore = posts.length == 9;
+          hasMore = posts.length == 15;
 
           allUserPosts.addAll(posts);
           emit(
             UserPostsPaginationLoaded(
-              postLists: allUserPosts,
+              postLists: posts,
               username: event.username,
             ),
           );
         } else {
           emit(
             UserPostsPaginationError(
+              username: event.username,
               title: "Failed to load more user posts",
               description: message ?? "An unknown error occurred.",
             ),
@@ -65,6 +65,7 @@ class UserPostsPaginationBloc
       } catch (e) {
         emit(
           UserPostsPaginationError(
+            username: event.username,
             title: "Something went wrong",
             description: e.toString(),
           ),
@@ -72,6 +73,42 @@ class UserPostsPaginationBloc
       }
 
       isLoading = false;
+    });
+
+    on<ReloadInitialUserPosts>((event, emit) async {
+      emit(ReloadUserPostsLoading(username: event.username));
+      page = 1;
+      isLoading = false;
+      allUserPosts = [];
+      final tokenId = await ServicesUtils.getTokenId();
+
+      final (success, posts, message) = await sl<GetUserPostsUsecase>().call(
+        userId: tokenId!,
+        username: event.username,
+        page: page,
+        limit: 15,
+      );
+
+      if (success && posts != null) {
+        hasMore = posts.length == 15;
+        page = 2;
+        allUserPosts.addAll(posts);
+        emit(
+          UserPostsPaginationLoaded(
+            username: event.username,
+            postLists: posts,
+          ),
+        );
+        return;
+      }
+
+      emit(
+        UserPostsPaginationError(
+          username: event.username,
+          title: "Failed to load more user posts",
+          description: message ?? "An unknown error occurred.",
+        ),
+      );
     });
   }
 }

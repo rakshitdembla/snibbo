@@ -51,6 +51,8 @@ class ApiRoutes {
   static String dislikeComment = "$postRoute/dislike-comment";
   static String likeReply = "$postRoute/like-reply";
   static String dislikeReply = "$postRoute/dislike-reply";
+  static String commentLikedUsers = "$postRoute/comment-likes";
+  static String replyLikedUsers = "$postRoute/reply-likes";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";
@@ -65,5 +67,7 @@ class ApiRoutes {
   static String followUser = "$userRoute/follow";
   static String unfollowUser = "$userRoute/unfollow";
   static String userProfile = "$userRoute/profile";
-  static String updateProfile = "$userRoute/update-profile";
+  static String userFollowings = "$userRoute/followings";
+  static String userFollowers= "$userRoute/followers";
+  static String updateProfile= "$userRoute/update-profile";
 }

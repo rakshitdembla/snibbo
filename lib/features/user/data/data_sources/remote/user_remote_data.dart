@@ -2,7 +2,9 @@ import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
 import 'package:snibbo_app/features/feed/data/models/post_model.dart';
+import 'package:snibbo_app/features/feed/data/models/user_model.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/data/models/profile_model.dart';
 import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
@@ -139,7 +141,7 @@ class UserRemoteData {
     required int page,
     required int limit,
     required String username,
-    required String userId
+    required String userId,
   }) async {
     try {
       final response = await sl<ApiService>().get(
@@ -165,6 +167,87 @@ class UserRemoteData {
         return (
           false,
           null,
+          "No response from server. Please try again later.",
+        );
+      }
+    } catch (e) {
+      return (false, null, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  // @ ----- Get User Followers -----
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getUserFollowers({
+    required String username,
+    required String userId,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await sl<ApiService>().get(
+        path: "${ApiRoutes.userFollowers}/$username",
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+        if (response.statusCode == 200) {
+          final usersJson = responseData["users"] as List;
+          final users =
+              usersJson.map((x) => UserModel.fromJson(x).toEntity()).toList();
+          return (true, users, "Followers fetched successfully.");
+        } else {
+          return (false, null, responseData["message"].toString());
+        }
+      } else {
+        return (
+          false,
+          null,
+          "No response from server. Please try again later.",
+        );
+      }
+    } catch (e) {
+      return (false, null, "Unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+  // @ ----- Get User Following -----
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  getUserFollowing({
+    required String username,
+    required String userId,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await sl<ApiService>().get(
+        path: "${ApiRoutes.userFollowings}/$username",
+        queryParameters: {
+          MyStrings.pageParam: page,
+          MyStrings.limitParam: limit,
+        },
+        headers: {MyStrings.userIdHeader: userId},
+      );
+
+      if (response != null) {
+        final responseData = response.data;
+        if (response.statusCode == 200) {
+          final usersJson = responseData["users"] as List;
+          final users =
+              usersJson.map((x) => UserModel.fromJson(x).toEntity()).toList();
+          return (true, users, "Following fetched successfully.");
+        } else {
+          return (false, null, responseData["message"].toString());
+        }
+      } else {
+        return (
+          false,
+          null,
+
           "No response from server. Please try again later.",
         );
       }

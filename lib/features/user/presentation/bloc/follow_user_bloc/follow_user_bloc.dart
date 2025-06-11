@@ -7,7 +7,7 @@ import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/foll
 class FollowUserBloc extends Bloc<FollowUserEvents, FollowUserStates> {
   FollowUserBloc() : super(FollowUserInitial()) {
     on<FollowRequested>((event, emit) async {
-      emit(FollowUserLoading());
+      emit(FollowUserLoading(username: event.username));
       final userId = await ServicesUtils.getTokenId();
       final (bool success, String? message) = await FollowUsecase().call(
         userId: userId!,
@@ -19,6 +19,7 @@ class FollowUserBloc extends Bloc<FollowUserEvents, FollowUserStates> {
           FollowUserSuccess(
             description: message.toString(),
             title: 'User followed successfully.',
+            username: event.username
           ),
         );
       } else {
@@ -26,6 +27,7 @@ class FollowUserBloc extends Bloc<FollowUserEvents, FollowUserStates> {
           FollowUserError(
             title: "Follow Failed",
             description: message ?? "Unknown error occurred",
+            username: event.username
           ),
         );
       }
