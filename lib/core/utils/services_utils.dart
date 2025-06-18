@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -226,5 +227,25 @@ class ServicesUtils {
     BlocProvider.of<UserSavedPostsPaginationBloc>(
       context,
     ).add(ReloadInitialUserSavedPosts(username: onPopRefreshUsername));
+  }
+
+  //Conditional DateFormat
+  static String formattedDate(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final messageDate = DateTime(date.year, date.month, date.day);
+
+    final difference = today.difference(messageDate).inDays;
+    debugPrint(difference.toString());
+
+    if (difference == 0) {
+      return DateFormat('HH:mm').format(date);
+    } else if (difference == 1) {
+      return 'Yesterday';
+    } else if (difference < 7) {
+      return DateFormat('EEE').format(date);
+    } else {
+      return DateFormat('dd/MM/yyyy').format(date);
+    }
   }
 }

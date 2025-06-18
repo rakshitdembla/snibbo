@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:snibbo_app/core/network/web_sockets/web_sockets_services.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/features/activity/presentation/pages/activity_screen.dart';
 import 'package:snibbo_app/features/explore/presentation/pages/explore_screen.dart';
@@ -13,6 +14,7 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 import 'package:snibbo_app/presentation/general/presentation/bloc/hide_bottom_nav_bloc/hide_bottom_nav_bloc.dart';
 import 'package:snibbo_app/presentation/general/presentation/bloc/hide_bottom_nav_bloc/hide_bottom_nav_states.dart';
 import 'package:snibbo_app/presentation/general/presentation/widgets/bottom_nav_bar_item.dart';
+import 'package:snibbo_app/service_locator.dart';
 
 @RoutePage()
 class GeneralPage extends StatefulWidget {
@@ -30,6 +32,8 @@ class GeneralPageState extends State<GeneralPage> {
   void initState() {
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(_handleTabChange);
+    sl<WebSocketsServices>().connectToSocket();
+    sl<WebSocketsServices>().onAuthUser();
     super.initState();
   }
 
