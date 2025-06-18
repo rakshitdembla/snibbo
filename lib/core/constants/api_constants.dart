@@ -3,6 +3,9 @@ class ApiMainUrl {
   // Use this when running on emulator
   static String url_ = "http://127.0.0.1:3000/api";
 
+  //
+  static String baseUrl = "http://192.168.31.63:3000";
+
   //Jio AirFiber IP (Wireless Debugging)
   static String urlp = "http://192.168.31.213:3000/api";
 
@@ -21,6 +24,7 @@ class ApiEndPoints {
   static String story = "/story";
   static String report = "/report";
   static String user = "/user";
+  static String chat = "/chat";
 }
 
 class ApiRoutes {
@@ -53,6 +57,8 @@ class ApiRoutes {
   static String dislikeReply = "$postRoute/dislike-reply";
   static String commentLikedUsers = "$postRoute/comment-likes";
   static String replyLikedUsers = "$postRoute/reply-likes";
+  static String updatePost = "$postRoute/update";
+  static String deletePost = "$postRoute/delete";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";
@@ -70,4 +76,12 @@ class ApiRoutes {
   static String userFollowings = "$userRoute/followings";
   static String userFollowers= "$userRoute/followers";
   static String updateProfile= "$userRoute/update-profile";
+  static String searchUser = "$userRoute/search-user";
+
+  static String chatRoute = "${ApiMainUrl.url}${ApiEndPoints.chat}";
+  static String blockUser = "$chatRoute/block";
+  static String unblockUser = "$chatRoute/unblock";
+  static String getBlockedUsers = "$chatRoute/blocked-users";
+  static String getMessages = "$chatRoute/chats";
+  static String getChats = "$chatRoute/chats-list";
 }

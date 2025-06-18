@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';

@@ -10,6 +10,6 @@ class GetExplorePostsUsecase {
     required int limit
    }
   ) {
-    return sl<ExploreRepositories>().getExplorePosts(userId, page, limit);
+    return sl<ExploreRepository>().getExplorePosts(userId, page, limit);
   }
 }

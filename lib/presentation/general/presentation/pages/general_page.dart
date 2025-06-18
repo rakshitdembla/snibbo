@@ -91,7 +91,7 @@ class GeneralPageState extends State<GeneralPage> {
                 ),
               ],
               screens: [
-                FeedScreen(),
+                FeedScreen(navController: _controller ,),
                 ExploreScreen(),
                 CreatePostScreen(),
                 ActivityScreen(),

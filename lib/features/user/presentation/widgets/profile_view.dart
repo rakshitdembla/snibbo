@@ -209,8 +209,10 @@ class _ProfileViewState extends State<ProfileView>
                       return Center(child: CircularProgressLoading());
                     }
                     return UserPostsTab(
+                      isUserPosts: true,
                       posts: userPostsBloc.allUserPosts,
                       hasMore: userPostsBloc.hasMore,
+                      profileEntity: widget.profileEntity,
                     );
                   },
                 ),
@@ -233,8 +235,9 @@ class _ProfileViewState extends State<ProfileView>
                       return Center(child: CircularProgressLoading());
                     }
                     return UserPostsTab(
-                      key: Key(widget.profileEntity.username),
+                      isUserPosts: false,
                       posts: userSavedPostsBloc.allSavedPosts,
+                      profileEntity: widget.profileEntity,
                       hasMore: userSavedPostsBloc.hasMore,
                     );
                   },

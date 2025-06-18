@@ -1,4 +1,4 @@
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 
 class PostCommentEntity {
   String id;

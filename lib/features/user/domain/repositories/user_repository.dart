@@ -1,5 +1,5 @@
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 
 abstract class UserRepository {
@@ -46,4 +46,7 @@ abstract class UserRepository {
     required int page,
     required int limit,
   });
+
+  Future<(bool success, UserEntity? user, String? message)>
+  searchUserByUsername({required String username});
 }

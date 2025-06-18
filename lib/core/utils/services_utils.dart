@@ -32,6 +32,27 @@ class ServicesUtils {
     return emailRegex.hasMatch(email);
   }
 
+  // @Username Validator Helper
+  static bool usernameValidator(String username) {
+    final usernameRegex = RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$');
+    return usernameRegex.hasMatch(username);
+  }
+
+  // @Name Validator Helper
+  static bool nameValidator(String name) {
+    final nameRegex = RegExp(r'^[A-Za-z]+(?: [A-Za-z]+)*$');
+    return nameRegex.hasMatch(name);
+  }
+
+  // @Password Validator Helper
+  static bool passwordValidator(String password) {
+    // Reject if password starts or ends with a space
+    if (password.startsWith(' ') || password.endsWith(' ')) return false;
+
+    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#\$&*~]).+$');
+    return passwordRegex.hasMatch(password);
+  }
+
   // @Save User TokenId Helper
   static Future<void> saveTokenId(String tokenId) async {
     final secureStorage = sl<FlutterSecureStorage>();
@@ -48,6 +69,14 @@ class ServicesUtils {
 
     return await secureStorage.read(key: MyStrings.secureStorageToken);
   }
+
+  // @Delete User TokenId Helper
+  static Future<void> deleteTokenId() async {
+    final secureStorage = sl<FlutterSecureStorage>();
+
+    await secureStorage.delete(key: MyStrings.secureStorageToken);
+  }
+
   // @Save User Username Helper
   static Future<void> saveUsername(String username) async {
     final secureStorage = sl<FlutterSecureStorage>();
@@ -56,6 +85,13 @@ class ServicesUtils {
       key: MyStrings.secureStorageUsername,
       value: username,
     );
+  }
+
+  // @Delete User Username Helper
+  static Future<void> deleteUsername() async {
+    final secureStorage = sl<FlutterSecureStorage>();
+
+    await secureStorage.delete(key: MyStrings.secureStorageUsername);
   }
 
   // @Get User TokenId Helper
@@ -180,8 +216,15 @@ class ServicesUtils {
 
   //Refresh UserPosts & UserSavedPosts on Pop;
 
-static void onPopRefreshPosts({required BuildContext context,required String onPopRefreshUsername}) {
-  BlocProvider.of<UserPostsPaginationBloc>(context).add(ReloadInitialUserPosts(username: onPopRefreshUsername));
-  BlocProvider.of<UserSavedPostsPaginationBloc>(context).add(ReloadInitialUserSavedPosts(username: onPopRefreshUsername));
-}
+  static void onPopRefreshPosts({
+    required BuildContext context,
+    required String onPopRefreshUsername,
+  }) {
+    BlocProvider.of<UserPostsPaginationBloc>(
+      context,
+    ).add(ReloadInitialUserPosts(username: onPopRefreshUsername));
+    BlocProvider.of<UserSavedPostsPaginationBloc>(
+      context,
+    ).add(ReloadInitialUserSavedPosts(username: onPopRefreshUsername));
+  }
 }

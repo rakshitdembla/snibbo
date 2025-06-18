@@ -1,14 +1,25 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
+import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class UserPostsTab extends StatefulWidget {
   final List<PostEntity> posts;
   final bool hasMore;
+  final bool isUserPosts;
+  final ProfileEntity profileEntity;
 
-  const UserPostsTab({super.key, required this.posts, required this.hasMore});
+  const UserPostsTab({
+    super.key,
+    required this.posts,
+    required this.hasMore,
+    required this.profileEntity,
+    required this.isUserPosts,
+  });
 
   @override
   State<UserPostsTab> createState() => _UserPostsTabState();
@@ -36,24 +47,38 @@ class _UserPostsTabState extends State<UserPostsTab> {
             delegate: SliverChildBuilderDelegate(
               childCount: widget.posts.length,
               (context, index) {
-                return Image.network(
-                  widget.posts[index].postContent,
-                  fit: BoxFit.cover,
-                  frameBuilder: (
-                    context,
-                    child,
-                    frame,
-                    wasSynchronouslyLoaded,
-                  ) {
-                    return UiUtils.showShimmerBuilder(
-                      wasSynchronouslyLoaded: wasSynchronouslyLoaded,
-                      frame: frame,
-                      child: child,
-                    );
+                return GestureDetector(
+                  onTap: () {
+               widget.isUserPosts ?     context.router.push(
+                      UserPostsViewScreenRoute(
+                        profileEntity: widget.profileEntity,
+                        initialIndex: index,
+                      ),
+                    ) : context.router.push(
+                      SavedPostsViewScreenRoute(
+                        profileEntity: widget.profileEntity,
+                        initialIndex: index,
+                      ),);
                   },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(MyAssets.profilePictureHolder);
-                  },
+                  child: Image.network(
+                    widget.posts[index].postContent,
+                    fit: BoxFit.cover,
+                    frameBuilder: (
+                      context,
+                      child,
+                      frame,
+                      wasSynchronouslyLoaded,
+                    ) {
+                      return UiUtils.showShimmerBuilder(
+                        wasSynchronouslyLoaded: wasSynchronouslyLoaded,
+                        frame: frame,
+                        child: child,
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(MyAssets.profilePictureHolder);
+                    },
+                  ),
                 );
               },
             ),

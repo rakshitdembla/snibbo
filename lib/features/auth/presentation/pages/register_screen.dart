@@ -14,11 +14,12 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import '../../../../core/theme/mycolors.dart';
-import '../../../auth/presentation/widgets/text_span_bottom.dart';
+import '../widgets/text_span_bottom.dart';
 
 @RoutePage()
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final bool routedFromLogin;
+  const RegisterScreen({super.key, required this.routedFromLogin});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -41,7 +42,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     passController.dispose();
     usernameController.dispose();
     nameController.dispose();
-
     passNode.dispose();
     emailNode.dispose();
     nameNode.dispose();
@@ -129,7 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   focusNode: passNode,
                   isPassword: true,
                   textEditingController: passController,
-                  maxLength: 32,
+                  maxLength: 64,
                   maxLines: 1,
                   onSubmit: (String value) {
                     FocusScope.of(context).unfocus();
@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isSuccess: true,
                         isWarning: false,
                       );
-                      context.router.push(GeneralPageRoute());
+                      context.router.replaceAll([GeneralPageRoute()]);
                     }
                   },
                   builder: (context, state) {
@@ -166,12 +166,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ? CircularProgressLoading()
                         : ElevatedCTA(
                           onPressed: () {
+                            FocusScope.of(context).unfocus();
                             context.read<RegisterBloc>().add(
                               Register(
-                                email: emailController.text.trim(),
+                                email:
+                                    emailController.text.trim().toLowerCase(),
                                 password: passController.text,
                                 name: nameController.text.trim(),
-                                username: usernameController.text.trim(),
+                                username:
+                                    usernameController.text
+                                        .toLowerCase(),
                               ),
                             );
                           },
@@ -180,6 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         );
                   },
                 ),
+                SizedBox(height: height * 0.08),
               ],
             ),
           ),
@@ -192,7 +197,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextSpanBottom(
                 actionTitle: "Log In",
                 onTap: () {
-                  context.router.push(LoginScreenRoute());
+                  FocusScope.of(context).unfocus();
+                  !widget.routedFromLogin
+                      ? context.router.push(
+                        LoginScreenRoute(routedFromRegister: true),
+                      )
+                      : context.router.pop();
                 },
                 title: "Already have an account? ",
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/themedata.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
@@ -7,6 +8,8 @@ import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/delete_post/delete_post_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/update_post_bloc/update_post_bloc.dart';
 import 'package:snibbo_app/features/explore/presentation/bloc/explore_posts_bloc/explore_posts_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_liked_users_bloc/comment_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
@@ -37,6 +40,7 @@ import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_blo
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/follow_user_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/search_user_bloc/search_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_followers_bloc/user_followers_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_followings_bloc/user_followings_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
@@ -144,6 +148,15 @@ void main() async {
         BlocProvider<ReplyLikedUsersBloc>(
           create: (context) => ReplyLikedUsersBloc(),
         ),
+        BlocProvider<SearchUserBloc>(
+          create: (context) => SearchUserBloc(),
+        ),
+        BlocProvider<UpdatePostBloc>(
+          create: (context) => UpdatePostBloc(),
+        ),
+        BlocProvider<DeletePostBloc>(
+          create: (context) => DeletePostBloc(),
+        ),
       ],
 
       child: ToastificationWrapper(child: MyApp()),
@@ -157,30 +170,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(412, 915),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, child) {
-        return BlocBuilder<ThemeBloc, ThemeStates>(
-          builder: (context, state) {
-            ThemeMode themeMode;
-            if (state is DarkThemeState) {
-              themeMode = ThemeMode.dark;
-            } else {
-              themeMode = ThemeMode.light;
-            }
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: _appRouter.config(),
-              title: 'Snibbo',
-              themeMode: themeMode,
-              theme: Themedata.lightTheme(context),
-              darkTheme: Themedata.darkTheme(context),
-            );
-          },
-        );
-      },
+    return KeyboardVisibilityProvider(
+      child: ScreenUtilInit(
+        designSize: Size(412, 915),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, child) {
+          return BlocBuilder<ThemeBloc, ThemeStates>(
+            builder: (context, state) {
+              ThemeMode themeMode;
+              if (state is DarkThemeState) {
+                themeMode = ThemeMode.dark;
+              } else {
+                themeMode = ThemeMode.light;
+              }
+              return MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                routerConfig: _appRouter.config(),
+                title: 'Snibbo',
+                themeMode: themeMode,
+                theme: Themedata.lightTheme(context),
+                darkTheme: Themedata.darkTheme(context),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

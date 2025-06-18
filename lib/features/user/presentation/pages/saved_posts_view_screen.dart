@@ -1,0 +1,105 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:snibbo_app/core/widgets/circular_progress.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_widget.dart';
+import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_events.dart';
+import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_states.dart';
+
+@RoutePage()
+class SavedPostsViewScreen extends StatefulWidget {
+  final ProfileEntity profileEntity;
+  final int initialIndex;
+
+  const SavedPostsViewScreen({
+    super.key,
+    required this.profileEntity,
+    required this.initialIndex,
+  });
+
+  @override
+  State<SavedPostsViewScreen> createState() => _SavedPostsViewScreenState();
+}
+
+class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
+  late UserSavedPostsPaginationBloc userSavedPostsBloc;
+  late AutoScrollController autoScrollController;
+
+  void _listener() {
+    if (autoScrollController.position.pixels ==
+        autoScrollController.position.maxScrollExtent) {
+      if (userSavedPostsBloc.hasMore && !userSavedPostsBloc.isLoading) {
+        userSavedPostsBloc.add(
+          LoadMoreSavedPosts(username: widget.profileEntity.username),
+        );
+      }
+    }
+  }
+
+  void scrollToIndex() async {
+    await autoScrollController.scrollToIndex(
+      widget.initialIndex,
+      preferPosition: AutoScrollPosition.begin,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  void initState() {
+    userSavedPostsBloc = context.read<UserSavedPostsPaginationBloc>();
+    autoScrollController = AutoScrollController(axis: Axis.vertical);
+    autoScrollController.addListener(_listener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollToIndex();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    autoScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Saved Posts"),
+        automaticallyImplyLeading: true,
+      ),
+      body: BlocBuilder<UserSavedPostsPaginationBloc, UserSavedPostsPaginationStates>(
+        buildWhen: (previous, current) {
+          if (current is UserSavedPostsPaginationLoaded) {
+            return current.username == widget.profileEntity.username;
+          }
+          return false;
+        },
+        builder: (context, state) {
+          return ListView.builder(
+            controller: autoScrollController,
+            itemCount: userSavedPostsBloc.allSavedPosts.length + 1,
+            itemBuilder: (context, index) {
+              if (index == userSavedPostsBloc.allSavedPosts.length) {
+                return userSavedPostsBloc.hasMore
+                    ? const Center(child: CircularProgressLoading())
+                    : const SizedBox.shrink();
+              }
+
+              final post = userSavedPostsBloc.allSavedPosts[index];
+              return AutoScrollTag(
+                key: ValueKey(index),
+                controller: autoScrollController,
+                index: index,
+                child: PostWidget(postEntity: post),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

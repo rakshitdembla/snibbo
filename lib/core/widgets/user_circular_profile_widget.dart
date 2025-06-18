@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
@@ -64,7 +64,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
         shape: BoxShape.circle,
       ),
       child: Container(
-        padding: EdgeInsets.all(storyRadius * 0.03),
+        padding: widget.showBorder ? EdgeInsets.all(storyRadius * 0.03) : EdgeInsets.zero,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isDark ? MyColors.darkPrimary : MyColors.primary,

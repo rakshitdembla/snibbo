@@ -11,12 +11,16 @@ class SearchField extends StatelessWidget {
   final FocusNode focusNode;
   final IconData prefixIcon;
   final String hintText;
+  final GestureTapCallback onIconTap;
+  final ValueChanged<String>? onSubmit;
   const SearchField({
     super.key,
     required this.focusNode,
     required this.textEditingController,
     required this.prefixIcon,
     required this.hintText,
+    required this.onIconTap,
+    required this.onSubmit
   });
 
   @override
@@ -26,24 +30,24 @@ class SearchField extends StatelessWidget {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return SizedBox(
       width: width,
+      height: height * 0.055,
       child: TextField(
         cursorColor: MyColors.grey,
         cursorErrorColor: MyColors.grey,
         controller: textEditingController,
         focusNode: focusNode,
+        onSubmitted: onSubmit,
         style: TextStyle(
           color: isDark ? MyColors.white : MyColors.black,
-          fontWeight: FontWeight.w600,
-          fontSize: height * 0.02,
+          fontWeight: FontWeight.w500,
+          fontSize: height * 0.0155,
         ),
-
         decoration: InputDecoration(
-  
           hintText: hintText,
           hintStyle: TextStyle(
             color: MyColors.lowOpacitySecondary,
             fontWeight: FontWeight.w500,
-            fontSize: height * 0.02,
+            fontSize: height * 0.0155,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15.r),
@@ -53,7 +57,9 @@ class SearchField extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.r),
             borderSide: BorderSide.none,
           ),
-          prefixIcon: Icon(prefixIcon, color: isDark? MyColors.white : MyColors.black),
+          prefixIcon: GestureDetector(
+            onTap: onIconTap,
+            child: Icon(prefixIcon, color: isDark? MyColors.white : MyColors.black)),
           filled: true,
           fillColor: MyColors.searchField,
           counter: SizedBox.shrink(),

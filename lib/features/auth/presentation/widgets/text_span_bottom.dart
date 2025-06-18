@@ -18,27 +18,29 @@ class TextSpanBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
-    return RichText(
-      text: TextSpan(
-        text: title,
-        style: TextStyle(
-          fontFamily: MyFonts.assetsFontFamily(),
-          color: MyColors.grey,
-          fontWeight: FontWeight.w600,
-          fontSize: width * 0.04,
-        ),
-        children: [
-          TextSpan(
-            recognizer: TapGestureRecognizer()..onTap = onTap,
-            text: actionTitle,
-            style: TextStyle(
-              fontFamily: MyFonts.assetsFontFamily(),
-              color: MyColors.secondary,
-              fontWeight: FontWeight.w900,
-              fontSize: width * 0.04,
-            ),
+    return SafeArea(
+      child: RichText(
+        text: TextSpan(
+          text: title,
+          style: TextStyle(
+            fontFamily: MyFonts.assetsFontFamily(),
+            color: MyColors.grey,
+            fontWeight: FontWeight.w600,
+            fontSize: width * 0.04,
           ),
-        ],
+          children: [
+            TextSpan(
+              recognizer: TapGestureRecognizer()..onTap = onTap,
+              text: actionTitle,
+              style: TextStyle(
+                fontFamily: MyFonts.assetsFontFamily(),
+                color: MyColors.secondary,
+                fontWeight: FontWeight.w700,
+                fontSize: width * 0.04,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

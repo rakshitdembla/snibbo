@@ -6,7 +6,7 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/mini_elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/mini_elevated_outline_cta.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/follow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/follow_user_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_bloc.dart';

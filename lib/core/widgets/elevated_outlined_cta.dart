@@ -45,8 +45,8 @@ class ElevatedOutlinedCTA extends StatelessWidget {
           style: TextStyle(
             fontFamily: MyFonts.assetsFontFamily(),
             color: isDark ? MyColors.white : MyColors.black,
-            fontWeight: isShort ? FontWeight.w600 : FontWeight.w900,
-            fontSize: isShort ? height * 0.0165: height * 0.020,
+            fontWeight: isShort ? FontWeight.w600 : FontWeight.w600,
+            fontSize: isShort ? height * 0.0165 : height * 0.020,
           ),
         ),
       ),

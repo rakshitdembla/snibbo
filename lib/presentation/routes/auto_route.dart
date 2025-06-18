@@ -13,11 +13,10 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: RegisterScreenRoute.page),
     AutoRoute(page: ForgotPasswordScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
-    AutoRoute(page: FeedScreenRoute.page),
     AutoRoute(page: OnboardScreenRoute.page),
     AutoRoute(page: ProfileViewRoute.page),
     AutoRoute(page: PostsViewScreenRoute.page),
-    AutoRoute(page: SearchScreenRoute.page),
+    AutoRoute(page: SearchUserScreenRoute.page),
     AutoRoute(page: StoryViewScreenRoute.page),
     AutoRoute(page: FetchStoriesLoadingRoute.page),
     AutoRoute(page: EditProfileScreenRoute.page),
@@ -38,6 +37,12 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: PostLikedUsersScreenRoute.page),
     AutoRoute(page: CommentLikedUsersScreenRoute.page),
     AutoRoute(page: ReplyLikedUsersScreenRoute.page),
+    AutoRoute(page: ExplorePostsViewScreenRoute.page),
+    AutoRoute(page: UserPostsViewScreenRoute.page),
+    AutoRoute(page: SavedPostsViewScreenRoute.page),
+    AutoRoute(page: UpdatePostScreenRoute.page),
+    AutoRoute(page: ChatListScreenRoute.page),
+    AutoRoute(page: ChatScreenRoute.page),
   ];
   @override
   List<AutoRouteGuard> get guards => [];

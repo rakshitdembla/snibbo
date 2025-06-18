@@ -147,9 +147,7 @@ class ShowCommentsSheet {
                                     return getPostCommentsBloc.hasMore
                                         ? Padding(
                                           padding: EdgeInsetsGeometry.only(
-                                            bottom: UiUtils.bottomNavBar(
-                                              context: context,
-                                            ),
+                                            bottom: height * 0.02
                                           ),
                                           child: CircularProgressLoading(),
                                         )

@@ -13,7 +13,7 @@ class ProfileRemoteData {
       final response = await sl<ApiService>().patch(
         path: ApiRoutes.updateProfile,
         headers: {MyStrings.userIdHeader: userId},
-        body: updateProfileReqModel.toJson()
+        body: updateProfileReqModel.toJson(),
       );
 
       if (response != null) {
@@ -30,4 +30,5 @@ class ProfileRemoteData {
       return (false, "Unexpected error occurred: ${e.toString()}");
     }
   }
+
 }

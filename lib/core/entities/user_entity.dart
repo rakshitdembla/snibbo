@@ -7,6 +7,8 @@ class UserEntity {
   bool? isAllStoriesViewed;
   bool? isMyself;
   bool? isFollowedByMe;
+  bool? isOnline;
+  DateTime? lastSeen;
 
   UserEntity({
     required this.username,
@@ -17,5 +19,7 @@ class UserEntity {
     this.isAllStoriesViewed,
     this.isMyself,
     this.isFollowedByMe,
+    this.isOnline,
+    this.lastSeen,
   });
 }

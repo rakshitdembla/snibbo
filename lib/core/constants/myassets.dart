@@ -13,6 +13,9 @@ class MyAssets {
   static String profilePictureHolder = "assets/user_profile.webp";
   static String storyImage = "assets/story_image.jpg";
   static String postImage = "assets/post.webp";
+  static String cat404 = "assets/cat404.json";
+  static String space404 = "assets/space404.json";
+  static String chatBG = "assets/chatBG.webp";
 
   // Memoji assets (webp format)
   static String chillMemoji = "assets/chill_memoji.webp";

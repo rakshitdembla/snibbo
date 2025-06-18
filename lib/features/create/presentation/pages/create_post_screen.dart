@@ -10,6 +10,7 @@ import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_events.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_states.dart';
+import 'package:snibbo_app/features/create/presentation/widgets/captions_text_field.dart';
 import 'package:snibbo_app/features/create/presentation/widgets/create_bottom_modal_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
@@ -27,10 +28,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   void dispose() {
-   captionNode.dispose();
-   captionController.dispose();
+    captionNode.dispose();
+    captionController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
@@ -140,7 +142,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         children: [
                           if (blocPickedImage != null)
                             Image.file(
-                             blocPickedImage,
+                              blocPickedImage,
                               width: double.infinity,
                               height: height * 0.2,
                               fit: BoxFit.contain,
@@ -180,45 +182,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     style: TextStyle(fontSize: width * 0.036),
                   ),
                   SizedBox(height: height * 0.009),
-                  TextField(
-                    cursorColor: MyColors.secondaryDense,
-                    cursorErrorColor: MyColors.secondaryDense,
-                    controller: captionController,
-                    focusNode: captionNode,
-                    style: TextStyle(
-                      color: isDark ? MyColors.white : MyColors.grey,
-                      fontWeight: FontWeight.w500,
-                      fontSize: height * 0.018,
-                    ),
-                    onSubmitted: (String value) {
-                      FocusScope.of(context).unfocus();
-                    },
-                    maxLength: 600,
-                    textAlign: TextAlign.start,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: height * 0.015,
-                        horizontal: width * 0.025,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                        borderSide: BorderSide(color: MyColors.searchField),
-                      ),
-                      counterStyle: TextStyle(
-                        color: MyColors.grey
-                      ),
-                      filled: true,
-                      fillColor:
-                          isDark
-                              ? MyColors.darkTextFields
-                              : MyColors.textFields,
-                    ),
-                    
+                  CaptionsTextField(
+                    captionController: captionController,
+                    captionNode: captionNode,
                   ),
                   SizedBox(height: height * 0.05),
                   state is CreatePostLoading

@@ -1,6 +1,6 @@
 import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/repositories/post_comments_repository.dart';
 import 'package:snibbo_app/features/feed/domain/repositories/post_interactions_repository.dart';
 import 'package:snibbo_app/service_locator.dart';
@@ -254,4 +254,34 @@ class PostsUsecase {
       limit: limit,
     );
   }
+  /// Updates an post of the user
+  /// [postId] - ID of the post
+  /// [userId] - ID of the current user making the request
+  /// Returns a tuple with success status, and optional message
+    Future<(bool, String?)> updatePost({
+    required String postId,
+    required String userId,
+    required String caption,
+  }) {
+    return sl<PostInteractionsRepository>().updatePost(
+      postId: postId,
+      userId: userId,
+      caption: caption,
+    );
+  }
+  /// Deletes a post of the user
+/// [postId] - ID of the post
+/// [userId] - ID of the current user making the request
+/// Returns a tuple with success status and optional message
+  Future<(bool, String?)> deletePost({
+    required String postId,
+    required String userId,
+  }) {
+    return sl<PostInteractionsRepository>().deletePost(
+      postId: postId,
+      userId: userId,
+    );
+  }
+
+
 }

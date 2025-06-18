@@ -3,7 +3,7 @@ import 'package:snibbo_app/features/explore/domain/repositories/explore_reposito
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
 
-class ExploreRepositoriesImpl implements ExploreRepositories {
+class ExploreRepositoryImpl implements ExploreRepository {
   @override
   Future<(bool, List<PostEntity>?, String?)> getExplorePosts(String userId, int page, int limit) {
    return sl<ExploreRemoteData>().getExplorePosts(userId, page, limit);

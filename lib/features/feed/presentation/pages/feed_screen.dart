@@ -1,6 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
@@ -21,9 +23,9 @@ import 'package:snibbo_app/features/feed/presentation/widgets/stories/feed_stori
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
-@RoutePage()
 class FeedScreen extends StatefulWidget {
-  const FeedScreen({super.key});
+  final PersistentTabController navController;
+  const FeedScreen({super.key, required this.navController});
 
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -127,7 +129,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   widget: CustomScrollView(
                     controller: controller,
                     slivers: [
-                      FeedAppBar(),
+                      FeedAppBar(navController: widget.navController),
                       //# Success State Handling ->
                       if (state is GetFeedSuccessState) ...[
                         SliverToBoxAdapter(
@@ -170,9 +172,14 @@ class _FeedScreenState extends State<FeedScreen> {
                             height:
                                 height -
                                 kBottomNavigationBarHeight -
-                                height * 0.16,
+                                height * 0.25,
                             width: width,
-                            child: Center(child: Text("No Posts Found")),
+                            child: Center(
+                              child: LottieBuilder.asset(
+                                MyAssets.space404,
+                                height: height * 0.15,
+                              ),
+                            ),
                           ),
                         ),
                       ]

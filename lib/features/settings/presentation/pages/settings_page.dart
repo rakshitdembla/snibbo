@@ -1,12 +1,14 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/settings/presentation/widgets/my_adaptive_switch.dart';
 import 'package:snibbo_app/features/settings/presentation/widgets/my_listtile.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 @RoutePage()
 class SettingsScreen extends StatefulWidget {
@@ -19,14 +21,13 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: Text(
-          "Settings and activity",
-        ),
+        title: Text("Settings and activity"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -36,12 +37,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               BlocBuilder<ThemeBloc, ThemeStates>(
                 builder: (context, state) {
                   final value = state is DarkThemeState;
-        
+
                   return MyListtile(
                     leadingTitle: "Dark Theme",
                     trailingWidget: MyAdaptiveSwitch(
                       onChanged: (value) {
-                        context.read<ThemeBloc>().add(ToogleTheme(isDark: value));
+                        context.read<ThemeBloc>().add(
+                          ToogleTheme(isDark: value),
+                        );
                       },
                       value: value,
                     ),
@@ -61,7 +64,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               MyListtile(
                 leadingTitle: "Terms & Conditions",
-                trailingWidget: Icon(Icons.article_outlined, size: width * 0.07),
+                trailingWidget: Icon(
+                  Icons.article_outlined,
+                  size: width * 0.07,
+                ),
               ),
               MyListtile(
                 leadingTitle: "Privacy Policy",
@@ -71,6 +77,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               MyListtile(
+                onTap: () async {
+                  context.router.replaceAll([OnboardScreenRoute()]);
+                  UiUtils.showToast(
+                    title: "See You Soon!",
+                    description:
+                        "You've successfully logged out of your account.",
+                    isDark: isDark,
+                    context: context,
+                    isSuccess: true,
+                    isWarning: false,
+                  );
+                  await ServicesUtils.deleteTokenId();
+                  await ServicesUtils.deleteUsername();
+                },
                 leadingTitle: "Logout",
                 trailingWidget: Icon(Icons.logout_outlined, size: width * 0.07),
               ),

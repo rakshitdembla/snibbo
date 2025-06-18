@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 
 abstract class GetFeedStates extends Equatable {

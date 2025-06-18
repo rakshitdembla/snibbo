@@ -11,7 +11,7 @@ import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.d
 import 'package:snibbo_app/core/widgets/posts_widgets/post_actions_row.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_captions.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_events.dart';
@@ -119,6 +119,15 @@ class _PostWidgetState extends State<PostWidget> {
                   color: isDark ? MyColors.white : MyColors.black,
                 ),
               ),
+           post.isMyPost ?   IconButton(
+                onPressed: () {
+                 context.router.push(UpdatePostScreenRoute(postId: post.id, imageUrl: post.postContent, initialCaption: post.postCaption.toString()));
+                },
+                icon: Icon(
+                  LineIcons.edit,
+                  color: isDark ? MyColors.white : MyColors.black,
+                ),
+              ) : SizedBox.shrink()
             ],
           ),
         ),

@@ -63,7 +63,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   SliverAppBar(
                     title: ListTile(
                       onTap: () {
-                        context.router.push(SearchScreenRoute());
+                        context.router.push(SearchUserScreenRoute());
                       },
                       minTileHeight: height * 0.04,
                       shape: RoundedRectangleBorder(
@@ -132,7 +132,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         itemBuilder: (context, index) {
                           final allPosts = explorePostsBloc.allPosts;
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context.router.push(ExplorePostsViewScreenRoute(initialIndex: index));
+                            },
                             child: Image.network(
                               allPosts[index].postContent,
                               fit: BoxFit.cover,

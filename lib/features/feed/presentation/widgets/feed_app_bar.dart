@@ -1,13 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class FeedAppBar extends StatelessWidget {
-  const FeedAppBar({super.key});
+   final PersistentTabController navController;
+  const FeedAppBar({super.key,required this.navController});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,9 @@ class FeedAppBar extends StatelessWidget {
                 ),
                 Spacer(),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    navController.jumpToTab(2);
+                  },
                   child: Icon(
                     Icons.add_box_outlined,
                     size: width * 0.075,
@@ -38,7 +44,9 @@ class FeedAppBar extends StatelessWidget {
                 ),
                 SizedBox(width: width * 0.05),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.router.push(ChatListScreenRoute());
+                  },
                   child: Stack(
                     children: [
                       Icon(

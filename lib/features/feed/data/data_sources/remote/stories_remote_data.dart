@@ -1,9 +1,9 @@
 import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
-import 'package:snibbo_app/features/feed/data/models/user_model.dart';
+import 'package:snibbo_app/core/models/user_model.dart';
 import 'package:snibbo_app/features/feed/data/models/user_stories_model.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/service_locator.dart';
 

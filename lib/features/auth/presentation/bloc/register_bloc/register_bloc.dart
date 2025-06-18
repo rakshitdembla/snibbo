@@ -31,6 +31,34 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
         return;
       }
 
+      // Name validation
+      if (name.length < 2) {
+        emit(
+          RegisterErrorState(
+            title: "Name Too Short",
+            description: "Name must be at least 2 characters long.",
+          ),
+        );
+        return;
+      } else if (name.length > 30) {
+        emit(
+          RegisterErrorState(
+            title: "Name Too Long",
+            description: "Name must not exceed 30 characters.",
+          ),
+        );
+        return;
+      } else if (!ServicesUtils.nameValidator(name)) {
+        emit(
+          RegisterErrorState(
+            title: "Invalid Name",
+            description: "Name cannot contain numbers or special characters.",
+          ),
+        );
+        return;
+      }
+
+      // Username validation
       if (username.length < 4) {
         emit(
           RegisterErrorState(
@@ -39,11 +67,35 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
           ),
         );
         return;
+      } else if (username.length > 20) {
+        emit(
+          RegisterErrorState(
+            title: "Username Too Long",
+            description: "Username must not exceed 20 characters.",
+          ),
+        );
+        return;
+      } else if (!ServicesUtils.usernameValidator(username)) {
+        emit(
+          RegisterErrorState(
+            title: "Invalid Username",
+            description:
+                "Username cannot contain spaces or special characters.",
+          ),
+        );
+        return;
       }
 
-      bool validateEmail = ServicesUtils.emailValidator(email);
-
-      if (!validateEmail) {
+      // Email validation
+      if (email.length > 64) {
+        emit(
+          RegisterErrorState(
+            title: "Email Too Long",
+            description: "Email must not exceed 64 characters.",
+          ),
+        );
+        return;
+      } else if (!ServicesUtils.emailValidator(email)) {
         emit(
           RegisterErrorState(
             title: "Invalid Email",
@@ -54,11 +106,29 @@ class RegisterBloc extends Bloc<RegisterEvents, RegisterStates> {
         return;
       }
 
+      // Password validation
       if (password.length < 8) {
         emit(
           RegisterErrorState(
             title: "Password Too Short",
-            description: "For security, please use at least 8 characters.",
+            description: "Password must be at least 8 characters long.",
+          ),
+        );
+        return;
+      } else if (password.length > 30) {
+        emit(
+          RegisterErrorState(
+            title: "Password Too Long",
+            description: "Password must not exceed 30 characters.",
+          ),
+        );
+        return;
+      } else if (!ServicesUtils.passwordValidator(password)) {
+        emit(
+          RegisterErrorState(
+            title: "Weak Password",
+            description:
+                "Password must contain a letter, a number, a special character, and should not have spaces at the start or end.",
           ),
         );
         return;

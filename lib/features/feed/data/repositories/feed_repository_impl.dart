@@ -1,6 +1,6 @@
 import 'package:snibbo_app/features/feed/data/data_sources/remote/get_feed_remote_data.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/features/feed/domain/repositories/feed_repository.dart';
 import 'package:snibbo_app/service_locator.dart';

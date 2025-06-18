@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 
 abstract class UserFollowingsStates extends Equatable {
   const UserFollowingsStates();

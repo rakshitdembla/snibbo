@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/domain/usecases/user_followers_usecase.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_followers_bloc/user_followers_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_followers_bloc/user_followers_states.dart';

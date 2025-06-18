@@ -1,4 +1,4 @@
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 
 abstract class PostInteractionsRepository {
   // -- Post Interactions --
@@ -31,6 +31,19 @@ abstract class PostInteractionsRepository {
 
   /// Removes saved post from user saved posts
   Future<(bool success, String? message)> removeSavedPost({
+    required String postId,
+    required String userId,
+  });
+
+  /// Update a post
+  Future<(bool success, String? message)> updatePost({
+    required String postId,
+    required String userId,
+    required String caption,
+  });
+
+  //Delete a post
+  Future<(bool success, String? message)> deletePost({
     required String postId,
     required String userId,
   });

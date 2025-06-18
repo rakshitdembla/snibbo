@@ -72,7 +72,7 @@ class _MyTextFieldState extends State<MyTextField> {
             textAlign: TextAlign.start,
             maxLines: widget.maxLines,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: height * 0.02),
+              contentPadding: EdgeInsets.symmetric(vertical: height * 0.02,horizontal: width * 0.02),
               hintText: widget.hintText,
               hintStyle: TextStyle(
                 color: MyColors.lowOpacitySecondary,

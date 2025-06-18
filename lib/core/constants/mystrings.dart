@@ -28,4 +28,5 @@ class MyStrings {
   static const limitParam = "limit";
   static const commentContent = "commentContent";
   static const replyContent = "replyContent";
+  static const postCaptions = "captions";
 }

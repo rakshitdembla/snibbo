@@ -123,7 +123,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
               ElevatedCTA(
                 onPressed: () {
                   if (index == 2) {
-                    context.router.push(RegisterScreenRoute());
+                    context.router.push(RegisterScreenRoute(routedFromLogin: false));
                   } else {
                     pageController.animateToPage(
                       duration: const Duration(milliseconds: 300),
@@ -138,7 +138,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
               SizedBox(height: height * 0.015),
               ElevatedOutlinedCTA(
                 onPressed: () {
-                  context.router.push(RegisterScreenRoute());
+                  context.router.push(RegisterScreenRoute(routedFromLogin: false));
                 },
                 buttonName: "Skip",
                 isShort: false,
@@ -148,7 +148,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
               TextSpanBottom(
                 actionTitle: " Log In",
                 onTap: () {
-                  context.router.push(LoginScreenRoute());
+                  context.router.push(LoginScreenRoute(routedFromRegister: false));
                 },
                 title: "Already have an account?",
               ),

@@ -1,5 +1,5 @@
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
-import 'package:snibbo_app/features/feed/domain/entities/user_entity.dart';
+import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/data/data_sources/remote/user_remote_data.dart';
 import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/features/user/domain/repositories/user_repository.dart';
@@ -94,5 +94,12 @@ class UserRepositoryImpl implements UserRepository {
       page: page,
       limit: limit,
     );
+  }
+
+  @override
+  Future<(bool, UserEntity?, String?)> searchUserByUsername({
+    required String username,
+  }) {
+    return sl<UserRemoteData>().searchUserByUsername(username: username);
   }
 }

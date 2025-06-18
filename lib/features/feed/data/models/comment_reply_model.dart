@@ -1,4 +1,4 @@
-import 'package:snibbo_app/features/feed/data/models/user_model.dart';
+import 'package:snibbo_app/core/models/user_model.dart';
 import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 
 class CommentReplyModel {

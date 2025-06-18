@@ -14,4 +14,5 @@ class ProfileRepositoryImpl implements ProfileRepository {
       updateProfileReqModel: updateProfileReqModel,
     );
   }
+
 }
