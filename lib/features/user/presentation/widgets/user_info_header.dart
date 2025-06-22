@@ -140,7 +140,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                                     bio: widget.profileEntity.bio,
                                     name: widget.profileEntity.name,
                                     profileUrl:
-                                        widget.profileEntity.profilePicture,
+                                        widget.profileEntity.profilePicture.toString(),
                                     username: widget.profileEntity.username,
                                   ),
                                 );

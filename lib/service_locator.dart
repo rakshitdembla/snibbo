@@ -1,3 +1,4 @@
+import "package:audioplayers/audioplayers.dart";
 import "package:get_it/get_it.dart";
 import "package:image_picker/image_picker.dart";
 import "package:snibbo_app/core/network/base_api/api_services.dart";
@@ -66,6 +67,7 @@ void setupServiceLocator() {
   sl.registerSingleton<FlutterSecureStorage>(FlutterSecureStorage());
   sl.registerSingleton<ImagePicker>(ImagePicker());
   sl.registerSingleton<WebSocketsServices>(WebSocketsServices());
+  sl.registerSingleton<AudioPlayer>(AudioPlayer());
   
 
   // Auth - Data, Repo, Usecases
@@ -153,4 +155,5 @@ void setupServiceLocator() {
   sl.registerSingleton<GetChatsUseCase>(GetChatsUseCase());
   sl.registerSingleton<GetMessagesUseCase>(GetMessagesUseCase());
   sl.registerSingleton<GetBlockedUsersUseCase>(GetBlockedUsersUseCase());
+  
 }

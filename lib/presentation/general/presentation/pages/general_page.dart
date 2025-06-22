@@ -32,8 +32,7 @@ class GeneralPageState extends State<GeneralPage> {
   void initState() {
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(_handleTabChange);
-    sl<WebSocketsServices>().connectToSocket();
-    sl<WebSocketsServices>().onAuthUser();
+   sl<WebSocketsServices>().connectToSocket(context : context);
     super.initState();
   }
 

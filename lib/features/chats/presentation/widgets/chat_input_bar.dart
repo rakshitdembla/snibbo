@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snibbo_app/core/network/web_sockets/web_sockets_services.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/service_locator.dart';
 
 class ChatInputBar extends StatelessWidget {
   final TextEditingController controller;
-  final VoidCallback onSend;
   final FocusNode node;
-  final Future<void>Function() toogleToEmojiKeyboard;
+  final String chatId;
+  final Future<void> Function() toogleToEmojiKeyboard;
 
   const ChatInputBar({
     super.key,
     required this.controller,
-    required this.onSend,
     required this.node,
+    required this.chatId,
     required this.toogleToEmojiKeyboard,
   });
 
@@ -53,13 +55,16 @@ class ChatInputBar extends StatelessWidget {
                       cursorColor: MyColors.secondaryDense,
                       cursorErrorColor: MyColors.secondaryDense,
                       controller: controller,
+                      onChanged: (value) {
+                        sl<WebSocketsServices>().onChangedTyping(
+                          chatId: chatId,
+                        );
+                      },
                       style: TextStyle(
-                        
-                     fontSize: height * 0.018,
-                        color: MyColors.black
+                        fontSize: height * 0.018,
+                        color: MyColors.black,
                       ),
                       decoration: const InputDecoration(
-                        
                         hintText: "Type a message",
                         border: InputBorder.none,
                       ),
@@ -82,12 +87,20 @@ class ChatInputBar extends StatelessWidget {
             child: IconButton(
               iconSize: height * 0.026,
               icon: const Icon(Icons.send, color: Colors.white),
-              onPressed: onSend,
+              onPressed: () {
+                if (controller.text.trim().isNotEmpty) {
+                  sl<WebSocketsServices>().emitNewMessage(
+                    context: context,
+                    chatId: chatId,
+                    text: controller.text,
+                  );
+                  controller.clear();
+                }
+              },
             ),
           ),
         ],
       ),
     );
   }
-
 }

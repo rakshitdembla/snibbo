@@ -41,7 +41,7 @@ class ChatRepositoryImpl implements ChatRepostitory {
   }
 
   @override
-  Future<(bool, List<MessageEntity>?, String?)> getMessages({
+  Future<(bool,String? chatId, List<MessageEntity>?, String?)> getMessages({
     required String tokenId,
     required String username,
     required int page,

@@ -15,7 +15,7 @@ class ChatRemoteData {
     required String username,
   }) async {
     try {
-      final response = await sl<ApiService>().get(
+      final response = await sl<ApiService>().post(
         path: "${ApiRoutes.blockUser}/$username",
         headers: {MyStrings.userIdHeader: tokenId},
       );
@@ -44,7 +44,7 @@ class ChatRemoteData {
     required String username,
   }) async {
     try {
-      final response = await sl<ApiService>().get(
+      final response = await sl<ApiService>().post(
         path: "${ApiRoutes.unblockUser}/$username",
         headers: {MyStrings.userIdHeader: tokenId},
       );
@@ -115,7 +115,7 @@ class ChatRemoteData {
   }
 
   // Get Messages List -->
-  Future<(bool success, List<MessageEntity>? messages, String? message)>
+  Future<(bool success,String? chatId, List<MessageEntity>? messages, String? message)>
   getMessages({
     required String tokenId,
     required String username,
@@ -140,11 +140,13 @@ class ChatRemoteData {
               messagesJson
                   .map((x) => MessageModel.fromJson(x).toEntity())
                   .toList();
+                  final chatId = responseData["chatId"];
 
-          return (true, messages, "Messages fetched successfully.");
+          return (true,chatId.toString(), messages, "Messages fetched successfully.");
         } else {
           return (
             false,
+            null,
             null,
             responseData["message"].toString(),
           );
@@ -153,11 +155,12 @@ class ChatRemoteData {
         return (
           false,
           null,
+          null,
           "No response from server. Please try again later.",
         );
       }
     } catch (e) {
-      return (false, null, "Unexpected error occurred: ${e.toString()}");
+      return (false, null,null, "Unexpected error occurred: ${e.toString()}");
     }
   }
 

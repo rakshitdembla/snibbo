@@ -32,4 +32,5 @@ class MyAssets {
   static String smileMemoji = "assets/smile_memoji.webp";
   static String starsMemoji = "assets/stars_memoji.webp";
   static String thinkingMemoji = "assets/thinking_memoji.webp";
+
 }

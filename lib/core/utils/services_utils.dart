@@ -230,13 +230,17 @@ class ServicesUtils {
   }
 
   //Conditional DateFormat
-  static String formattedDate(DateTime date) {
+  static String formattedDate(DateTime? date) {
+
+    if (date == null) {
+      return "";
+    }
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final messageDate = DateTime(date.year, date.month, date.day);
 
     final difference = today.difference(messageDate).inDays;
-    debugPrint(difference.toString());
+    debugPrint("${difference.toString()},$now,$today,$date");
 
     if (difference == 0) {
       return DateFormat('HH:mm').format(date);

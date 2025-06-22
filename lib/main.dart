@@ -6,7 +6,10 @@ import 'package:snibbo_app/core/theme/themedata.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:snibbo_app/features/chats/presentation/bloc/block_user_bloc/block_user_bloc.dart';
 import 'package:snibbo_app/features/chats/presentation/bloc/get_chats_bloc/get_chats_bloc.dart';
+import 'package:snibbo_app/features/chats/presentation/bloc/get_messages_bloc/get_messages_bloc.dart';
+import 'package:snibbo_app/features/chats/presentation/bloc/unblock_user_bloc/unbloc_user_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_post_bloc/create_post_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/delete_post/delete_post_bloc.dart';
@@ -160,6 +163,15 @@ void main() async {
         ),
         BlocProvider<ChatsListBloc>(
           create: (context) => ChatsListBloc(),
+        ),
+        BlocProvider<MessagesBloc>(
+          create: (context) => MessagesBloc(),
+        ),
+        BlocProvider<UnblockUserBloc>(
+          create: (context) => UnblockUserBloc(),
+        ),
+        BlocProvider<BlockUserBloc>(
+          create: (context) => BlockUserBloc(),
         ),
       ],
 

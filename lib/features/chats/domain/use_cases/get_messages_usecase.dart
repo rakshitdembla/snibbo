@@ -3,7 +3,7 @@ import 'package:snibbo_app/features/chats/domain/repositories/chat_repostitory.d
 import 'package:snibbo_app/service_locator.dart';
 
 class GetMessagesUseCase {
-  Future<(bool, List<MessageEntity>?, String?)> call({
+  Future<(bool,String? chatId, List<MessageEntity>?, String?)> call({
     required String tokenId,
     required String username,
     required int page,

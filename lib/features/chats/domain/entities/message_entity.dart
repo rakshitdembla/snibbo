@@ -1,5 +1,6 @@
 class MessageEntity {
   String id;
+  String chat;
   bool isSentByMe;
   String? text;
   String? media;
@@ -9,6 +10,7 @@ class MessageEntity {
   MessageEntity({
     required this.id,
     required this.isSentByMe,
+    required this.chat,
     this.text,
     this.media,
     required this.isSeenByOther,

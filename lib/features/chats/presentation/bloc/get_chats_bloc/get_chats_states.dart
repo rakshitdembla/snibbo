@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:snibbo_app/features/chats/domain/entities/chat_list_entity.dart';
+import 'package:snibbo_app/features/chats/domain/entities/message_entity.dart';
 
 abstract class ChatsListStates extends Equatable {
   const ChatsListStates();
@@ -51,4 +52,14 @@ class ChatsListPaginationError extends ChatsListStates {
 
   @override
   List<Object?> get props => [title, description];
+}
+
+class SocketUpdateChatList extends ChatsListStates {
+  final List<ChatListEntity>? chats;
+  final MessageEntity? message;
+
+  const SocketUpdateChatList({this.chats, this.message});
+
+  @override
+  List<Object?> get props => [chats, message];
 }

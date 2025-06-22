@@ -23,11 +23,7 @@ class CreateBottomModalSheet {
       builder: (context) {
         return SizedBox(
           height: height * 0.6,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              bottom: UiUtils.bottomNavBar(context: context)
-            ),
-            child: Column(
+          child: Column(
               children: [
                 Stack(
                   children: [
@@ -91,8 +87,8 @@ class CreateBottomModalSheet {
                   onTap: gallerySourceTap,
                 ),
               ],
-            ),
-          ),
+            )
+         
         );
       },
     );

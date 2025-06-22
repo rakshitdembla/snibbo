@@ -2,6 +2,7 @@ import 'package:snibbo_app/features/chats/domain/entities/message_entity.dart';
 
 class MessageModel {
   String id;
+  String chat;
   bool isSentByMe;
   String? text;
   String? media;
@@ -11,6 +12,7 @@ class MessageModel {
   MessageModel({
     required this.id,
     required this.isSentByMe,
+    required this.chat,
     this.text,
     this.media,
     required this.isSeenByOther,
@@ -20,6 +22,7 @@ class MessageModel {
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
         id: json["_id"],
         isSentByMe: json["isSentByMe"],
+        chat: json["chat"],
         text: json["text"],
         media: json["media"],
         isSeenByOther: json["isSeenByOther"],
@@ -30,6 +33,7 @@ class MessageModel {
     return MessageEntity(
       id: id,
       isSentByMe: isSentByMe,
+      chat: chat,
       text: text,
       media: media,
       isSeenByOther: isSeenByOther,

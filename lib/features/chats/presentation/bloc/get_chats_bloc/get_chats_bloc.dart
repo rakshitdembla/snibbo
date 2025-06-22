@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/network/web_sockets/web_sockets_services.dart';
+import 'package:snibbo_app/core/utils/sound_effects_utils.dart';
 import 'package:snibbo_app/features/chats/domain/entities/chat_list_entity.dart';
 import 'package:snibbo_app/features/chats/domain/use_cases/get_chats_usecase.dart';
 import 'package:snibbo_app/features/chats/presentation/bloc/get_chats_bloc/get_chats_events.dart';
@@ -40,6 +43,9 @@ class ChatsListBloc extends Bloc<ChatsListEvents, ChatsListStates> {
         page = 2;
 
         emit(ChatsListLoaded(chats: chats));
+        sl<WebSocketsServices>().emitjoinChats(
+          roomIds: chats.map((chat) => chat.id).toList(),
+        );
         return;
       }
 
@@ -74,6 +80,9 @@ class ChatsListBloc extends Bloc<ChatsListEvents, ChatsListStates> {
 
         isLoading = false;
         emit(ChatsListPaginationSuccess(chats: chats));
+        sl<WebSocketsServices>().emitjoinChats(
+          roomIds: chats.map((chat) => chat.id).toList(),
+        );
         return;
       }
 
@@ -84,6 +93,50 @@ class ChatsListBloc extends Bloc<ChatsListEvents, ChatsListStates> {
         ),
       );
       isLoading = false;
+    });
+
+    on<UpdateMessageSeenStatus>((event, emit) {
+      debugPrint("Got messages seen event on chatlist ${event.chatId}");
+
+      for (var chat in allChats) {
+        if (chat.id == event.chatId) {
+          chat.lastMessage?.isSeenByOther = true;
+          break;
+        }
+      }
+      
+      emit(SocketUpdateChatList(chats: List.from(allChats)));
+    });
+
+    on<UpdateLastMessage>((event, emit) {
+      debugPrint(
+        "Got last message update event on chatlist ${event.message.chat}",
+      );
+      for (var chat in allChats) {
+        if (chat.id == event.message.chat) {
+          chat.lastMessage = event.message;
+          SoundEffectsUtils.receivedMessage();
+          break;
+        }
+      }
+
+      allChats.sort((a, b) {
+        final aTime = a.lastMessage?.createdAt;
+        final bTime = b.lastMessage?.createdAt;
+
+        if (aTime == null && bTime == null) return 0;
+        if (aTime == null) return 1;
+        if (bTime == null) return -1;
+
+        return bTime.compareTo(aTime);
+      });
+
+      emit(
+        SocketUpdateChatList(
+          chats: List.from(allChats),
+          message: event.message,
+        ),
+      );
     });
   }
 }

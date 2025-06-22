@@ -19,7 +19,7 @@ abstract class ChatRepostitory {
     required int limit,
   });
 
-  Future<(bool success, List<MessageEntity>? messages, String? message)>
+  Future<(bool success,String? chatId, List<MessageEntity>? messages, String? message)>
   getMessages({
     required String tokenId,
     required String username,

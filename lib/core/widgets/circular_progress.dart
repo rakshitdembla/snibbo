@@ -35,7 +35,6 @@ class SecondaryCircularProgress extends StatefulWidget {
 }
 
 class _SecondaryCircularProgressState extends State<SecondaryCircularProgress> {
-
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);

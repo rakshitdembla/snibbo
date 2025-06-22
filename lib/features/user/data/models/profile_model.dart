@@ -3,10 +3,10 @@ import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 class ProfileModel {
   String username;
   String name;
-  String profilePicture;
+  String? profilePicture;
   String bio;
   bool isVerified;
-  dynamic lastSeen;
+  DateTime? lastSeen;
   bool isOnline;
   DateTime createdAt;
   int posts;

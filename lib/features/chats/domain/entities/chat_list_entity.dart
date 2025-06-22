@@ -3,7 +3,7 @@ import 'package:snibbo_app/features/chats/domain/entities/message_entity.dart';
 
 class ChatListEntity {
   String id;
-  MessageEntity lastMessage;
+  MessageEntity? lastMessage;
   UserEntity participantInfo;
   bool isBlocked;
   bool isBlockedByMe;

@@ -4,7 +4,7 @@ import 'package:snibbo_app/features/chats/domain/entities/chat_list_entity.dart'
 
 class ChatListModel {
   String id;
-  MessageModel lastMessage;
+  MessageModel? lastMessage;
   UserModel participantInfo;
   bool isBlocked;
   bool isBlockedByMe;
@@ -20,7 +20,7 @@ class ChatListModel {
   factory ChatListModel.fromJson(Map<String, dynamic> json) {
     return ChatListModel(
       id: json["_id"],
-      lastMessage: MessageModel.fromJson(json["lastMessage"]),
+      lastMessage: json["lastMessage"] != null ? MessageModel.fromJson(json["lastMessage"]) : null,
       participantInfo: UserModel.fromJson(json["participantInfo"]),
       isBlocked: json["isBlocked"],
       isBlockedByMe: json["isBlockedByMe"],
@@ -30,7 +30,7 @@ class ChatListModel {
   ChatListEntity toEntity() {
     return ChatListEntity(
       id: id,
-      lastMessage: lastMessage.toEntity(),
+      lastMessage: lastMessage?.toEntity(),
       participantInfo: participantInfo.toEntity(),
       isBlocked: isBlocked,
       isBlockedByMe: isBlockedByMe,
