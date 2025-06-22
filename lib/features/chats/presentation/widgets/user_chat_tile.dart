@@ -136,6 +136,7 @@ class _UserChatTileState extends State<UserChatTile> {
                                   lastMessage?.isSeenByOther ?? false
                                       ? Icons.done_all
                                       : Icons.done,
+                                      color: MyColors.secondary,
                                   size: height * 0.02,
                                 ),
                               ),

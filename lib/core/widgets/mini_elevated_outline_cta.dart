@@ -31,7 +31,7 @@ class MiniElevatedOutlinedCTA extends StatelessWidget {
           padding: EdgeInsets.zero,
           side: BorderSide(
             color: isDark ? MyColors.white : MyColors.black,
-            width: 0.45.r,
+            width: 0.7.r,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6.r),
