@@ -26,7 +26,7 @@ class GetFeedBloc extends Bloc<GetFeedEvents, GetFeedStates> {
       ) = await sl<GetFeedPostsUsecase>().getFollowingStories(
         tokenId: tokenId,
         page: 1,
-        limit: 7,
+        limit: 15,
       );
 
       final (

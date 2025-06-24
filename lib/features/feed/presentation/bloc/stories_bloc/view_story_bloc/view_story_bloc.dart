@@ -37,5 +37,10 @@ class ViewStoryBloc extends Bloc<ViewStoryEvents, ViewStoryStates> {
         ),
       );
     });
+
+    on<AllStoriesSeen>((event, emit) {
+      debugPrint("Got all stories sene event");
+      emit(AllStoriesSeenState(username: event.username));
+    });
   }
 }

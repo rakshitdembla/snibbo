@@ -5,13 +5,14 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
+import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/get_user_stories_bloc/get_user_stories_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/get_user_stories_bloc/get_user_stories_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/delete_story_bloc/get_user_stories_bloc/get_user_stories_states.dart';
+import 'package:snibbo_app/features/feed/presentation/pages/story_view_screen.dart';
 import 'package:snibbo_app/features/feed/presentation/widgets/stories/story_user_details_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
-import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 @RoutePage()
 class FetchStoriesLoading extends StatefulWidget {
@@ -32,6 +33,8 @@ class FetchStoriesLoading extends StatefulWidget {
 }
 
 class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
+  bool showLoading = true;
+  late UserStoriesEntity user;
   @override
   void initState() {
     super.initState();
@@ -57,29 +60,12 @@ class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
       listener: (context, state) {
         if (state is UserStoriesSuccessState &&
             state.userStories.userStories.isNotEmpty) {
-          final user = state.userStories;
-
-          if (widget.isPreviousSlide) {
-            context.router.replace(
-              StoryViewSlidePageRoute(
-                stories: user.userStories,
-                username: user.username,
-                profilePicture: user.profilePicture,
-                isMyStory: false,
-                storyUsers: widget.storyUsers,
-              ),
-            );
-          } else {
-            context.router.replace(
-              StoryViewScreenRoute(
-                stories: user.userStories,
-                username: user.username,
-                profilePicture: user.profilePicture,
-                isMyStory: false,
-                storyUsers: widget.storyUsers,
-              ),
-            );
-          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              showLoading = false;
+              user = state.userStories;
+            });
+          });
         } else if (state is UserStoriesSuccessState &&
             state.userStories.userStories.isEmpty) {
           UiUtils.showToast(
@@ -109,23 +95,36 @@ class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
           }
         }
       },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Container(color: MyColors.black, height: height, width: width),
-            Positioned(
-              left: width * 0.03,
-              top: height * 0.11,
-              child: StoryUserDetailsWidget(
-                profilePicture: widget.profilePicture,
-                username: widget.username,
-              ),
-            ),
+      child:
+          showLoading
+              ? Scaffold(
+                body: Stack(
+                  children: [
+                    Container(
+                      color: MyColors.black,
+                      height: height,
+                      width: width,
+                    ),
+                    Positioned(
+                      left: width * 0.03,
+                      top: height * 0.11,
+                      child: StoryUserDetailsWidget(
+                        profilePicture: widget.profilePicture,
+                        username: widget.username,
+                      ),
+                    ),
 
-            Center(child: SecondaryCircularProgress()),
-          ],
-        ),
-      ),
+                    Center(child: SecondaryCircularProgress()),
+                  ],
+                ),
+              )
+              : StoryViewScreen(
+                stories: user.userStories,
+                username: user.username,
+                profilePicture: user.profilePicture,
+                isMyStory: false,
+                storyUsers: widget.storyUsers,
+              ),
     );
   }
 }

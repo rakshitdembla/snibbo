@@ -116,11 +116,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   UserCircularProfileWidget(
+                    isStatic: true,
                     profileUrl: widget.profilePicture,
                     margins: EdgeInsets.zero,
                     storySize: 0.05,
-                    greyBorder: false,
-                    showBorder: false,
+                    isAllStoriesViewed: false,
+                    hasActiveStories: false,
                   ),
                   SizedBox(width: width * 0.02),
                   BlocBuilder<MessagesBloc, MessagesStates>(

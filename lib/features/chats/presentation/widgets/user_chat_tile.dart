@@ -100,13 +100,15 @@ class _UserChatTileState extends State<UserChatTile> {
                   );
                 },
                 child: UserCircularProfileWidget(
+                  isStatic: false,
                   profileUrl: user.profilePicture,
                   margins: EdgeInsets.zero,
                   storySize: 0.075,
-                  greyBorder:
+                  isAllStoriesViewed:
                       user.hasActiveStories == true
-                          ? user.isAllStoriesViewed ?? true : true,
-                  showBorder: user.hasActiveStories ?? false,
+                          ? user.isAllStoriesViewed ?? true
+                          : true,
+                  hasActiveStories: user.hasActiveStories ?? false,
                 ),
               ),
               SizedBox(width: width * 0.02),
@@ -136,7 +138,7 @@ class _UserChatTileState extends State<UserChatTile> {
                                   lastMessage?.isSeenByOther ?? false
                                       ? Icons.done_all
                                       : Icons.done,
-                                      color: MyColors.secondary,
+                                  color: MyColors.secondary,
                                   size: height * 0.02,
                                 ),
                               ),

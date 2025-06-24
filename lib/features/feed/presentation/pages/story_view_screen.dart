@@ -152,11 +152,21 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                       ).add(ViewStory(storyId: storyId));
                     }
                   });
+
+                  if (index == widget.stories.length - 1) {
+                    if (!widget.isMyStory) {
+                      BlocProvider.of<ViewStoryBloc>(
+                        context,
+                      ).add(AllStoriesSeen(username: widget.username));
+                    }
+                  }
                 },
 
                 //On story complete
                 onComplete: () {
                   if (storyUsers != null && storyUsers!.isNotEmpty) {
+                    debugPrint("Going on next story!");
+                    debugPrint("$storyUsers");
                     StoryHelpers().goToNextStory(
                       widget.username,
                       storyUsers!,
@@ -258,21 +268,17 @@ class IconWithText extends StatelessWidget {
     required this.height,
     required this.icon,
     required this.text,
-    required this.onTap
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap ,
+      onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: MyColors.white,
-            size: height * 0.0275,
-          ),
+          Icon(icon, color: MyColors.white, size: height * 0.0275),
           SizedBox(height: height * (0.002)),
           Text(
             text,

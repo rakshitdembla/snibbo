@@ -24,8 +24,10 @@ class StoryUserDetailsWidget extends StatelessWidget {
     return  Row(
         children: [
           UserCircularProfileWidget(
-            showBorder: false,
-            greyBorder: false,
+            isStatic: true,
+            username: username,
+            isAllStoriesViewed: false,
+            hasActiveStories: false,
             profileUrl: profilePicture,
             storySize: 0.045,
             

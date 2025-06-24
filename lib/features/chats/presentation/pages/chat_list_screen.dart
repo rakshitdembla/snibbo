@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pro_image_editor/core/platform/io/io_helper.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
@@ -49,23 +48,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios_new,
-            color: MyColors.white,
-          ),
-          onPressed: () => context.router.pop(),
-        ),
+        automaticallyImplyLeading: true,
         actions: [
           IconButton(
-            icon: Icon(LineIcons.userPlus, color: MyColors.white),
+            icon: Icon(LineIcons.userPlus, color: MyColors.secondary),
             onPressed: () {},
           ),
         ],
         iconTheme: IconThemeData(color: MyColors.white),
-        backgroundColor: MyColors.secondaryDense,
-        title: Text("Chats", style: TextStyle(color: MyColors.white)),
+        title: Text("Chats"),
       ),
       body: MyRefreshBar(
         onRefresh: () async {

@@ -1,9 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class StoryHelpers {
@@ -24,6 +21,7 @@ class StoryHelpers {
       if (context.mounted) {
         context.router.replace(
           FetchStoriesLoadingRoute(
+            key: ValueKey(nextUser.username),
             username: nextUser.username,
             isPreviousSlide: false,
             storyUsers: storyUsers,
@@ -34,7 +32,6 @@ class StoryHelpers {
     } else {
       if (context.mounted) {
         context.router.popUntilRoot();
-        context.read<GetFeedBloc>().add(GetFeedData());
       }
     }
   }
@@ -53,9 +50,11 @@ class StoryHelpers {
     if (previousIndex >= 0) {
       final previousUser = storyUsers[previousIndex];
       if (context.mounted) {
-        context.router.replace(
-          FetchStoriesLoadingSlidePageRoute(
-            user: previousUser,
+              context.router.replace(
+          FetchStoriesLoadingRoute(
+            key: ValueKey(previousUser.username),
+            username: previousUser.username,
+            isPreviousSlide: false,
             storyUsers: storyUsers,
             profilePicture: previousUser.profilePicture.toString(),
           ),
@@ -64,7 +63,6 @@ class StoryHelpers {
     } else {
       if (context.mounted) {
         context.router.popUntilRoot();
-        context.read<GetFeedBloc>().add(GetFeedData());
       }
     }
   }

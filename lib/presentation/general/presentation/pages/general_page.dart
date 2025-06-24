@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:snibbo_app/core/network/web_sockets/web_sockets_services.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
-import 'package:snibbo_app/features/activity/presentation/pages/activity_screen.dart';
 import 'package:snibbo_app/features/explore/presentation/pages/explore_screen.dart';
 import 'package:snibbo_app/features/feed/presentation/pages/feed_screen.dart';
 import 'package:snibbo_app/features/create/presentation/pages/create_post_screen.dart';
@@ -37,7 +36,7 @@ class GeneralPageState extends State<GeneralPage> {
   }
 
   void _handleTabChange() {
-  if (_controller.index == 4) {
+  if (_controller.index == 3) {
     _profileKey.currentState?.initialize();
   }
 }
@@ -83,12 +82,6 @@ class GeneralPageState extends State<GeneralPage> {
                 ),
                 BottomNavBarItem.item(
                   context: context,
-                  icon: Icons.favorite,
-
-                  inactiveIcon: Icons.favorite_outline,
-                ),
-                BottomNavBarItem.item(
-                  context: context,
                   icon: Icons.person,
                   inactiveIcon: Icons.person_outline,
                 ),
@@ -97,7 +90,6 @@ class GeneralPageState extends State<GeneralPage> {
                 FeedScreen(navController: _controller ,),
                 ExploreScreen(),
                 CreatePostScreen(),
-                ActivityScreen(),
                 ProfileScreen(key: _profileKey,onPopRefreshUsername: null,),
               ],
               navBarStyle: NavBarStyle.style6,

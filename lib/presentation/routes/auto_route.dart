@@ -20,16 +20,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: StoryViewScreenRoute.page),
     AutoRoute(page: FetchStoriesLoadingRoute.page),
     AutoRoute(page: EditProfileScreenRoute.page),
-    CustomRoute(
-      page: FetchStoriesLoadingSlidePageRoute.page,
-      transitionsBuilder: TransitionsBuilders.slideRight,
-      duration: Duration(milliseconds: 300),
-    ),
-    CustomRoute(
-      page: StoryViewSlidePageRoute.page,
-      transitionsBuilder: TransitionsBuilders.slideRight,
-      duration: Duration(milliseconds: 300),
-    ),
     AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
     AutoRoute(page: UserProfileScreenRoute.page),
     AutoRoute(page: UserConnectionsScreenRoute.page),

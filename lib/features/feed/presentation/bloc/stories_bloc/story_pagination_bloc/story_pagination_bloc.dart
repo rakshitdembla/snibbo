@@ -17,7 +17,7 @@ class StoryPaginationBloc
     on<InitializePaginationStories>((event, emit) {
       allStories = event.initialStories;
       page = 2;
-      hasMore = event.initialStories.length == 7;
+      hasMore = event.initialStories.length == 15;
       emit(StoryPaginationLoaded(storiesList: allStories, hasMore: hasMore));
     });
 
@@ -37,13 +37,13 @@ class StoryPaginationBloc
         ) = await sl<GetFeedPostsUsecase>().getFollowingStories(
           tokenId: tokenId!,
           page: page,
-          limit: 7,
+          limit: 15,
         );
 
         if (storiesSuccess && stories != null) {
           page++;
 
-          hasMore = stories.length == 7;
+          hasMore = stories.length == 15;
 
           allStories.addAll(stories);
           emit(

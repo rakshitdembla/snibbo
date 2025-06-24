@@ -13,3 +13,11 @@ class ViewStory extends ViewStoryEvents {
   @override
   List<Object> get props => [storyId];
 }
+
+class AllStoriesSeen extends ViewStoryEvents {
+  final String username;
+  AllStoriesSeen({required this.username});
+
+  @override
+  List<Object> get props => [username];
+}

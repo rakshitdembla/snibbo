@@ -108,11 +108,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   }
                 },
                 child: UserCircularProfileWidget(
+                  isStatic: true,
                   profileUrl: updatedProfile ?? widget.profileUrl,
                   margins: EdgeInsets.only(bottom: height * 0.005),
                   storySize: 0.13,
-                  greyBorder: false,
-                  showBorder: false,
+                  hasActiveStories: false,
+                  isAllStoriesViewed: false,
                   isFile: updatedProfile == null ? false : true,
                 ),
               ),

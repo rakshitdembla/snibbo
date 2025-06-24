@@ -11,7 +11,7 @@ import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dar
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class MyStoryWidget extends StatelessWidget {
-  final bool showBorder;
+  final bool hasActiveStories;
   final String profileUrl;
   final String username;
   final bool isDark;
@@ -21,7 +21,7 @@ class MyStoryWidget extends StatelessWidget {
     required this.myStoryState,
     required this.username,
     required this.profileUrl,
-    required this.showBorder,
+    required this.hasActiveStories,
     required this.isDark,
   });
 
@@ -48,10 +48,10 @@ class MyStoryWidget extends StatelessWidget {
             Stack(
               children: [
                 UserCircularProfileWidget(
-                  showBorder: showBorder,
-                  greyBorder: true,
+                  isAllStoriesViewed: hasActiveStories,
+                  hasActiveStories: hasActiveStories,
+                  isStatic: false,
                   profileUrl: profileUrl,
-                  
                   margins: EdgeInsets.fromLTRB(
                     width * 0.023,
                     height * 0.015,

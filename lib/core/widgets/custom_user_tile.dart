@@ -17,7 +17,11 @@ import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 class CustomUserTile extends StatefulWidget {
   final UserEntity user;
   final String onPopRefreshUsername;
-  const CustomUserTile({super.key, required this.user,required this.onPopRefreshUsername});
+  const CustomUserTile({
+    super.key,
+    required this.user,
+    required this.onPopRefreshUsername,
+  });
 
   @override
   State<CustomUserTile> createState() => _CustomUserTileState();
@@ -34,12 +38,10 @@ class _CustomUserTileState extends State<CustomUserTile> {
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
-    final isAllStoriesViewed = widget.user.isAllStoriesViewed == true;
-
-    final hasActiveStories = widget.user.hasActiveStories == true;
-    final isMySelf = widget.user.isMyself == true;
+    final user = widget.user;
+    final isMySelf = user.isMyself == true;
     final isFollowedByMe =
-        FollowStatusManager.isAlreadyFollwing[widget.user.username] == true;
+        FollowStatusManager.isAlreadyFollwing[user.username] == true;
 
     final height = UiUtils.screenHeight(context);
     return Padding(
@@ -50,11 +52,12 @@ class _CustomUserTileState extends State<CustomUserTile> {
       child: Row(
         children: [
           UserCircularProfileWidget(
-            profileUrl: widget.user.profilePicture,
+            isStatic: false,
+            profileUrl: user.profilePicture,
             margins: EdgeInsets.zero,
             storySize: 0.06,
-            greyBorder: isAllStoriesViewed,
-            showBorder: hasActiveStories,
+            isAllStoriesViewed: user.isAllStoriesViewed,
+            hasActiveStories: user.hasActiveStories,
           ),
           SizedBox(width: width * 0.022),
           GestureDetector(
@@ -62,13 +65,13 @@ class _CustomUserTileState extends State<CustomUserTile> {
               isMySelf
                   ? context.router.push(
                     ProfileScreenRoute(
-                      onPopRefreshUsername: widget.onPopRefreshUsername
+                      onPopRefreshUsername: widget.onPopRefreshUsername,
                     ),
                   )
                   : context.router.push(
                     UserProfileScreenRoute(
-                      username: widget.user.username,
-                      onPopRefreshUsername: widget.onPopRefreshUsername
+                      username: user.username,
+                      onPopRefreshUsername: widget.onPopRefreshUsername,
                     ),
                   );
             },
@@ -76,7 +79,7 @@ class _CustomUserTileState extends State<CustomUserTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.user.username,
+                  user.username,
                   style: TextStyle(
                     fontSize: height * 0.016,
                     fontWeight: FontWeight.w500,
@@ -85,7 +88,7 @@ class _CustomUserTileState extends State<CustomUserTile> {
                 ),
                 SizedBox(height: height * 0.0035),
                 Text(
-                  widget.user.name,
+                  user.name,
                   style: TextStyle(
                     fontSize: height * 0.012,
                     color: MyColors.grey,
@@ -102,22 +105,20 @@ class _CustomUserTileState extends State<CustomUserTile> {
               : isFollowedByMe
               ? MiniElevatedOutlinedCTA(
                 onPressed: () {
-                  FollowStatusManager.isAlreadyFollwing[widget.user.username] =
-                      false;
+                  FollowStatusManager.isAlreadyFollwing[user.username] = false;
                   BlocProvider.of<UnfollowUserBloc>(
                     context,
-                  ).add(UnfollowRequested(username: widget.user.username));
+                  ).add(UnfollowRequested(username: user.username));
                   setState(() {});
                 },
                 buttonName: "Unfollow",
               )
               : MiniElevatedCTA(
                 onPressed: () {
-                  FollowStatusManager.isAlreadyFollwing[widget.user.username] =
-                      true;
+                  FollowStatusManager.isAlreadyFollwing[user.username] = true;
                   BlocProvider.of<FollowUserBloc>(
                     context,
-                  ).add(FollowRequested(username: widget.user.username));
+                  ).add(FollowRequested(username: user.username));
                   setState(() {});
                 },
                 buttonName: "Follow",

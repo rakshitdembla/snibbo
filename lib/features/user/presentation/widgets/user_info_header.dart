@@ -45,8 +45,9 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
           Row(
             children: [
               UserCircularProfileWidget(
-                showBorder: widget.profileEntity.hasActiveStories,
-                greyBorder: widget.profileEntity.viewedAllStories,
+                isStatic: false,
+                hasActiveStories: widget.profileEntity.hasActiveStories,
+                isAllStoriesViewed: widget.profileEntity.viewedAllStories,
                 profileUrl: widget.profileEntity.profilePicture,
                 storySize: 0.11,
                 margins: EdgeInsets.zero,

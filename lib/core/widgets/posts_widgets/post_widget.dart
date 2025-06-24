@@ -72,11 +72,13 @@ class _PostWidgetState extends State<PostWidget> {
           child: Row(
             children: [
               UserCircularProfileWidget(
-                showBorder: false,
-                greyBorder: false,
+                isAllStoriesViewed: postUser.isAllStoriesViewed,
+                isStatic: false,
+                username: postUser.username,
+                hasActiveStories: postUser.hasActiveStories,
                 profileUrl: postUser.profilePicture.toString(),
                 storySize: 0.055,
-                margins: EdgeInsets.only(right: width * 0.01),
+                margins: EdgeInsets.only(right: width * 0.015),
               ),
               GestureDetector(
                 onTap: () {

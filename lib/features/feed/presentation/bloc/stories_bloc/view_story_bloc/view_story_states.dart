@@ -1,4 +1,9 @@
-abstract class ViewStoryStates {}
+import 'package:equatable/equatable.dart';
+
+abstract class ViewStoryStates extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 class ViewStoryInitialState extends ViewStoryStates {}
 
@@ -15,8 +20,12 @@ class ViewStorySuccessState extends ViewStoryStates {
   final String title;
   final String description;
 
-  ViewStorySuccessState({
-    required this.title,
-    required this.description
-  });
+  ViewStorySuccessState({required this.title, required this.description});
+}
+
+class AllStoriesSeenState extends ViewStoryStates {
+  final String username;
+  AllStoriesSeenState({required this.username});
+  @override
+  List<Object> get props => [username];
 }

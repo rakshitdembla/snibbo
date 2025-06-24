@@ -65,8 +65,9 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
             profileUrl: widget.replyEntity.userId.profilePicture,
             margins: EdgeInsets.only(right: width * 0.012),
             storySize: 0.035,
-            greyBorder: widget.replyEntity.userId.isAllStoriesViewed == true,
-            showBorder: widget.replyEntity.userId.hasActiveStories == true,
+            isStatic: true,
+            isAllStoriesViewed: widget.replyEntity.userId.isAllStoriesViewed,
+            hasActiveStories: widget.replyEntity.userId.hasActiveStories,
           ),
           Expanded(
             child: Column(

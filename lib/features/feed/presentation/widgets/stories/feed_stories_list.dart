@@ -62,7 +62,7 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
             final myStory = widget.state.myStories;
             return MyStoryWidget(
               myStoryState: myStory,
-              showBorder:
+              hasActiveStories:
                   myStory.userStories.isEmpty ? false : true,
               profileUrl: myStory.profilePicture,
               username: myStory.username,
@@ -83,13 +83,13 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                
                 UserCircularProfileWidget(
-                  showBorder: true,
+                  hasActiveStories: true,
+                  isStatic: false,
                   username: story.username,
-                  greyBorder:
-                     story.isAllStoriesViewed == true
-                          ? true
-                          : false,
+                  isAllStoriesViewed:
+                     story.isAllStoriesViewed ,
                   profileUrl: story.profilePicture.toString(),
 
                   margins: EdgeInsets.fromLTRB(

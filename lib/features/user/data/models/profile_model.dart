@@ -41,7 +41,8 @@ class ProfileModel {
     profilePicture: json["profilePicture"],
     bio: json["bio"],
     isVerified: json["isVerified"],
-    lastSeen: DateTime.parse(json["lastSeen"],),
+    lastSeen:
+        json["lastSeen"] != null ? DateTime.tryParse(json["lastSeen"]) : null,
     isOnline: json["isOnline"],
     createdAt: DateTime.parse(json["createdAt"]),
     posts: json["posts"],

@@ -34,11 +34,12 @@ class UserListTile extends StatelessWidget {
       minTileHeight: height * 0.08,
       dense: false,
       leading: UserCircularProfileWidget(
+        isStatic: true,
         profileUrl: profileUrl,
         margins: EdgeInsets.symmetric(),
         storySize: 0.06,
-        greyBorder: false,
-        showBorder: false,
+       isAllStoriesViewed: false,
+       hasActiveStories: false,
       ),
       title: Text(
         username,

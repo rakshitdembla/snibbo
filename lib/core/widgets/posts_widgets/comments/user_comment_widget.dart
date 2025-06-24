@@ -70,17 +70,12 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
             children: [
               // --> User Profile / User Story Widget
               UserCircularProfileWidget(
+                isStatic: false,
                 profileUrl: widget.commentEntity.userId.profilePicture,
                 margins: EdgeInsets.only(right: width * 0.016),
                 storySize: 0.04,
-                greyBorder:
-                    widget.commentEntity.userId.isAllStoriesViewed == true
-                        ? true
-                        : false,
-                showBorder:
-                    widget.commentEntity.userId.hasActiveStories == true
-                        ? true
-                        : false,
+              isAllStoriesViewed: widget.commentEntity.userId.isAllStoriesViewed,
+               hasActiveStories: widget.commentEntity.userId.hasActiveStories,
               ),
               // --> Comment Info
               Expanded(
