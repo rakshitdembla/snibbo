@@ -65,7 +65,6 @@ class _ReplyInputFieldState extends State<ReplyInputField> {
                   Text(
                     "Replying to @${widget.comment.userId.username}",
                     style: TextStyle(fontSize: height * 0.013),
-                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(width: width * 0.02),
                   GestureDetector(
@@ -96,7 +95,6 @@ class _ReplyInputFieldState extends State<ReplyInputField> {
                     decoration: InputDecoration(
                       hintText: hintText,
                       hintStyle: TextStyle(
-                        overflow: TextOverflow.ellipsis,
                         fontSize: height * 0.016,
                         color: MyColors.grey,
                       ),

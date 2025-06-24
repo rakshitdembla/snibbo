@@ -127,4 +127,14 @@ class PostCommentsRepositoryImpl implements PostCommentsRepository {
   Future<(bool, List<UserEntity>?, String?)> getReplyLikedUsers({required String replyId, required String userId, required int page, required int limit}) {
    return _remoteData.getReplyLikedUsers(replyId: replyId, userId: userId, page: page, limit: limit);
   }
+  
+  @override
+  Future<(bool, List<UserEntity>?, String?)> searchCommentLikedUser({required String userId, required String userToSearch, required String commentId}) {
+    return _remoteData.searchCommentLikedUser(userId: userId, userToSearch: userToSearch, commentId: commentId);
+  }
+  
+  @override
+  Future<(bool, List<UserEntity>?, String?)> searchReplyLikedUser({required String userId, required String userToSearch, required String commentId}) {
+    return _remoteData.searchReplyLikedUser(userId: userId, userToSearch: userToSearch, commentId: commentId);
+  }
 }

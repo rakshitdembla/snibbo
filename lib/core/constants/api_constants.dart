@@ -50,6 +50,7 @@ class ApiRoutes {
   static String replyLikedUsers = "$postRoute/reply-likes";
   static String updatePost = "$postRoute/update";
   static String deletePost = "$postRoute/delete";
+  static String searchPostLikedUser = "$postRoute/search-post-liked-user";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";
@@ -68,6 +69,8 @@ class ApiRoutes {
   static String userFollowers= "$userRoute/followers";
   static String updateProfile= "$userRoute/update-profile";
   static String searchUser = "$userRoute/search-user";
+  static String searchFollower = "$userRoute/search-follower";
+  static String searchFollowing = "$userRoute/search-following";
 
   static String chatRoute = "${ApiMainUrl.url}${ApiEndPoints.chat}";
   static String blockUser = "$chatRoute/block";

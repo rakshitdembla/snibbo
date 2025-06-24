@@ -1,6 +1,7 @@
 import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
+import 'package:snibbo_app/core/network/helpers/search_user_helper.dart';
 import 'package:snibbo_app/features/feed/data/models/post_comment_model.dart';
 import 'package:snibbo_app/features/feed/data/models/comment_reply_model.dart';
 import 'package:snibbo_app/core/models/user_model.dart';
@@ -414,5 +415,31 @@ class PostCommentsRemoteData {
     } catch (e) {
       return (false, null, "Unexpected error occurred: ${e.toString()}");
     }
+  }
+
+  // Search Comment Liked User
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchCommentLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String commentId,
+  }) {
+    return sl<SearchUserHelper>().searchUserByUsername(
+      path: "${ApiRoutes.commentLikedUsers}/$commentId/$userToSearch",
+      userId: userId,
+    );
+  }
+
+  // Search Reply Liked User
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchReplyLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String commentId,
+  }) {
+    return sl<SearchUserHelper>().searchUserByUsername(
+      path: "${ApiRoutes.commentLikedUsers}/$commentId/$userToSearch",
+      userId: userId,
+    );
   }
 }

@@ -3,7 +3,13 @@ import 'package:snibbo_app/features/user/domain/repositories/user_repository.dar
 import 'package:snibbo_app/service_locator.dart';
 
 class SearchUserUsecase {
-  Future<(bool, UserEntity?, String?)> call({required String username}) {
-    return sl<UserRepository>().searchUserByUsername(username: username);
+  Future<(bool success, List<UserEntity>? users, String? message)> call({
+    required String username,
+    required String userId,
+  }) {
+    return sl<UserRepository>().searchUserByUsername(
+      username: username,
+      userId: userId,
+    );
   }
 }

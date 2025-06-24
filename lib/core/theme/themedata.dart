@@ -28,6 +28,7 @@ class Themedata {
       ),
       appBarTheme: AppBarTheme(
         titleTextStyle: TextStyle(
+            overflow: TextOverflow.ellipsis,
           color: MyColors.black,
           fontSize: width * 0.047,
           fontFamily: MyFonts.assetsFontFamily(),
@@ -62,6 +63,7 @@ class Themedata {
       appBarTheme: AppBarTheme(
         backgroundColor: MyColors.darkPrimary,
         titleTextStyle: TextStyle(
+            overflow: TextOverflow.ellipsis,
           color: MyColors.white,
           fontSize: width * 0.047,
           fontFamily: MyFonts.assetsFontFamily(),

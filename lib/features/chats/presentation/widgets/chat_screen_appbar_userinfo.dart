@@ -28,7 +28,6 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
             username,
             style: TextStyle(
               fontSize: height * 0.016,
-              overflow: TextOverflow.ellipsis,
               color: MyColors.white,
             ),
           ),
@@ -50,7 +49,6 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
                       color: MyColors.white,
                       fontWeight: FontWeight.w400,
                       fontSize: height * 0.013,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   );
                 } else if (isStoppedTyping && isSameRoom) {
@@ -64,7 +62,6 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
                       color: MyColors.white,
                       fontWeight: FontWeight.w400,
                       fontSize: height * 0.013,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   );
                 }
@@ -79,7 +76,6 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
                   color: MyColors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: height * 0.013,
-                  overflow: TextOverflow.ellipsis,
                 ),
               );
             },

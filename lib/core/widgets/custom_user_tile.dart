@@ -83,7 +83,6 @@ class _CustomUserTileState extends State<CustomUserTile> {
                   style: TextStyle(
                     fontSize: height * 0.016,
                     fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(height: height * 0.0035),

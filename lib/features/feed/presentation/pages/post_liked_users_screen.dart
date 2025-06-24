@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/network/helpers/search_debouncing.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/custom_user_tile.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
+import 'package:snibbo_app/features/explore/presentation/widgets/search_field.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_liked_users/post_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/post_liked_users/post_liked_users_events.dart';
@@ -24,6 +26,9 @@ class PostLikedUsersScreen extends StatefulWidget {
 class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
   late ScrollController _controller;
   late PostLikedUsersBloc postLikedUsersBloc;
+  late FocusNode focusNode;
+  late TextEditingController textEditingController;
+  final SearchDebouncingHelper _debounce = SearchDebouncingHelper();
 
   void _listener() {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
@@ -35,9 +40,11 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
 
   @override
   void initState() {
-    BlocProvider.of<PostLikedUsersBloc>(context).add(
-      GetPostLikedUsers(postId: widget.post.id),
-    );
+    BlocProvider.of<PostLikedUsersBloc>(
+      context,
+    ).add(GetPostLikedUsers(postId: widget.post.id, showloading: true));
+    focusNode = FocusNode();
+    textEditingController = TextEditingController();
     _controller = ScrollController();
     postLikedUsersBloc = context.read<PostLikedUsersBloc>();
     _controller.addListener(_listener);
@@ -48,12 +55,16 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
   void dispose() {
     _controller.removeListener(_listener);
     _controller.dispose();
+    focusNode.dispose();
+    textEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+    final width = UiUtils.screenWidth(context);
+    final height = UiUtils.screenHeight(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,8 +73,10 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
       ),
       body: MyRefreshBar(
         onRefresh: () async {
-          BlocProvider.of<PostLikedUsersBloc>(context)
-            .add(GetPostLikedUsers(postId: widget.post.id));
+          textEditingController.clear();
+          BlocProvider.of<PostLikedUsersBloc>(
+            context,
+          ).add(GetPostLikedUsers(postId: widget.post.id, showloading: true));
         },
         widget: BlocConsumer<PostLikedUsersBloc, PostLikedUsersStates>(
           listenWhen: (previous, current) {
@@ -116,25 +129,60 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
               return const Center(child: Text("Something went wrong"));
             }
 
-            return postLikedUsersBloc.allUsers.isEmpty
-                ? const Center(child: Text("No Likes"))
-                : ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    controller: _controller,
-                    itemCount: postLikedUsersBloc.allUsers.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == postLikedUsersBloc.allUsers.length) {
-                        return postLikedUsersBloc.hasMore
-                            ? const CircularProgressLoading()
-                            : const SizedBox.shrink();
-                      }
-                      final user = postLikedUsersBloc.allUsers[index];
-                      return CustomUserTile(
-                        user: user,
-                        onPopRefreshUsername: widget.post.userId.username,
-                      );
-                    },
+            return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _controller,
+              itemCount: postLikedUsersBloc.allUsers.length + 2,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.03,
+                      vertical: height * 0.005,
+                    ),
+                    child: SearchField(
+                      focusNode: focusNode,
+                      textEditingController: textEditingController,
+                      onChanged: (value) {
+                        final String finalValue =
+                            value.startsWith("@") ? value.substring(1) : value;
+                        _debounce.onChanged(
+                          onTimerEnd: () {
+                            if (value.trim().isEmpty) {
+                              BlocProvider.of<PostLikedUsersBloc>(context).add(
+                                GetPostLikedUsers(
+                                  postId: widget.post.id,
+                                  showloading: false,
+                                ),
+                              );
+                              return;
+                            }
+                            BlocProvider.of<PostLikedUsersBloc>(context).add(
+                              SearchUser(
+                                postId: widget.post.id,
+                                userToSearch: finalValue,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      isMini: true,
+                      hintText: "Search liked users",
+                    ),
                   );
+                }
+                if (index == postLikedUsersBloc.allUsers.length + 1) {
+                  return postLikedUsersBloc.hasMore
+                      ? const CircularProgressLoading()
+                      : const SizedBox.shrink();
+                }
+                final user = postLikedUsersBloc.allUsers[index - 1];
+                return CustomUserTile(
+                  user: user,
+                  onPopRefreshUsername: widget.post.userId.username,
+                );
+              },
+            );
           },
         ),
       ),

@@ -13,7 +13,7 @@ class SearchUserInitial extends SearchUserState {}
 class SearchUserLoading extends SearchUserState {}
 
 class SearchUserFound extends SearchUserState {
-  final UserEntity user;
+  final List<UserEntity> user;
 
   const SearchUserFound(this.user);
 

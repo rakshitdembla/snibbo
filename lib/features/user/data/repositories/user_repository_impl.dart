@@ -97,9 +97,34 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<(bool, UserEntity?, String?)> searchUserByUsername({
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchUserByUsername({required String username,required String userId}) {
+    return sl<UserRemoteData>().searchUserByUsername(username: username,userId: userId);
+  }
+
+  @override
+  Future<(bool, List<UserEntity>?, String?)> searchFollower({
     required String username,
+    required String userId,
+    required String userToSearch,
   }) {
-    return sl<UserRemoteData>().searchUserByUsername(username: username);
+    return sl<UserRemoteData>().searchFollower(
+      username: username,
+      userId: userId,
+      userToSearch: userToSearch,
+    );
+  }
+
+  @override
+  Future<(bool, List<UserEntity>?, String?)> searchFollowing({
+    required String username,
+    required String userId,
+    required String userToSearch,
+  }) {
+    return sl<UserRemoteData>().searchFollowing(
+      username: username,
+      userId: userId,
+      userToSearch: userToSearch,
+    );
   }
 }

@@ -9,18 +9,17 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 class SearchField extends StatelessWidget {
   final TextEditingController textEditingController;
   final FocusNode focusNode;
-  final IconData prefixIcon;
   final String hintText;
-  final GestureTapCallback onIconTap;
-  final ValueChanged<String>? onSubmit;
+  final bool isMini;
+  final Function(String)? onChanged;
+
   const SearchField({
     super.key,
     required this.focusNode,
+    required this.isMini,
     required this.textEditingController,
-    required this.prefixIcon,
+    required this.onChanged,
     required this.hintText,
-    required this.onIconTap,
-    required this.onSubmit
   });
 
   @override
@@ -30,24 +29,25 @@ class SearchField extends StatelessWidget {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return SizedBox(
       width: width,
-      height: height * 0.055,
+      height: isMini ? height * 0.045 : height * 0.05,
       child: TextField(
+        maxLines: 1,
         cursorColor: MyColors.grey,
         cursorErrorColor: MyColors.grey,
         controller: textEditingController,
         focusNode: focusNode,
-        onSubmitted: onSubmit,
         style: TextStyle(
           color: isDark ? MyColors.white : MyColors.black,
           fontWeight: FontWeight.w500,
-          fontSize: height * 0.0155,
+          fontSize: isMini ? height * 0.0165 : height * 0.0165,
         ),
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
             color: MyColors.lowOpacitySecondary,
             fontWeight: FontWeight.w500,
-            fontSize: height * 0.0155,
+            fontSize: isMini ? height * 0.0139 : height * 0.0148,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15.r),
@@ -57,15 +57,14 @@ class SearchField extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.r),
             borderSide: BorderSide.none,
           ),
-          prefixIcon: GestureDetector(
-            onTap: onIconTap,
-            child: Icon(prefixIcon, color: isDark? MyColors.white : MyColors.black)),
+          prefixIcon: Icon(
+            Icons.search_rounded,
+            color: isDark ? MyColors.white : MyColors.black,
+          ),
           filled: true,
           fillColor: MyColors.searchField,
           counter: SizedBox.shrink(),
-             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.r),
-              ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.r)),
         ),
       ),
     );

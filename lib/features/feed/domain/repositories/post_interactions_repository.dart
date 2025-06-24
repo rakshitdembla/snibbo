@@ -47,4 +47,12 @@ abstract class PostInteractionsRepository {
     required String postId,
     required String userId,
   });
+
+  //Search Post Liked User
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchPostLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String postId,
+  });
 }

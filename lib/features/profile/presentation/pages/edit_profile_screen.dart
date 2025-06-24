@@ -78,7 +78,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           "My Profile",
           style: TextStyle(
             fontWeight: FontWeight.w700,
-            overflow: TextOverflow.ellipsis,
             fontSize: height * 0.021,
           ),
         ),

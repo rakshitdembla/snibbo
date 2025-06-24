@@ -2,6 +2,7 @@ import "package:audioplayers/audioplayers.dart";
 import "package:get_it/get_it.dart";
 import "package:image_picker/image_picker.dart";
 import "package:snibbo_app/core/network/base_api/api_services.dart";
+import "package:snibbo_app/core/network/helpers/search_user_helper.dart";
 import "package:snibbo_app/core/network/web_sockets/web_sockets_services.dart";
 import "package:snibbo_app/features/auth/data/data_sources/remote/auth_remote_data.dart";
 import "package:snibbo_app/features/auth/data/repositories/auth_repository_impl.dart";
@@ -53,6 +54,8 @@ import "package:snibbo_app/features/user/domain/repositories/user_repository.dar
 import "package:snibbo_app/features/user/domain/usecases/follow_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/get_user_posts_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/get_user_saved_posts.dart";
+import "package:snibbo_app/features/user/domain/usecases/search_follower_usecase.dart";
+import "package:snibbo_app/features/user/domain/usecases/search_following_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/search_user_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/unfollow_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/user_followers_usecase.dart";
@@ -68,6 +71,7 @@ void setupServiceLocator() {
   sl.registerSingleton<ImagePicker>(ImagePicker());
   sl.registerSingleton<WebSocketsServices>(WebSocketsServices());
   sl.registerSingleton<AudioPlayer>(AudioPlayer());
+  sl.registerSingleton<SearchUserHelper>(SearchUserHelper());
   
 
   // Auth - Data, Repo, Usecases
@@ -121,6 +125,8 @@ void setupServiceLocator() {
   sl.registerSingleton<FollowUsecase>(FollowUsecase());
   sl.registerSingleton<UnfollowUsecase>(UnfollowUsecase());
   sl.registerSingleton<UserProfileUsecase>(UserProfileUsecase());
+  sl.registerSingleton<SearchFollowerUsecase>(SearchFollowerUsecase());
+  sl.registerSingleton<SearchFollowingUsecase>(SearchFollowingUsecase());
 
   // Profile
   sl.registerSingleton<ProfileRemoteData>(ProfileRemoteData());

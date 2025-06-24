@@ -65,7 +65,7 @@ abstract class PostCommentsRepository {
     required int limit,
   });
 
-    Future<(bool success, List<UserEntity>? users, String? message)>
+  Future<(bool success, List<UserEntity>? users, String? message)>
   getReplyLikedUsers({
     required String replyId,
     required String userId,
@@ -73,11 +73,25 @@ abstract class PostCommentsRepository {
     required int limit,
   });
 
-    Future<(bool success, List<UserEntity>? users, String? message)>
+  Future<(bool success, List<UserEntity>? users, String? message)>
   getCommentLikedUsers({
     required String commentId,
     required String userId,
     required int page,
     required int limit,
+  });
+
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchCommentLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String commentId,
+  });
+
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchReplyLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String commentId,
   });
 }

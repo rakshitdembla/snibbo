@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
+import 'package:snibbo_app/features/user/domain/usecases/search_follower_usecase.dart';
 import 'package:snibbo_app/features/user/domain/usecases/user_followers_usecase.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_followers_bloc/user_followers_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_followers_bloc/user_followers_states.dart';
@@ -11,18 +12,23 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
   List<UserEntity> allFollowers = [];
   bool hasMore = true;
   bool isLoading = false;
+  String? userId;
+  bool isSearchMode = false;
 
   UserFollowersBloc() : super(UserFollowersInitial()) {
     on<GetUserFollowers>((event, emit) async {
-      emit(UserFollowersLoading(username: event.username));
-
       // Reset
       page = 1;
       allFollowers = [];
       hasMore = true;
+      isSearchMode = false;
       isLoading = false;
 
-      final userId = await ServicesUtils.getTokenId();
+      event.showLoading
+          ? emit(UserFollowersLoading(username: event.username))
+          : null;
+
+      userId = await ServicesUtils.getTokenId();
       final (
         bool success,
         List<UserEntity>? users,
@@ -39,7 +45,7 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
         hasMore = users.length == 13;
         page = 2;
 
-        emit(UserFollowersLoaded(users: users,username: event.username));
+        emit(UserFollowersLoaded(users: users, username: event.username));
         return;
       }
 
@@ -47,16 +53,18 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
         UserFollowersError(
           title: "Failed to fetch followers",
           descrition: message.toString(),
-          username: event.username
+          username: event.username,
         ),
       );
     });
 
     on<LoadMoreUserFollowers>((event, emit) async {
-      if (isLoading || !hasMore) return;
+      if (isLoading || !hasMore || isSearchMode) return;
 
       isLoading = true;
-      final userId = await ServicesUtils.getTokenId();
+      if (userId == null) {
+        return;
+      }
 
       final (
         bool success,
@@ -75,7 +83,12 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
         page++;
 
         isLoading = false;
-        emit(UserFollowersPaginationSuccess(users: users,username: event.username));
+        emit(
+          UserFollowersPaginationSuccess(
+            users: users,
+            username: event.username,
+          ),
+        );
         return;
       }
 
@@ -83,10 +96,30 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
         UserFollowersPaginationError(
           title: "Failed to load more followers",
           descrition: message.toString(),
-          username: event.username
+          username: event.username,
         ),
       );
       isLoading = false;
+    });
+
+    on<SearchFollower>((event, emit) async {
+      allFollowers = [];
+      userId = userId ?? await ServicesUtils.getTokenId();
+      isSearchMode = true;
+
+      final (
+        bool success,
+        List<UserEntity>? users,
+        String? message,
+      ) = await sl<SearchFollowerUsecase>().call(
+        username: event.username,
+        userId: userId!,
+        userToSearch: event.userToSearch,
+      );
+
+      allFollowers = users ?? [];
+
+      emit(UserFollowersLoaded(users: users ?? [], username: event.username));
     });
   }
 }

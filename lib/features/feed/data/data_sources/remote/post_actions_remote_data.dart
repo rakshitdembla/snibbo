@@ -3,6 +3,7 @@ import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
 import 'package:snibbo_app/core/models/user_model.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
+import 'package:snibbo_app/core/network/helpers/search_user_helper.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class PostActionsRemoteData {
@@ -201,5 +202,18 @@ class PostActionsRemoteData {
     } catch (e) {
       return (false, "Unexpected error occurred: ${e.toString()}");
     }
+  }
+
+  // @ -- Search Post Liked User --
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchPostLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String postId,
+  }) {
+    return sl<SearchUserHelper>().searchUserByUsername(
+      path: "${ApiRoutes.searchPostLikedUser}/$postId/$userToSearch",
+      userId: userId,
+    );
   }
 }

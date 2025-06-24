@@ -1,6 +1,7 @@
 import 'package:snibbo_app/core/constants/api_constants.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
+import 'package:snibbo_app/core/network/helpers/search_user_helper.dart';
 import 'package:snibbo_app/features/feed/data/models/post_model.dart';
 import 'package:snibbo_app/core/models/user_model.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
@@ -257,30 +258,37 @@ class UserRemoteData {
   }
 
   // @ -- Search User --
-
-  Future<(bool success, UserEntity? user, String? message)> searchUserByUsername({
-  required String username,
-}) async {
-  try {
-    final response = await sl<ApiService>().get(
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchUserByUsername({required String username,required String userId}) async {
+    return sl<SearchUserHelper>().searchUserByUsername(
       path: "${ApiRoutes.searchUser}/$username",
+      userId: userId,
     );
-
-    if (response != null) {
-      final responseData = response.data;
-
-      if (response.statusCode == 200) {
-        final user = UserModel.fromJson(responseData["user"]).toEntity();
-        return (true, user, "User found successfully.");
-      } else {
-        return (false, null, responseData["message"]?.toString() ?? "Failed to fetch user.");
-      }
-    } else {
-      return (false, null, "No response from server. Please try again later.");
-    }
-  } catch (e) {
-    return (false, null, "Unexpected error occurred: ${e.toString()}");
   }
-}
 
+  // @ -- Search Follower --
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchFollower({
+    required String username,
+    required String userId,
+    required String userToSearch,
+  }) async {
+    return sl<SearchUserHelper>().searchUserByUsername(
+      path: "${ApiRoutes.searchFollower}/$username/$userToSearch",
+      userId: userId,
+    );
+  }
+
+  // @ -- Search Following --
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchFollowing({
+    required String username,
+    required String userId,
+    required String userToSearch,
+  }) async {
+    return sl<SearchUserHelper>().searchUserByUsername(
+      path: "${ApiRoutes.searchFollowing}/$username/$userToSearch",
+      userId: userId,
+    );
+  }
 }

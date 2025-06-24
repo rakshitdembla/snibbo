@@ -64,7 +64,6 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                         child: Text(
                           widget.profileEntity.name,
                           style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w600,
                             fontSize: width * 0.035,
                           ),

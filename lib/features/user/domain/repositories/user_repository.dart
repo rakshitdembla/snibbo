@@ -47,6 +47,20 @@ abstract class UserRepository {
     required int limit,
   });
 
-  Future<(bool success, UserEntity? user, String? message)>
-  searchUserByUsername({required String username});
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchUserByUsername({required String username,required String userId});
+
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchFollower({
+    required String username,
+    required String userId,
+    required String userToSearch,
+  });
+
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchFollowing({
+    required String username,
+    required String userId,
+    required String userToSearch,
+  });
 }

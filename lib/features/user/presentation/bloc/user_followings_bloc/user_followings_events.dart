@@ -7,8 +7,9 @@ abstract class UserFollowingsEvents extends Equatable {
 
 class GetUserFollowings extends UserFollowingsEvents {
   final String username;
+  final bool showLoading;
 
-  GetUserFollowings({required this.username});
+  GetUserFollowings({required this.username,required this.showLoading});
 
   @override
   List<Object> get props => [username];
@@ -21,3 +22,14 @@ class LoadMoreUserFollowings extends UserFollowingsEvents {
   @override
   List<Object> get props => [username];
 }
+
+class SearchFollowing extends UserFollowingsEvents {
+  final String username;
+  final String userToSearch;
+
+  SearchFollowing({required this.username,required this.userToSearch});
+
+  @override
+  List<Object> get props => [username,userToSearch];
+}
+

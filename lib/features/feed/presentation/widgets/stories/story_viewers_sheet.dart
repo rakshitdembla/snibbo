@@ -42,9 +42,7 @@ class StoryViewersSheet {
                             final user = users[index];
                             debugPrint("${user.name},${user.profilePicture}");
                             return UserListTile(
-                              name: user.name,
-                              profileUrl: user.profilePicture.toString(),
-                              username: user.username,
+                              user: user,
                               isDark: isDark,
                             );
                           },

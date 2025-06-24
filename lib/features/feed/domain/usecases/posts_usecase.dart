@@ -254,11 +254,12 @@ class PostsUsecase {
       limit: limit,
     );
   }
+
   /// Updates an post of the user
   /// [postId] - ID of the post
   /// [userId] - ID of the current user making the request
   /// Returns a tuple with success status, and optional message
-    Future<(bool, String?)> updatePost({
+  Future<(bool, String?)> updatePost({
     required String postId,
     required String userId,
     required String caption,
@@ -269,10 +270,11 @@ class PostsUsecase {
       caption: caption,
     );
   }
+
   /// Deletes a post of the user
-/// [postId] - ID of the post
-/// [userId] - ID of the current user making the request
-/// Returns a tuple with success status and optional message
+  /// [postId] - ID of the post
+  /// [userId] - ID of the current user making the request
+  /// Returns a tuple with success status and optional message
   Future<(bool, String?)> deletePost({
     required String postId,
     required String userId,
@@ -283,5 +285,57 @@ class PostsUsecase {
     );
   }
 
+  /// Search post liked user
+  /// [postId] - ID of the post
+  /// [userId] - ID of the current user making the request
+  /// [userToSearch] - User to search
+  /// Returns a tuple with success status, list of users and optional message
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchPostLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String postId,
+  }) {
+    return sl<PostInteractionsRepository>().searchPostLikedUser(
+      userId: userId,
+      userToSearch: userToSearch,
+      postId: postId,
+    );
+  }
 
+  /// Search post liked user
+  /// [commentId] - ID of the comment
+  /// [userId] - ID of the current user making the request
+  /// [userToSearch] - User to search
+  /// Returns a tuple with success status, list of users and optional message
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchCommentLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String commentId,
+  }) {
+    return sl<PostCommentsRepository>().searchCommentLikedUser(
+      userId: userId,
+      userToSearch: userToSearch,
+      commentId: commentId,
+    );
+  }
+
+  /// Search post liked user
+  /// [replyId] - ID of the reply
+  /// [userId] - ID of the current user making the request
+  /// [userToSearch] - User to search
+  /// Returns a tuple with success status, list of users and optional message
+  Future<(bool success, List<UserEntity>? users, String? message)>
+  searchReplyLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String commentId,
+  }) {
+    return sl<PostCommentsRepository>().searchReplyLikedUser(
+      userId: userId,
+      userToSearch: userToSearch,
+      commentId: commentId,
+    );
+  }
 }

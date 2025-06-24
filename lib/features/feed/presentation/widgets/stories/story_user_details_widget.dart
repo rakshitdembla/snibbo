@@ -39,7 +39,6 @@ class StoryUserDetailsWidget extends StatelessWidget {
             children: [
               Text(
                 username,
-                overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: TextStyle(
                   color: MyColors.white,
@@ -51,7 +50,6 @@ class StoryUserDetailsWidget extends StatelessWidget {
                 stories != null && storyIndex != null
                     ? ServicesUtils.toTimeAgo(stories![storyIndex!].createdAt)
                     : "Loading stories...",
-                overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: TextStyle(
                   color: const Color.fromARGB(255, 172, 171, 171),

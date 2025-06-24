@@ -54,7 +54,6 @@ class _CommentInputFieldState extends State<CommentInputField> {
                 decoration: InputDecoration(
                   hintText: hintText,
                   hintStyle: TextStyle(
-                    overflow: TextOverflow.ellipsis,
                     fontSize: height * 0.016,
                     color: MyColors.grey,
                   ),

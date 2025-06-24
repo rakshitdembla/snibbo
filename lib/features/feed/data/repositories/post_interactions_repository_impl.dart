@@ -78,4 +78,17 @@ class PostInteractionsRepositoryImpl extends PostInteractionsRepository {
       userId: userId,
     );
   }
+
+  @override
+  Future<(bool, List<UserEntity>?, String?)> searchPostLikedUser({
+    required String userId,
+    required String userToSearch,
+    required String postId,
+  }) {
+    return sl<PostActionsRemoteData>().searchPostLikedUser(
+      userId: userId,
+      userToSearch: userToSearch,
+      postId: postId,
+    );
+  }
 }

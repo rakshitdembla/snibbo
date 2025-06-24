@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/network/helpers/search_debouncing.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
@@ -23,6 +24,7 @@ class SearchUserScreen extends StatefulWidget {
 class _SearchUserScreenState extends State<SearchUserScreen> {
   TextEditingController textEditingController = TextEditingController();
   FocusNode focusNode = FocusNode();
+  final SearchDebouncingHelper _debouncer = SearchDebouncingHelper();
 
   @override
   void dispose() {
@@ -37,19 +39,17 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
     super.initState();
   }
 
-  void searchUser() {
-    final String controllerText = textEditingController.text;
+  void searchUser({required String value}) {
     final String finalValue =
-        controllerText.startsWith("@")
-            ? controllerText.substring(1)
-            : controllerText;
+        value.startsWith("@") ? value.substring(1) : value;
 
-    final isLoading = context.read<SearchUserBloc>().state is SearchUserLoading;
-    if (!isLoading) {
-      BlocProvider.of<SearchUserBloc>(
-        context,
-      ).add(SearchUserByUsername(username: finalValue));
-    }
+    _debouncer.onChanged(
+      onTimerEnd: () {
+        BlocProvider.of<SearchUserBloc>(
+          context,
+        ).add(SearchUserByUsername(username: finalValue));
+      },
+    );
   }
 
   @override
@@ -63,43 +63,34 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
           color: isDark ? MyColors.white : MyColors.black,
         ),
         title: SearchField(
-          onSubmit: (value) {
-            searchUser();
-          },
-          onIconTap: () {
-            searchUser();
+          isMini: false,
+          onChanged: (value) {
+            searchUser(value: value);
           },
           focusNode: FocusNode(),
           textEditingController: textEditingController,
-          prefixIcon: Icons.search_rounded,
-          hintText: "@rakshitdembla",
+          hintText: "Search username",
         ),
       ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(top: height * 0.005),
-          child: BlocConsumer<SearchUserBloc, SearchUserState>(
-            listener: (context, state) {
-              if (state is SearchUserEmptyState) {
-                UiUtils.showToast(
-                  title: state.title,
-                  isDark: isDark,
-                  description: state.description,
-                  context: context,
-                  isSuccess: false,
-                  isWarning: false,
-                );
-              }
-            },
+          child: BlocBuilder<SearchUserBloc, SearchUserState>(
             builder: (context, state) {
               if (state is SearchUserNotFound) {
-                return Center(child: Text("No User Found"));
+                return Center(child: Text("No Users Found"));
               } else if (state is SearchUserFound) {
-                return UserListTile(
-                  name: state.user.name,
-                  profileUrl: state.user.profilePicture.toString(),
-                  username: state.user.username,
-                  isDark: isDark,
+                final users = state.user;
+
+                if (users.isEmpty) {
+                  return Center(child: Text("No Users Found"));
+                }
+                return ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    final user = users[index];
+                    return UserListTile(user: user, isDark: isDark);
+                  },
                 );
               } else if (state is SearchUserLoading) {
                 return Center(child: CircularProgressLoading());
