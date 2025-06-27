@@ -8,6 +8,7 @@ import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_states.dart';
+import 'package:snibbo_app/features/user/presentation/helpers/user_posts_helper.dart';
 
 @RoutePage()
 class UserPostsViewScreen extends StatefulWidget {
@@ -28,9 +29,19 @@ class _UserPostsViewScreenState extends State<UserPostsViewScreen> {
   late AutoScrollController autoScrollController;
 
   void _listener() {
+
     if (autoScrollController.position.pixels ==
         autoScrollController.position.maxScrollExtent) {
-      if (userPostsBloc.hasMore && !userPostsBloc.isLoading) {
+
+      final hasMoreUserPosts =
+          UserPostsHelper.hasMore[widget.profileEntity.username] == true;
+
+      final userPostsLoading =
+          UserPostsHelper.isLoading[widget.profileEntity.username] == true;
+
+      debugPrint("$hasMoreUserPosts $userPostsLoading");
+
+      if (hasMoreUserPosts && !userPostsLoading) {
         userPostsBloc.add(
           LoadMoreUserPosts(username: widget.profileEntity.username),
         );
@@ -78,16 +89,22 @@ class _UserPostsViewScreenState extends State<UserPostsViewScreen> {
           return false;
         },
         builder: (context, state) {
+          final allPosts = UserPostsHelper.posts[widget.profileEntity.username];
+
+          if (allPosts == null) {
+            return SizedBox.shrink();
+          }
           return ListView.builder(
             controller: autoScrollController,
-            itemCount: userPostsBloc.allUserPosts.length + 1,
+            itemCount: allPosts.length + 1,
             itemBuilder: (context, index) {
-              if (index == userPostsBloc.allUserPosts.length) {
-                return userPostsBloc.hasMore
+              if (index == allPosts.length) {
+                return UserPostsHelper.hasMore[widget.profileEntity.username] ==
+                        true
                     ? Center(child: CircularProgressLoading())
                     : SizedBox.shrink();
               }
-              final post = userPostsBloc.allUserPosts[index];
+              final post = allPosts[index];
               return AutoScrollTag(
                 key: ValueKey(index),
                 controller: autoScrollController,

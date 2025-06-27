@@ -22,7 +22,6 @@ class UserListTile extends StatelessWidget {
         context.router.push(
           UserProfileScreenRoute(
             username: user.username,
-            onPopRefreshUsername: null,
           ),
         );
       },

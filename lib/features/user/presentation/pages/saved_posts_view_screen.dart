@@ -8,6 +8,7 @@ import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_states.dart';
+import 'package:snibbo_app/features/user/presentation/helpers/user_saved_posts_helper.dart';
 
 @RoutePage()
 class SavedPostsViewScreen extends StatefulWidget {
@@ -31,7 +32,11 @@ class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
   void _listener() {
     if (autoScrollController.position.pixels ==
         autoScrollController.position.maxScrollExtent) {
-      if (userSavedPostsBloc.hasMore && !userSavedPostsBloc.isLoading) {
+
+    final hasMoreUserSavedPosts = UserSavedPostsHelper.hasMore[widget.profileEntity.username] == true;
+    final userSavedPostsLoading = UserSavedPostsHelper.isLoading[widget.profileEntity.username] == true;
+
+      if (hasMoreUserSavedPosts && !userSavedPostsLoading) {
         userSavedPostsBloc.add(
           LoadMoreSavedPosts(username: widget.profileEntity.username),
         );
@@ -79,17 +84,24 @@ class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
           return false;
         },
         builder: (context, state) {
+             final allPosts = UserSavedPostsHelper.posts[widget.profileEntity.username];
+
+              if (allPosts == null) {
+            return SizedBox.shrink();
+          }
+
           return ListView.builder(
             controller: autoScrollController,
-            itemCount: userSavedPostsBloc.allSavedPosts.length + 1,
+            itemCount: allPosts.length + 1,
             itemBuilder: (context, index) {
-              if (index == userSavedPostsBloc.allSavedPosts.length) {
-                return userSavedPostsBloc.hasMore
+              if (index == allPosts.length) {
+                return UserSavedPostsHelper.hasMore[widget.profileEntity.username] ==
+                        true
                     ? const Center(child: CircularProgressLoading())
                     : const SizedBox.shrink();
               }
 
-              final post = userSavedPostsBloc.allSavedPosts[index];
+              final post = allPosts[index];
               return AutoScrollTag(
                 key: ValueKey(index),
                 controller: autoScrollController,

@@ -12,6 +12,8 @@ import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagi
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_states.dart';
+import 'package:snibbo_app/features/user/presentation/helpers/user_posts_helper.dart';
+import 'package:snibbo_app/features/user/presentation/helpers/user_saved_posts_helper.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/tabs/tab_mode_enum.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/tabs/user_posts_tab.dart';
@@ -36,18 +38,21 @@ class _ProfileViewState extends State<ProfileView>
   late TabController tabController;
 
   void _controllerListener() {
-    final hasMoreUserPosts = userPostsBloc.hasMore;
-    final hasMoreSavedPosts = userSavedPostsBloc.hasMore;
+    final hasMoreUserPosts = UserPostsHelper.hasMore[widget.profileEntity.username] == true;
+    final userPostsLoading = UserPostsHelper.isLoading[widget.profileEntity.username] == true;
+    
+    final hasMoreUserSavedPosts = UserSavedPostsHelper.hasMore[widget.profileEntity.username] == true;
+    final userSavedPostsLoading = UserSavedPostsHelper.isLoading[widget.profileEntity.username] == true;
 
     if (controller.position.pixels == controller.position.maxScrollExtent) {
       if (tabMode == TabModeEnum.userPosts) {
-        if (hasMoreUserPosts && !userPostsBloc.isLoading) {
+        if (hasMoreUserPosts && !userPostsLoading) {
           context.read<UserPostsPaginationBloc>().add(
             LoadMoreUserPosts(username: widget.profileEntity.username),
           );
         }
       } else if (tabMode == TabModeEnum.userSavedPosts) {
-        if (hasMoreSavedPosts && !userSavedPostsBloc.isLoading) {
+        if (hasMoreUserSavedPosts && !userSavedPostsLoading) {
           context.read<UserSavedPostsPaginationBloc>().add(
             LoadMoreSavedPosts(username: widget.profileEntity.username),
           );
@@ -202,8 +207,8 @@ class _ProfileViewState extends State<ProfileView>
                     }
                     return UserPostsTab(
                       isUserPosts: true,
-                      posts: userPostsBloc.allUserPosts,
-                      hasMore: userPostsBloc.hasMore,
+                      posts:  UserPostsHelper.posts[widget.profileEntity.username] ?? [],
+                      hasMore: UserPostsHelper.hasMore[widget.profileEntity.username] ?? false,
                       profileEntity: widget.profileEntity,
                     );
                   },
@@ -228,9 +233,9 @@ class _ProfileViewState extends State<ProfileView>
                     }
                     return UserPostsTab(
                       isUserPosts: false,
-                      posts: userSavedPostsBloc.allSavedPosts,
+                      posts: UserSavedPostsHelper.posts[widget.profileEntity.username] ?? [],
                       profileEntity: widget.profileEntity,
-                      hasMore: userSavedPostsBloc.hasMore,
+                      hasMore: UserSavedPostsHelper.hasMore[widget.profileEntity.username] ?? false,
                     );
                   },
                 ),

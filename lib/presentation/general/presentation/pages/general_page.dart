@@ -25,27 +25,17 @@ class GeneralPage extends StatefulWidget {
 
 class GeneralPageState extends State<GeneralPage> {
   late PersistentTabController _controller;
-  final GlobalKey<ProfileScreenState> _profileKey = GlobalKey<ProfileScreenState>();
 
   @override
   void initState() {
     _controller = PersistentTabController(initialIndex: 0);
-    _controller.addListener(_handleTabChange);
-   sl<WebSocketsServices>().connectToSocket(context : context);
+    sl<WebSocketsServices>().connectToSocket(context: context);
     super.initState();
   }
-
-  void _handleTabChange() {
-  if (_controller.index == 3) {
-    _profileKey.currentState?.initialize();
-  }
-}
-
 
   @override
   void dispose() {
     _controller.dispose();
-     _controller.removeListener(_handleTabChange);
     super.dispose();
   }
 
@@ -56,7 +46,8 @@ class GeneralPageState extends State<GeneralPage> {
       body: SafeArea(
         child: BlocBuilder<HideBottomNavBloc, HideBottomNavStates>(
           builder: (context, state) {
-            final hideNavBar = context.watch<HideBottomNavBloc>().state is BottomNavBarHidden;
+            final hideNavBar =
+                context.watch<HideBottomNavBloc>().state is BottomNavBarHidden;
             return PersistentTabView(
               controller: _controller,
               backgroundColor: isDark ? MyColors.darkPrimary : MyColors.primary,
@@ -87,10 +78,10 @@ class GeneralPageState extends State<GeneralPage> {
                 ),
               ],
               screens: [
-                FeedScreen(navController: _controller ,),
+                FeedScreen(navController: _controller),
                 ExploreScreen(),
                 CreatePostScreen(),
-                ProfileScreen(key: _profileKey,),
+                ProfileScreen(),
               ],
               navBarStyle: NavBarStyle.style6,
             );

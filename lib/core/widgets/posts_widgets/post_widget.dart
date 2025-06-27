@@ -84,7 +84,6 @@ class _PostWidgetState extends State<PostWidget> {
                 onTap: () {
                   context.router.push(
                     UserProfileScreenRoute(
-                      onPopRefreshUsername: null,
                       username: widget.postEntity.userId.username,
                     ),
                   );

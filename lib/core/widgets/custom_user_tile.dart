@@ -71,7 +71,6 @@ class _CustomUserTileState extends State<CustomUserTile> {
                   : context.router.push(
                     UserProfileScreenRoute(
                       username: user.username,
-                      onPopRefreshUsername: widget.onPopRefreshUsername,
                     ),
                   );
             },
