@@ -27,6 +27,7 @@ class Themedata {
         iconColor: MyColors.secondaryDense,
       ),
       appBarTheme: AppBarTheme(
+          centerTitle: true,
         titleTextStyle: TextStyle(
             overflow: TextOverflow.ellipsis,
           color: MyColors.black,
@@ -61,6 +62,7 @@ class Themedata {
         ),
       ),
       appBarTheme: AppBarTheme(
+        centerTitle: true,
         backgroundColor: MyColors.darkPrimary,
         titleTextStyle: TextStyle(
             overflow: TextOverflow.ellipsis,

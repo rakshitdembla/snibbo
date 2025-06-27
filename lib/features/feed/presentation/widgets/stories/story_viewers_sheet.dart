@@ -43,6 +43,7 @@ class StoryViewersSheet {
                             debugPrint("${user.name},${user.profilePicture}");
                             return UserListTile(
                               user: user,
+                              isStatic: true,
                               isDark: isDark,
                             );
                           },

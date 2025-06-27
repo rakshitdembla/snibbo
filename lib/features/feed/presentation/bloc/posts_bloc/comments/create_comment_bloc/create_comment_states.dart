@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 
 abstract class CreateCommentState extends Equatable {
   const CreateCommentState();
@@ -22,10 +23,12 @@ class CreateCommentSuccess extends CreateCommentState {
   final String title;
   final String description;
   final String postId;
+  final PostCommentEntity comment;
 
   const CreateCommentSuccess({
     required this.description,
     required this.title,
+    required this.comment,
     required this.postId,
   });
 

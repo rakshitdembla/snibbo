@@ -115,7 +115,7 @@ class PostsUsecase {
   /// [userId] - ID of the user commenting
   /// [commentContent] - Text of the comment
   /// Returns tuple with success status and optional message
-  Future<(bool success, String? message)> createComment({
+  Future<(bool success,PostCommentEntity? comment, String? message)> createComment({
     required String postId,
     required String userId,
     required String commentContent,
@@ -132,7 +132,7 @@ class PostsUsecase {
   /// [userId] - ID of the user replying
   /// [replyContent] - Text of the reply
   /// Returns tuple with success status and optional message
-  Future<(bool success, String? message)> createReply({
+  Future<(bool success,CommentReplyEntity? reply, String? message)> createReply({
     required String commentId,
     required String userId,
     required String replyContent,
@@ -330,12 +330,12 @@ class PostsUsecase {
   searchReplyLikedUser({
     required String userId,
     required String userToSearch,
-    required String commentId,
+    required String replyId,
   }) {
     return sl<PostCommentsRepository>().searchReplyLikedUser(
       userId: userId,
       userToSearch: userToSearch,
-      commentId: commentId,
+      replyId: replyId,
     );
   }
 }

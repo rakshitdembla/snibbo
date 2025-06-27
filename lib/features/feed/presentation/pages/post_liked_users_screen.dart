@@ -172,7 +172,7 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
                   );
                 }
                 if (index == postLikedUsersBloc.allUsers.length + 1) {
-                  return postLikedUsersBloc.hasMore
+                  return postLikedUsersBloc.hasMore && !postLikedUsersBloc.isSearchMode
                       ? const CircularProgressLoading()
                       : const SizedBox.shrink();
                 }

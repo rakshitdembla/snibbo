@@ -55,6 +55,7 @@ class _CustomUserTileState extends State<CustomUserTile> {
             isStatic: false,
             profileUrl: user.profilePicture,
             margins: EdgeInsets.zero,
+            username: user.username,
             storySize: 0.06,
             isAllStoriesViewed: user.isAllStoriesViewed,
             hasActiveStories: user.hasActiveStories,
@@ -65,7 +66,6 @@ class _CustomUserTileState extends State<CustomUserTile> {
               isMySelf
                   ? context.router.push(
                     ProfileScreenRoute(
-                      onPopRefreshUsername: widget.onPopRefreshUsername,
                     ),
                   )
                   : context.router.push(

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
-import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/tab_bar.dart';
@@ -22,8 +21,7 @@ import '../../../settings/presentation/bloc/theme_bloc.dart';
 @RoutePage()
 class ProfileView extends StatefulWidget {
   final ProfileEntity profileEntity;
-  final String? onPopRefreshUsername;
-  const ProfileView({super.key, required this.profileEntity,required this.onPopRefreshUsername});
+  const ProfileView({super.key, required this.profileEntity});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -94,13 +92,7 @@ class _ProfileViewState extends State<ProfileView>
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop && widget.onPopRefreshUsername != null) {
-          ServicesUtils.onPopRefreshPosts(context: context, onPopRefreshUsername: widget.onPopRefreshUsername!);
-        }
-      },
-      child: MultiBlocListener(
+    return MultiBlocListener(
         listeners: [
           BlocListener<UserPostsPaginationBloc, UserPostsPaginationStates>(
             listenWhen: (previous, current) {
@@ -246,8 +238,8 @@ class _ProfileViewState extends State<ProfileView>
             ),
           ),
         ),
-      ),
-    );
+      );
+  
   }
 }
 

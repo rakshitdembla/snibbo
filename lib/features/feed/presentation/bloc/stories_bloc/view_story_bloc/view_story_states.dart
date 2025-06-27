@@ -25,7 +25,8 @@ class ViewStorySuccessState extends ViewStoryStates {
 
 class AllStoriesSeenState extends ViewStoryStates {
   final String username;
-  AllStoriesSeenState({required this.username});
+  final Map<String,bool> status;
+  AllStoriesSeenState({required this.username,required this.status});
   @override
   List<Object> get props => [username];
 }

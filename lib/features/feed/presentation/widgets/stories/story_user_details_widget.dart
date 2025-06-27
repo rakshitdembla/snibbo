@@ -21,7 +21,16 @@ class StoryUserDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
-    return  Row(
+    return GestureDetector(
+      // onTap: () {
+      //   context.router.push(
+      //     UserProfileScreenRoute(
+      //       username: username,
+      //       onPopRefreshUsername: null,
+      //     ),
+      //   );
+      // },
+      child: Row(
         children: [
           UserCircularProfileWidget(
             isStatic: true,
@@ -30,7 +39,7 @@ class StoryUserDetailsWidget extends StatelessWidget {
             hasActiveStories: false,
             profileUrl: profilePicture,
             storySize: 0.045,
-            
+
             margins: EdgeInsets.zero,
           ),
           SizedBox(width: width * 0.015),
@@ -59,7 +68,7 @@ class StoryUserDetailsWidget extends StatelessWidget {
             ],
           ),
         ],
-      );
-    
+      ),
+    );
   }
 }

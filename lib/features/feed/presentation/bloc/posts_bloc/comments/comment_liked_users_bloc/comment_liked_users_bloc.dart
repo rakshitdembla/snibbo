@@ -11,17 +11,24 @@ class CommentLikedUsersBloc extends Bloc<CommentLikedUsersEvents, CommentLikedUs
   List<UserEntity> allUsers = [];
   bool hasMore = true;
   bool isLoading = false;
+  String? userId;
+  bool isSearchMode = false;
 
   CommentLikedUsersBloc() : super(CommentLikedUsersInitial()) {
     on<GetCommentLikedUsers>((event, emit) async {
-      emit(CommentLikedUsersLoading(commentId: event.commentId));
-
+      // 🔁 Reset before emitting
       page = 1;
       allUsers = [];
       hasMore = true;
       isLoading = false;
+      isSearchMode = false;
 
-      final userId = await ServicesUtils.getTokenId();
+      // Emit loading only if showloading is true
+      if (event.showloading) {
+        emit(CommentLikedUsersLoading(commentId: event.commentId));
+      }
+
+      userId = await ServicesUtils.getTokenId();
       final (
         bool success,
         List<UserEntity>? users,
@@ -50,10 +57,10 @@ class CommentLikedUsersBloc extends Bloc<CommentLikedUsersEvents, CommentLikedUs
     });
 
     on<LoadMoreCommentLikedUsers>((event, emit) async {
-      if (isLoading || !hasMore) return;
+      if (isLoading || !hasMore || isSearchMode) return;
 
       isLoading = true;
-      final userId = await ServicesUtils.getTokenId();
+      if (userId == null) return;
 
       final (
         bool success,
@@ -82,6 +89,27 @@ class CommentLikedUsersBloc extends Bloc<CommentLikedUsersEvents, CommentLikedUs
         commentId: event.commentId,
       ));
       isLoading = false;
+    });
+
+    // 🔍 Search
+    on<SearchCommentLikedUser>((event, emit) async {
+      allUsers = [];
+      userId = userId ?? await ServicesUtils.getTokenId();
+      isSearchMode = true;
+
+      final (
+        bool success,
+        List<UserEntity>? users,
+        String? message,
+      ) = await sl<PostsUsecase>().searchCommentLikedUser(
+        commentId: event.commentId,
+        userId: userId!,
+        userToSearch: event.userToSearch,
+      );
+
+      allUsers = users ?? [];
+
+      emit(CommentLikedUsersLoaded(users: users ?? [], commentId: event.commentId));
     });
   }
 }

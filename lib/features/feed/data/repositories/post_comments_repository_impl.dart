@@ -9,7 +9,7 @@ class PostCommentsRepositoryImpl implements PostCommentsRepository {
   final _remoteData = sl<PostCommentsRemoteData>();
 
   @override
-  Future<(bool success, String? message)> createComment({
+  Future<(bool success,PostCommentEntity? comment, String? message)> createComment({
     required String postId,
     required String userId,
     required String commentContent,
@@ -22,7 +22,7 @@ class PostCommentsRepositoryImpl implements PostCommentsRepository {
   }
 
   @override
-  Future<(bool success, String? message)> createReply({
+  Future<(bool success,CommentReplyEntity? comment, String? message)> createReply({
     required String commentId,
     required String userId,
     required String replyContent,
@@ -134,7 +134,7 @@ class PostCommentsRepositoryImpl implements PostCommentsRepository {
   }
   
   @override
-  Future<(bool, List<UserEntity>?, String?)> searchReplyLikedUser({required String userId, required String userToSearch, required String commentId}) {
-    return _remoteData.searchReplyLikedUser(userId: userId, userToSearch: userToSearch, commentId: commentId);
+  Future<(bool, List<UserEntity>?, String?)> searchReplyLikedUser({required String userId, required String userToSearch, required String replyId}) {
+    return _remoteData.searchReplyLikedUser(userId: userId, userToSearch: userToSearch, replyId: replyId);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/stories_usecase.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/stories_bloc/view_story_bloc/view_story_events.dart';
@@ -39,8 +40,14 @@ class ViewStoryBloc extends Bloc<ViewStoryEvents, ViewStoryStates> {
     });
 
     on<AllStoriesSeen>((event, emit) {
-      debugPrint("Got all stories sene event");
-      emit(AllStoriesSeenState(username: event.username));
+      debugPrint('Got all stories seen event!');
+      StoryViewsManager.storyViewStatus.putIfAbsent(event.username, () => true);
+      emit(
+        AllStoriesSeenState(
+          username: event.username,
+          status: StoryViewsManager.storyViewStatus,
+        ),
+      );
     });
   }
 }

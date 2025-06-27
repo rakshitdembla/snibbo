@@ -22,17 +22,18 @@ class CreateCommentBloc extends Bloc<CreateCommentEvent, CreateCommentState> {
       }
 
       final userId = await ServicesUtils.getTokenId();
-      final (success, message) = await sl<PostCommentsRepository>()
+      final (success,comment, message) = await sl<PostCommentsRepository>()
           .createComment(
             postId: event.postId,
             userId: userId!,
             commentContent: event.commentContent,
           );
 
-      if (success) {
+      if (success && comment != null) {
         emit(
           CreateCommentSuccess(
             title: 'Comment added successfully.',
+            comment: comment,
             description: message.toString(),
             postId: event.postId
           ),

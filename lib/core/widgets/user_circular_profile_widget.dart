@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
@@ -40,12 +41,16 @@ class UserCircularProfileWidget extends StatefulWidget {
 }
 
 class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
-  bool blocUpdated = false;
-  late bool allViewedState;
+  late bool isAllViewed;
 
   @override
   void initState() {
-    allViewedState = widget.isAllStoriesViewed ?? false;
+    isAllViewed = StoryViewsManager.storyViewStatus[widget.username] ??
+        widget.isAllStoriesViewed ??
+        widget.hasActiveStories ??
+        false;
+
+        debugPrint("init state isAllViewed 💁$isAllViewed for ${widget.username}");
     super.initState();
   }
 
@@ -56,7 +61,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
     final storyRadius = height * widget.storySize;
 
     //Base story widget -->
-    
+
     final storyWidget = BlocBuilder<ViewStoryBloc, ViewStoryStates>(
       buildWhen: (previous, current) {
         if (current is AllStoriesSeenState &&
@@ -68,19 +73,12 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
       },
       builder: (context, state) {
         debugPrint(
-          "Rebuilt the user circular profile widget for ${widget.username}",
+          "Rebuilt the user circular profile widget for ${widget.username} & status is 💁$isAllViewed",
         );
+
         if (state is AllStoriesSeenState) {
-          if (state.username == widget.username && !widget.isStatic) {
-            if (!blocUpdated) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                setState(() {
-                  allViewedState = true;
-                  blocUpdated = true;
-                });
-              });
-            }
-          }
+          isAllViewed = state.status[widget.username] ?? isAllViewed;
+          debugPrint("State AllStoriesSeenState  isAllViewed 💁$isAllViewed for ${widget.username}");
         }
 
         return Container(
@@ -91,11 +89,11 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
           decoration: BoxDecoration(
             gradient:
                 widget.hasActiveStories == true &&
-                        allViewedState != true &&
+                        isAllViewed != true &&
                         widget.isStatic != true
                     ? MyColors.gradient
                     : null,
-            color: allViewedState ? MyColors.lowOpacitySecondary : null,
+            color: isAllViewed && !widget.isStatic ? MyColors.lowOpacitySecondary : null,
             shape: BoxShape.circle,
           ),
           child: Container(

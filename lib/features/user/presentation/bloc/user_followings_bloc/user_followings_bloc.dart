@@ -29,7 +29,7 @@ class UserFollowingsBloc
           ? emit(UserFollowingsLoading(username: event.username))
           : null;
 
-      final userId = await ServicesUtils.getTokenId();
+       userId = await ServicesUtils.getTokenId();
       final (
         bool success,
         List<UserEntity>? users,
@@ -63,6 +63,10 @@ class UserFollowingsBloc
       if (isLoading || !hasMore || isSearchMode) return;
 
       isLoading = true;
+            if (userId == null) {
+        return;
+      }
+
 
       final (
         bool success,

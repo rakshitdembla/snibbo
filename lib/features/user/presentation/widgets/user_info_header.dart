@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/elevated_outlined_cta.dart';
@@ -25,10 +26,12 @@ class UserInfoHeader extends StatefulWidget {
 }
 
 class _UserInfoHeaderState extends State<UserInfoHeader> {
+  late ProfileEntity profile;
   @override
   void initState() {
-    FollowStatusManager.isAlreadyFollwing[widget.profileEntity.username] =
-        widget.profileEntity.isFollowedByMe;
+    profile = widget.profileEntity;
+    FollowStatusManager.isAlreadyFollwing[profile.username] =
+        profile.isFollowedByMe;
     super.initState();
   }
 
@@ -46,10 +49,11 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
             children: [
               UserCircularProfileWidget(
                 isStatic: false,
-                hasActiveStories: widget.profileEntity.hasActiveStories,
-                isAllStoriesViewed: widget.profileEntity.viewedAllStories,
-                profileUrl: widget.profileEntity.profilePicture,
+                hasActiveStories: profile.hasActiveStories,
+                isAllStoriesViewed: profile.viewedAllStories,
+                profileUrl: profile.profilePicture,
                 storySize: 0.11,
+                username: profile.username,
                 margins: EdgeInsets.zero,
               ),
               Padding(
@@ -62,7 +66,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                       Padding(
                         padding: EdgeInsets.only(left: width * 0.006),
                         child: Text(
-                          widget.profileEntity.name,
+                          profile.name,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: width * 0.035,
@@ -77,31 +81,31 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                           children: [
                             SocialStatsWidget(
                               onTap: () {},
-                              count: "${widget.profileEntity.posts}",
+                              count: "${profile.posts}",
                               title: "posts",
                             ),
                             SocialStatsWidget(
                               onTap: () {
                                 context.router.push(
                                   UserConnectionsScreenRoute(
-                                    username: widget.profileEntity.username,
+                                    username: profile.username,
                                     initialIndex: 0,
                                   ),
                                 );
                               },
-                              count: "${widget.profileEntity.userFollowers}",
+                              count: "${profile.userFollowers}",
                               title: "followers",
                             ),
                             SocialStatsWidget(
                               onTap: () {
                                 context.router.push(
                                   UserConnectionsScreenRoute(
-                                    username: widget.profileEntity.username,
+                                    username: profile.username,
                                     initialIndex: 1,
                                   ),
                                 );
                               },
-                              count: "${widget.profileEntity.userFollowing}",
+                              count: "${profile.userFollowing}",
                               title: "following",
                             ),
                           ],
@@ -113,13 +117,10 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
               ),
             ],
           ),
-          widget.profileEntity.bio.isNotEmpty
+          profile.bio.isNotEmpty
               ? Padding(
                 padding: EdgeInsetsGeometry.only(top: height * 0.01),
-                child: SizedBox(
-                  width: width * 0.9,
-                  child: Text(widget.profileEntity.bio),
-                ),
+                child: SizedBox(width: width * 0.9, child: Text(profile.bio)),
               )
               : SizedBox.shrink(),
           SizedBox(height: height * 0.020),
@@ -132,23 +133,23 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        widget.profileEntity.isMyProfile
+                        profile.isMyProfile
                             ? ElevatedOutlinedCTA(
                               onPressed: () {
                                 context.router.push(
                                   EditProfileScreenRoute(
-                                    bio: widget.profileEntity.bio,
-                                    name: widget.profileEntity.name,
+                                    bio: profile.bio,
+                                    name: profile.name,
                                     profileUrl:
-                                        widget.profileEntity.profilePicture.toString(),
-                                    username: widget.profileEntity.username,
+                                        profile.profilePicture.toString(),
+                                    username: profile.username,
                                   ),
                                 );
                               },
                               buttonName: "Edit Profile",
                               isShort: true,
                             )
-                            : !widget.profileEntity.isMyProfile &&
+                            : !profile.isMyProfile &&
                                 FollowStatusManager.isAlreadyFollwing[widget
                                         .profileEntity
                                         .username] ==
@@ -160,9 +161,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                                         .username] =
                                     false;
                                 BlocProvider.of<UnfollowUserBloc>(context).add(
-                                  UnfollowRequested(
-                                    username: widget.profileEntity.username,
-                                  ),
+                                  UnfollowRequested(username: profile.username),
                                 );
                               },
                               buttonName: "Unfollow",
@@ -175,22 +174,34 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                                         .username] =
                                     true;
                                 BlocProvider.of<FollowUserBloc>(context).add(
-                                  FollowRequested(
-                                    username: widget.profileEntity.username,
-                                  ),
+                                  FollowRequested(username: profile.username),
                                 );
                               },
                               buttonName: "Follow",
                               isShort: true,
                             ),
-                        widget.profileEntity.isMyProfile
+                        profile.isMyProfile
                             ? ElevatedOutlinedCTA(
                               onPressed: () {},
                               buttonName: "Share Profile",
                               isShort: true,
                             )
                             : ElevatedOutlinedCTA(
-                              onPressed: () {},
+                              onPressed: () {
+                                context.router.push(
+                                  ChatScreenRoute(
+                                    profilePicture: profile.profilePicture,
+                                    username: profile.username,
+                                    isOnline: profile.isOnline,
+                                    lastSeen:
+                                        profile.lastSeen != null
+                                            ? DateFormat(
+                                              'MMM d, yyyy • hh:mm a',
+                                            ).format(profile.lastSeen!)
+                                            : null,
+                                  ),
+                                );
+                              },
                               buttonName: "Message",
                               isShort: true,
                             ),

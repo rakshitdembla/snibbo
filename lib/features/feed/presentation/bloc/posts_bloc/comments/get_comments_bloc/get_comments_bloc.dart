@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/rendering.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart';
@@ -82,11 +83,34 @@ class GetPostCommentsBloc
         GetPostCommentsPaginationError(
           title: "Failed to load more comments",
           description: result.message ?? "Something went wrong",
-          postId: event.postId
+          postId: event.postId,
         ),
       );
 
       isLoading = false;
+    });
+
+    on<AddNewPostComment>((event, emit) {
+      final comment = event.comment;
+
+      allComments.insert(0, comment);
+
+      emit(
+        GetPostCommentsLoaded(
+          comments: List.from(allComments),
+          postId: event.postId,
+        ),
+      );
+    });
+
+    on<RefreshComments>((event, emit) {
+      debugPrint("refresh comments called!");
+      emit(
+        GetPostCommentsLoaded(
+          comments: List.from(allComments),
+          postId: event.postId,
+        ),
+      );
     });
   }
 }

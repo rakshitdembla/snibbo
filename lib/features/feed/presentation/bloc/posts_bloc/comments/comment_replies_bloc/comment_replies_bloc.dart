@@ -18,6 +18,7 @@ class GetCommentRepliesBloc
       if (isLoading || !hasMore) return;
 
       isLoading = true;
+      allReplies = [];
 
       final userId = await ServicesUtils.getTokenId();
       final result = await sl<PostsUsecase>().getCommentReplies(
@@ -34,16 +35,20 @@ class GetCommentRepliesBloc
         hasMore = fetchedReplies.length == 4;
         page++;
 
-        emit(GetCommentRepliesLoaded(
-          replies: result.commentReplies ?? [],
-          commentId: event.commentId,
-        ));
+        emit(
+          GetCommentRepliesLoaded(
+            replies: result.commentReplies ?? [],
+            commentId: event.commentId,
+          ),
+        );
       } else {
-        emit(GetCommentRepliesError(
-          title: "Failed to Load Replies",
-          description: result.message ?? "An unknown error occurred",
-          commentId: event.commentId,
-        ));
+        emit(
+          GetCommentRepliesError(
+            title: "Failed to Load Replies",
+            description: result.message ?? "An unknown error occurred",
+            commentId: event.commentId,
+          ),
+        );
       }
 
       isLoading = false;
@@ -54,6 +59,19 @@ class GetCommentRepliesBloc
       allReplies = [];
       isLoading = false;
       hasMore = true;
-    },);
+    });
+
+    on<AddNewCommentReply>((event, emit) {
+      final reply = event.reply;
+
+      allReplies.insert(0, reply);
+
+      emit(
+        GetCommentRepliesLoaded(
+          replies: List.from(allReplies),
+          commentId: event.commentId,
+        ),
+      );
+    });
   }
 }

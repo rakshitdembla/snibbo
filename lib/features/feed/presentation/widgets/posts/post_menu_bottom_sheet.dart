@@ -32,8 +32,8 @@ class PostMenuBottomSheet {
                   height: height,
                   width: width,
                   isDark: isDark,
-                  icon: LineIcons.bookmark,
-                  text: "Save",
+                  icon: LineIcons.link,
+                  text: "Link",
                   color: MyColors.secondary,
                 ),
                 PostMenuSheetContainer._(

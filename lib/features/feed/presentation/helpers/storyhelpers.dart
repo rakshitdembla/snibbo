@@ -31,7 +31,7 @@ class StoryHelpers {
       }
     } else {
       if (context.mounted) {
-        context.router.popUntilRoot();
+        context.router.pop();
       }
     }
   }
@@ -62,7 +62,7 @@ class StoryHelpers {
       }
     } else {
       if (context.mounted) {
-        context.router.popUntilRoot();
+        context.router.pop();
       }
     }
   }

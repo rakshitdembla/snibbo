@@ -13,7 +13,8 @@ import 'package:snibbo_app/service_locator.dart';
 
 class PostCommentsRemoteData {
   // Adds a new comment to a post.
-  Future<(bool success, String? message)> createComment({
+  Future<(bool success, PostCommentEntity? comment, String? message)>
+  createComment({
     required String postId,
     required String userId,
     required String commentContent,
@@ -29,20 +30,29 @@ class PostCommentsRemoteData {
         final responseData = response.data;
 
         if (response.statusCode == 201 || responseData["success"] == true) {
-          return (true, responseData["message"].toString());
+          return (
+            true,
+            PostCommentModel.fromJson(responseData["comment"]).toEntity(),
+            responseData["message"].toString(),
+          );
         } else {
-          return (false, responseData["message"].toString());
+          return (false, null, responseData["message"].toString());
         }
       } else {
-        return (false, "No response from server. Please try again later.");
+        return (
+          false,
+          null,
+          "No response from server. Please try again later.",
+        );
       }
     } catch (e) {
-      return (false, "Unexpected error occurred: ${e.toString()}");
+      return (false, null, "Unexpected error occurred: ${e.toString()}");
     }
   }
 
   // Adds a new reply to a comment.
-  Future<(bool success, String? message)> createReply({
+  Future<(bool success, CommentReplyEntity? commentReply, String? message)>
+  createReply({
     required String commentId,
     required String userId,
     required String replyContent,
@@ -58,15 +68,23 @@ class PostCommentsRemoteData {
         final responseData = response.data;
 
         if (response.statusCode == 201 || responseData["success"] == true) {
-          return (true, responseData["message"].toString());
+          return (
+            true,
+            CommentReplyModel.fromJson(responseData["reply"]).toEntity(),
+            responseData["message"].toString(),
+          );
         } else {
-          return (false, responseData["message"].toString());
+          return (false, null, responseData["message"].toString());
         }
       } else {
-        return (false, "No response from server. Please try again later.");
+        return (
+          false,
+          null,
+          "No response from server. Please try again later.",
+        );
       }
     } catch (e) {
-      return (false, "Unexpected error occurred: ${e.toString()}");
+      return (false, null, "Unexpected error occurred: ${e.toString()}");
     }
   }
 
@@ -425,7 +443,7 @@ class PostCommentsRemoteData {
     required String commentId,
   }) {
     return sl<SearchUserHelper>().searchUserByUsername(
-      path: "${ApiRoutes.commentLikedUsers}/$commentId/$userToSearch",
+      path: "${ApiRoutes.searchCommentLikedUser}/$commentId/$userToSearch",
       userId: userId,
     );
   }
@@ -435,10 +453,10 @@ class PostCommentsRemoteData {
   searchReplyLikedUser({
     required String userId,
     required String userToSearch,
-    required String commentId,
+    required String replyId,
   }) {
     return sl<SearchUserHelper>().searchUserByUsername(
-      path: "${ApiRoutes.commentLikedUsers}/$commentId/$userToSearch",
+      path: "${ApiRoutes.searchReplyLikedUser}/$replyId/$userToSearch",
       userId: userId,
     );
   }

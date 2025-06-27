@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/network/helpers/search_debouncing.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/custom_user_tile.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
+import 'package:snibbo_app/features/explore/presentation/widgets/search_field.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_liked_users_bloc/comment_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_liked_users_bloc/comment_liked_users_events.dart';
@@ -24,6 +26,9 @@ class CommentLikedUsersScreen extends StatefulWidget {
 class _CommentLikedUsersScreenState extends State<CommentLikedUsersScreen> {
   late ScrollController _controller;
   late CommentLikedUsersBloc commentLikedUsersBloc;
+  late FocusNode focusNode;
+  late TextEditingController textEditingController;
+  final SearchDebouncingHelper _debounce = SearchDebouncingHelper();
 
   void _listener() {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
@@ -36,11 +41,13 @@ class _CommentLikedUsersScreenState extends State<CommentLikedUsersScreen> {
   @override
   void initState() {
     BlocProvider.of<CommentLikedUsersBloc>(context).add(
-      GetCommentLikedUsers(commentId: widget.comment.id),
+      GetCommentLikedUsers(commentId: widget.comment.id, showloading: true),
     );
     _controller = ScrollController();
     commentLikedUsersBloc = context.read<CommentLikedUsersBloc>();
     _controller.addListener(_listener);
+    focusNode = FocusNode();
+    textEditingController = TextEditingController();
     super.initState();
   }
 
@@ -48,12 +55,16 @@ class _CommentLikedUsersScreenState extends State<CommentLikedUsersScreen> {
   void dispose() {
     _controller.removeListener(_listener);
     _controller.dispose();
+    focusNode.dispose();
+    textEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+    final width = UiUtils.screenWidth(context);
+    final height = UiUtils.screenHeight(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,8 +73,10 @@ class _CommentLikedUsersScreenState extends State<CommentLikedUsersScreen> {
       ),
       body: MyRefreshBar(
         onRefresh: () async {
-          BlocProvider.of<CommentLikedUsersBloc>(context)
-              .add(GetCommentLikedUsers(commentId: widget.comment.id));
+          textEditingController.clear();
+          BlocProvider.of<CommentLikedUsersBloc>(context).add(
+            GetCommentLikedUsers(commentId: widget.comment.id, showloading: true),
+          );
         },
         widget: BlocConsumer<CommentLikedUsersBloc, CommentLikedUsersStates>(
           listenWhen: (previous, current) {
@@ -116,19 +129,55 @@ class _CommentLikedUsersScreenState extends State<CommentLikedUsersScreen> {
               return const Center(child: Text("Something went wrong"));
             }
 
-            return commentLikedUsersBloc.allUsers.isEmpty
-                ? const Center(child: Text("No Likes"))
-                : ListView.builder(
+            return ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
                     controller: _controller,
-                    itemCount: commentLikedUsersBloc.allUsers.length + 1,
+                    itemCount: commentLikedUsersBloc.allUsers.length + 2,
                     itemBuilder: (context, index) {
-                      if (index == commentLikedUsersBloc.allUsers.length) {
-                        return commentLikedUsersBloc.hasMore
+                      if (index == 0) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.03,
+                            vertical: height * 0.005,
+                          ),
+                          child: SearchField(
+                            focusNode: focusNode,
+                            textEditingController: textEditingController,
+                            onChanged: (value) {
+                              final String finalValue =
+                                  value.startsWith("@") ? value.substring(1) : value;
+                              _debounce.onChanged(
+                                onTimerEnd: () {
+                                  if (value.trim().isEmpty) {
+                                    BlocProvider.of<CommentLikedUsersBloc>(context).add(
+                                      GetCommentLikedUsers(
+                                        commentId: widget.comment.id,
+                                        showloading: false,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  BlocProvider.of<CommentLikedUsersBloc>(context).add(
+                                    SearchCommentLikedUser(
+                                      commentId: widget.comment.id,
+                                      userToSearch: finalValue,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            isMini: true,
+                            hintText: "Search liked users",
+                          ),
+                        );
+                      }
+                      if (index == commentLikedUsersBloc.allUsers.length + 1) {
+                        return commentLikedUsersBloc.hasMore  &&
+                        !commentLikedUsersBloc.isSearchMode
                             ? const CircularProgressLoading()
                             : const SizedBox.shrink();
                       }
-                      final user = commentLikedUsersBloc.allUsers[index];
+                      final user = commentLikedUsersBloc.allUsers[index - 1];
                       return CustomUserTile(
                         user: user,
                         onPopRefreshUsername: widget.comment.userId.username,

@@ -5,7 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/show_comments_sheet.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';

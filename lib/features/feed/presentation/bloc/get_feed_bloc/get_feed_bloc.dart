@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/get_feed_bloc/get_feed_events.dart';
@@ -12,6 +13,7 @@ class GetFeedBloc extends Bloc<GetFeedEvents, GetFeedStates> {
       emit(GetFeedLoadingState());
       final tokenId = await ServicesUtils.getTokenId();
       debugPrint("token id : $tokenId");
+      StoryViewsManager.storyViewStatus.clear();
 
       final (
         postsSuccess,

@@ -3,13 +3,13 @@ import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dar
 import 'package:snibbo_app/core/entities/user_entity.dart';
 
 abstract class PostCommentsRepository {
-  Future<(bool success, String? message)> createComment({
+  Future<(bool success,PostCommentEntity? comment, String? message)> createComment({
     required String postId,
     required String userId,
     required String commentContent,
   });
 
-  Future<(bool success, String? message)> createReply({
+  Future<(bool success,CommentReplyEntity? comment, String? message)> createReply({
     required String commentId,
     required String userId,
     required String replyContent,
@@ -92,6 +92,6 @@ abstract class PostCommentsRepository {
   searchReplyLikedUser({
     required String userId,
     required String userToSearch,
-    required String commentId,
+    required String replyId,
   });
 }

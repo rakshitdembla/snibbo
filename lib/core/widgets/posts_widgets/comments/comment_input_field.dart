@@ -97,7 +97,7 @@ class _CommentInputFieldState extends State<CommentInputField> {
                   _controller.clear();
                   BlocProvider.of<GetPostCommentsBloc>(
                     context,
-                  ).add(FetchPostComments(postId: widget.post.id));
+                  ).add(AddNewPostComment(postId: widget.post.id,comment: state.comment));
                 } else if (state is CreateCommentFailure) {
                   UiUtils.showToast(
                     title: state.title,

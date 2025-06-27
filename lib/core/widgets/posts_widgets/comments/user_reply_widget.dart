@@ -5,7 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/reply_delete_icon.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
@@ -62,10 +62,11 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserCircularProfileWidget(
+            username: widget.replyEntity.userId.username,
             profileUrl: widget.replyEntity.userId.profilePicture,
             margins: EdgeInsets.only(right: width * 0.012),
             storySize: 0.035,
-            isStatic: true,
+            isStatic: false,
             isAllStoriesViewed: widget.replyEntity.userId.isAllStoriesViewed,
             hasActiveStories: widget.replyEntity.userId.hasActiveStories,
           ),
@@ -75,11 +76,16 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      widget.replyEntity.userId.username,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: height * 0.012,
+                    GestureDetector(
+                      onTap: () {
+                        // here
+                      },
+                      child: Text(
+                        widget.replyEntity.userId.username,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: height * 0.012,
+                        ),
                       ),
                     ),
                     Text(

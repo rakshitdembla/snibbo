@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
@@ -49,14 +48,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        actions: [
-          IconButton(
-            icon: Icon(LineIcons.userPlus, color: MyColors.secondary),
-            onPressed: () {},
-          ),
-        ],
         iconTheme: IconThemeData(color: MyColors.white),
-        title: Text("Chats"),
+        title: Text("Recent Chats"),
       ),
       body: MyRefreshBar(
         onRefresh: () async {

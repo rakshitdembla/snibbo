@@ -51,6 +51,8 @@ class ApiRoutes {
   static String updatePost = "$postRoute/update";
   static String deletePost = "$postRoute/delete";
   static String searchPostLikedUser = "$postRoute/search-post-liked-user";
+  static String searchCommentLikedUser = "$postRoute/search-comment-liked-user";
+  static String searchReplyLikedUser = "$postRoute/search-reply-liked-user";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";

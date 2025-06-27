@@ -11,17 +11,22 @@ class ReplyLikedUsersBloc extends Bloc<ReplyLikedUsersEvents, ReplyLikedUsersSta
   List<UserEntity> allUsers = [];
   bool hasMore = true;
   bool isLoading = false;
+  String? userId;
+  bool isSearchMode = false;
 
   ReplyLikedUsersBloc() : super(ReplyLikedUsersInitial()) {
     on<GetReplyLikedUsers>((event, emit) async {
-      emit(ReplyLikedUsersLoading(replyId: event.replyId));
-
       page = 1;
       allUsers = [];
       hasMore = true;
       isLoading = false;
+      isSearchMode = false;
 
-      final userId = await ServicesUtils.getTokenId();
+      if (event.showloading) {
+        emit(ReplyLikedUsersLoading(replyId: event.replyId));
+      }
+
+      userId = await ServicesUtils.getTokenId();
       final (
         bool success,
         List<UserEntity>? users,
@@ -50,10 +55,10 @@ class ReplyLikedUsersBloc extends Bloc<ReplyLikedUsersEvents, ReplyLikedUsersSta
     });
 
     on<LoadMoreReplyLikedUsers>((event, emit) async {
-      if (isLoading || !hasMore) return;
+      if (isLoading || !hasMore || isSearchMode) return;
 
       isLoading = true;
-      final userId = await ServicesUtils.getTokenId();
+      if (userId == null) return;
 
       final (
         bool success,
@@ -82,6 +87,26 @@ class ReplyLikedUsersBloc extends Bloc<ReplyLikedUsersEvents, ReplyLikedUsersSta
         replyId: event.replyId,
       ));
       isLoading = false;
+    });
+
+    on<SearchReplyLikedUser>((event, emit) async {
+      allUsers = [];
+      userId = userId ?? await ServicesUtils.getTokenId();
+      isSearchMode = true;
+
+      final (
+        bool success,
+        List<UserEntity>? users,
+        String? message,
+      ) = await sl<PostsUsecase>().searchReplyLikedUser(
+        replyId: event.replyId,
+        userId: userId!,
+        userToSearch: event.userToSearch,
+      );
+
+      allUsers = users ?? [];
+
+      emit(ReplyLikedUsersLoaded(users: users ?? [], replyId: event.replyId));
     });
   }
 }

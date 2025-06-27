@@ -90,7 +90,7 @@ class GeneralPageState extends State<GeneralPage> {
                 FeedScreen(navController: _controller ,),
                 ExploreScreen(),
                 CreatePostScreen(),
-                ProfileScreen(key: _profileKey,onPopRefreshUsername: null,),
+                ProfileScreen(key: _profileKey,),
               ],
               navBarStyle: NavBarStyle.style6,
             );

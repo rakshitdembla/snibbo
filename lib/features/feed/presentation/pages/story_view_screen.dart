@@ -155,6 +155,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
 
                   if (index == widget.stories.length - 1) {
                     if (!widget.isMyStory) {
+                      debugPrint("Adding all stories seen event for ${widget.username}");
                       BlocProvider.of<ViewStoryBloc>(
                         context,
                       ).add(AllStoriesSeen(username: widget.username));
@@ -180,7 +181,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                 //On Vertical Swipes
                 onVerticalSwipeComplete: (direction) {
                   if (direction == Direction.down) {
-                    context.router.popUntilRoot();
+                    context.router.pop();
                   } else if (direction == Direction.up && widget.isMyStory) {
                     BlocProvider.of<StoryViewersBloc>(
                       context,

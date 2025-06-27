@@ -98,7 +98,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             },
             builder: (context, state) {
               if (state is UserProfileSuccess) {
-                return ProfileView(profileEntity: state.profileEntity,onPopRefreshUsername: widget.onPopRefreshUsername,);
+                return ProfileView(profileEntity: state.profileEntity);
               } else if (state is UserProfileError) {
                 return const Center(child: Text("Failed to load user profile"));
               } else {

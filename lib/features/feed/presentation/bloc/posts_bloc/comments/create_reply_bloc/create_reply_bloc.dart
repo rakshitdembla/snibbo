@@ -22,17 +22,18 @@ CreateReplyFailure(
       }
 
       final userId = await ServicesUtils.getTokenId();
-      final (success, message) = await sl<PostCommentsRepository>().createReply(
+      final (success,reply, message) = await sl<PostCommentsRepository>().createReply(
         commentId: event.commentId,
         userId: userId!,
         replyContent: event.replyContent,
       );
 
-      if (success) {
+      if (success && reply != null) {
         emit(
           CreateReplySuccess(
             title: "Reply added successfully.",
             description: message.toString(),
+            reply: reply,
             commentId: event.commentId,
           ),
         );

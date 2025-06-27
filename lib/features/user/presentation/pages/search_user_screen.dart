@@ -89,7 +89,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                   itemCount: users.length,
                   itemBuilder: (context, index) {
                     final user = users[index];
-                    return UserListTile(user: user, isDark: isDark);
+                    return UserListTile(user: user, isDark: isDark,isStatic: false,);
                   },
                 );
               } else if (state is SearchUserLoading) {

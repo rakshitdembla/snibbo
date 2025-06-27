@@ -25,9 +25,14 @@ class UserPostsTab extends StatefulWidget {
   State<UserPostsTab> createState() => _UserPostsTabState();
 }
 
-class _UserPostsTabState extends State<UserPostsTab> {
+class _UserPostsTabState extends State<UserPostsTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    debugPrint("initialized for ${widget.profileEntity.username}");
+    super.build(context);
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     return CustomScrollView(
@@ -49,16 +54,19 @@ class _UserPostsTabState extends State<UserPostsTab> {
               (context, index) {
                 return GestureDetector(
                   onTap: () {
-               widget.isUserPosts ?     context.router.push(
-                      UserPostsViewScreenRoute(
-                        profileEntity: widget.profileEntity,
-                        initialIndex: index,
-                      ),
-                    ) : context.router.push(
-                      SavedPostsViewScreenRoute(
-                        profileEntity: widget.profileEntity,
-                        initialIndex: index,
-                      ),);
+                    widget.isUserPosts
+                        ? context.router.push(
+                          UserPostsViewScreenRoute(
+                            profileEntity: widget.profileEntity,
+                            initialIndex: index,
+                          ),
+                        )
+                        : context.router.push(
+                          SavedPostsViewScreenRoute(
+                            profileEntity: widget.profileEntity,
+                            initialIndex: index,
+                          ),
+                        );
                   },
                   child: Image.network(
                     widget.posts[index].postContent,

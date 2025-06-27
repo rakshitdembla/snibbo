@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 
 abstract class GetPostCommentsEvents extends Equatable {
   @override
@@ -21,4 +22,18 @@ class LoadMorePostComments extends GetPostCommentsEvents {
 
   @override
   List<Object> get props => [postId];
+}
+
+class AddNewPostComment extends GetPostCommentsEvents {
+  final String postId;
+  final PostCommentEntity comment;
+  AddNewPostComment({required this.comment, required this.postId});
+
+  @override
+  List<Object> get props => [postId, comment];
+}
+
+class RefreshComments extends GetPostCommentsEvents {
+  final String postId;
+  RefreshComments({required this.postId});
 }

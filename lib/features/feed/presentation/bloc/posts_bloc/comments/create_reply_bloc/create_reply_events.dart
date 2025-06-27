@@ -19,3 +19,4 @@ class SubmitReplyEvent extends CreateReplyEvent {
   @override
   List<Object> get props => [commentId, replyContent];
 }
+

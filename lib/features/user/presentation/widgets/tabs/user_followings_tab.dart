@@ -165,7 +165,8 @@ class _UserFollowingsTabState extends State<UserFollowingsTab> {
               }
 
               if (index == userFollowingsBloc.allFollowings.length + 1) {
-                return userFollowingsBloc.hasMore
+                return userFollowingsBloc.hasMore &&
+                        !userFollowingsBloc.isSearchMode
                     ? CircularProgressLoading()
                     : SizedBox.shrink();
               }

@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/network/helpers/search_debouncing.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/custom_user_tile.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
+import 'package:snibbo_app/features/explore/presentation/widgets/search_field.dart';
 import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/reply_liked_users_bloc/reply_liked_users_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/reply_liked_users_bloc/reply_liked_users_events.dart';
@@ -24,6 +26,9 @@ class ReplyLikedUsersScreen extends StatefulWidget {
 class _ReplyLikedUsersScreenState extends State<ReplyLikedUsersScreen> {
   late ScrollController _controller;
   late ReplyLikedUsersBloc replyLikedUsersBloc;
+  late FocusNode focusNode;
+  late TextEditingController textEditingController;
+  final SearchDebouncingHelper _debounce = SearchDebouncingHelper();
 
   void _listener() {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
@@ -36,11 +41,13 @@ class _ReplyLikedUsersScreenState extends State<ReplyLikedUsersScreen> {
   @override
   void initState() {
     BlocProvider.of<ReplyLikedUsersBloc>(context).add(
-      GetReplyLikedUsers(replyId: widget.reply.id),
+      GetReplyLikedUsers(replyId: widget.reply.id, showloading: true),
     );
     _controller = ScrollController();
     replyLikedUsersBloc = context.read<ReplyLikedUsersBloc>();
     _controller.addListener(_listener);
+    focusNode = FocusNode();
+    textEditingController = TextEditingController();
     super.initState();
   }
 
@@ -48,12 +55,16 @@ class _ReplyLikedUsersScreenState extends State<ReplyLikedUsersScreen> {
   void dispose() {
     _controller.removeListener(_listener);
     _controller.dispose();
+    focusNode.dispose();
+    textEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+    final width = UiUtils.screenWidth(context);
+    final height = UiUtils.screenHeight(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,8 +73,10 @@ class _ReplyLikedUsersScreenState extends State<ReplyLikedUsersScreen> {
       ),
       body: MyRefreshBar(
         onRefresh: () async {
-          BlocProvider.of<ReplyLikedUsersBloc>(context)
-              .add(GetReplyLikedUsers(replyId: widget.reply.id));
+          textEditingController.clear();
+          BlocProvider.of<ReplyLikedUsersBloc>(context).add(
+            GetReplyLikedUsers(replyId: widget.reply.id, showloading: true),
+          );
         },
         widget: BlocConsumer<ReplyLikedUsersBloc, ReplyLikedUsersStates>(
           listenWhen: (previous, current) {
@@ -116,28 +129,67 @@ class _ReplyLikedUsersScreenState extends State<ReplyLikedUsersScreen> {
               return const Center(child: Text("Something went wrong"));
             }
 
-            return replyLikedUsersBloc.allUsers.isEmpty
-                ? const Center(child: Text("No Likes"))
-                : ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    controller: _controller,
-                    itemCount: replyLikedUsersBloc.allUsers.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == replyLikedUsersBloc.allUsers.length) {
-                        return replyLikedUsersBloc.hasMore
-                            ? const CircularProgressLoading()
-                            : const SizedBox.shrink();
-                      }
-                      final user = replyLikedUsersBloc.allUsers[index];
-                      return CustomUserTile(
-                        user: user,
-                        onPopRefreshUsername: widget.reply.userId.username,
-                      );
-                    },
+            return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _controller,
+              itemCount: replyLikedUsersBloc.allUsers.length + 2,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.03,
+                      vertical: height * 0.005,
+                    ),
+                    child: SearchField(
+                      focusNode: focusNode,
+                      textEditingController: textEditingController,
+                      onChanged: (value) {
+                        final String finalValue =
+                            value.startsWith("@") ? value.substring(1) : value;
+                        _debounce.onChanged(
+                          onTimerEnd: () {
+                            if (value.trim().isEmpty) {
+                              BlocProvider.of<ReplyLikedUsersBloc>(context).add(
+                                GetReplyLikedUsers(
+                                  replyId: widget.reply.id,
+                                  showloading: false,
+                                ),
+                              );
+                              return;
+                            }
+                            BlocProvider.of<ReplyLikedUsersBloc>(context).add(
+                              SearchReplyLikedUser(
+                                replyId: widget.reply.id,
+                                userToSearch: finalValue,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      isMini: true,
+                      hintText: "Search liked users",
+                    ),
                   );
+                }
+
+                if (index == replyLikedUsersBloc.allUsers.length + 1) {
+                  return replyLikedUsersBloc.hasMore &&
+                          !replyLikedUsersBloc.isSearchMode
+                      ? const CircularProgressLoading()
+                      : const SizedBox.shrink();
+                }
+
+                final user = replyLikedUsersBloc.allUsers[index - 1];
+                return CustomUserTile(
+                  user: user,
+                  onPopRefreshUsername: widget.reply.userId.username,
+                );
+              },
+            );
           },
         ),
       ),
     );
   }
 }
+

@@ -19,8 +19,7 @@ import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 @RoutePage()
 class ProfileScreen extends StatefulWidget {
-    final String? onPopRefreshUsername;
-  const ProfileScreen({super.key,required this.onPopRefreshUsername
+  const ProfileScreen({super.key
 });
 
   @override
@@ -121,7 +120,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             },
                   builder: (context, state) {
                     if (state is UserProfileSuccess) {
-                      return ProfileView(profileEntity: state.profileEntity,onPopRefreshUsername: widget.onPopRefreshUsername,);
+                      return ProfileView(profileEntity: state.profileEntity);
                     } else if (state is UserProfileError) {
                       return Center(child: Text("Failed to load user profile"));
                     } else {

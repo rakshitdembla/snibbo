@@ -7,6 +7,8 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_states.dart';
@@ -141,9 +143,11 @@ class _ReplyInputFieldState extends State<ReplyInputField> {
                     isWarning: false,
                   );
                   _controller.clear();
-                  BlocProvider.of<GetPostCommentsBloc>(
+                  BlocProvider.of<GetCommentRepliesBloc>(
                     context,
-                  ).add(FetchPostComments(postId: widget.post.id));
+                  ).add(AddNewCommentReply(commentId: widget.comment.id,reply: state.reply));
+
+                  BlocProvider.of<GetPostCommentsBloc>(context).add(RefreshComments(postId: widget.post.id));
                 }
         
                   },

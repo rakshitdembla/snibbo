@@ -7,7 +7,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/animated_like.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_actions_row.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_captions.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';

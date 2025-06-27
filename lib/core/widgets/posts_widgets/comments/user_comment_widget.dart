@@ -6,7 +6,7 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/comment_delete_icon.dart';
-import 'package:snibbo_app/core/widgets/posts_widgets/post_interaction_manager.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/replies_list_widget.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
@@ -71,6 +71,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
               // --> User Profile / User Story Widget
               UserCircularProfileWidget(
                 isStatic: false,
+                username: widget.commentEntity.userId.username,
                 profileUrl: widget.commentEntity.userId.profilePicture,
                 margins: EdgeInsets.only(right: width * 0.016),
                 storySize: 0.04,
@@ -87,11 +88,16 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         // -> Username
-                        Text(
-                          widget.commentEntity.userId.username,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: height * 0.013,
+                        GestureDetector(
+                          onTap: () {
+                            // add here
+                          },
+                          child: Text(
+                            widget.commentEntity.userId.username,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: height * 0.013,
+                            ),
                           ),
                         ),
                         // -> When comment was created

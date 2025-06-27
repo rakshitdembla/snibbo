@@ -7,8 +7,9 @@ abstract class ReplyLikedUsersEvents extends Equatable {
 
 class GetReplyLikedUsers extends ReplyLikedUsersEvents {
   final String replyId;
+  final bool showloading;
 
-  GetReplyLikedUsers({required this.replyId});
+  GetReplyLikedUsers({required this.replyId, required this.showloading});
 
   @override
   List<Object> get props => [replyId];
@@ -21,4 +22,14 @@ class LoadMoreReplyLikedUsers extends ReplyLikedUsersEvents {
 
   @override
   List<Object> get props => [replyId];
+}
+
+class SearchReplyLikedUser extends ReplyLikedUsersEvents {
+  final String replyId;
+  final String userToSearch;
+
+  SearchReplyLikedUser({required this.replyId, required this.userToSearch});
+
+  @override
+  List<Object> get props => [replyId, userToSearch];
 }

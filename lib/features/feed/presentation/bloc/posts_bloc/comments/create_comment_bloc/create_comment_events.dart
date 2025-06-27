@@ -17,5 +17,5 @@ class SubmitCommentEvent extends CreateCommentEvent {
   });
 
   @override
-  List<Object> get props => [postId,commentContent];
+  List<Object> get props => [postId, commentContent];
 }

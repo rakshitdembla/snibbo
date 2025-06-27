@@ -103,12 +103,11 @@ class _UserChatTileState extends State<UserChatTile> {
                   isStatic: false,
                   profileUrl: user.profilePicture,
                   margins: EdgeInsets.zero,
+                  username: user.username,
                   storySize: 0.075,
                   isAllStoriesViewed:
-                      user.hasActiveStories == true
-                          ? user.isAllStoriesViewed ?? true
-                          : true,
-                  hasActiveStories: user.hasActiveStories ?? false,
+                   user.hasActiveStories != false ?   user.isAllStoriesViewed : null,
+                  hasActiveStories: user.hasActiveStories
                 ),
               ),
               SizedBox(width: width * 0.02),

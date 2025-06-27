@@ -7,11 +7,12 @@ abstract class CommentLikedUsersEvents extends Equatable {
 
 class GetCommentLikedUsers extends CommentLikedUsersEvents {
   final String commentId;
+  final bool showloading;
 
-  GetCommentLikedUsers({required this.commentId});
+  GetCommentLikedUsers({required this.commentId, required this.showloading});
 
   @override
-  List<Object> get props => [commentId];
+  List<Object> get props => [commentId, showloading];
 }
 
 class LoadMoreCommentLikedUsers extends CommentLikedUsersEvents {
@@ -22,3 +23,14 @@ class LoadMoreCommentLikedUsers extends CommentLikedUsersEvents {
   @override
   List<Object> get props => [commentId];
 }
+
+class SearchCommentLikedUser extends CommentLikedUsersEvents {
+  final String commentId;
+  final String userToSearch;
+
+  SearchCommentLikedUser({required this.commentId, required this.userToSearch});
+
+  @override
+  List<Object> get props => [commentId, userToSearch];
+}
+

@@ -10,7 +10,8 @@ import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 class UserListTile extends StatelessWidget {
   final UserEntity user;
   final bool isDark;
-  const UserListTile({super.key, required this.user, required this.isDark});
+  final bool isStatic;
+  const UserListTile({super.key, required this.user, required this.isDark,required this.isStatic});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class UserListTile extends StatelessWidget {
       minTileHeight: height * 0.08,
       dense: false,
       leading: UserCircularProfileWidget(
-        isStatic: false,
+        isStatic: isStatic,
+        username: user.username,
         profileUrl: user.profilePicture,
         margins: EdgeInsets.symmetric(),
         storySize: 0.06,
@@ -45,17 +47,30 @@ class UserListTile extends StatelessWidget {
       ),
       subtitle: Text(
         user.name,
-        style: TextStyle(fontSize: width * 0.028, fontWeight: FontWeight.w100,),
+        style: TextStyle(fontSize: width * 0.028, fontWeight: FontWeight.w100),
       ),
-      trailing: IconButton(
-        onPressed: () {},
-        icon: Padding(
-          padding: EdgeInsets.only(left: width * 0.1),
-          child: Icon(
-            Icons.more_vert_outlined,
-            color: isDark ? MyColors.white : MyColors.black,
-          ),
+      trailing: PopupMenuButton<String>(
+        color: isDark ? MyColors.darkPrimary : MyColors.primary,
+        onSelected: (String value) {
+          debugPrint("You selected $value");
+        },
+        icon: Icon(
+          Icons.more_vert_outlined,
+          color: isDark ? MyColors.white : MyColors.black,
         ),
+        itemBuilder: (BuildContext context) {
+          return <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'report',
+              child: Text(
+                'Report',
+                style: TextStyle(
+                  color: isDark ? MyColors.white : MyColors.black,
+                ),
+              ),
+            ),
+          ];
+        },
       ),
     );
   }
