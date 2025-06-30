@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
-import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/tab_bar.dart';
 import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
@@ -116,6 +115,7 @@ class _ProfileViewState extends State<ProfileView>
                   isWarning: false,
                 );
               }
+              
             },
           ),
           BlocListener<
@@ -195,16 +195,11 @@ class _ProfileViewState extends State<ProfileView>
                   buildWhen: (previous, current) {
                     if (current is UserPostsPaginationLoaded) {
                       return current.username == widget.profileEntity.username;
-                    } else if (current is ReloadUserPostsLoading) {
-                      return current.username == widget.profileEntity.username;
                     } else {
                       return false;
                     }
                   },
                   builder: (context, state) {
-                    if (state is ReloadUserPostsLoading) {
-                      return Center(child: CircularProgressLoading());
-                    }
                     return UserPostsTab(
                       isUserPosts: true,
                       posts:  UserPostsHelper.posts[widget.profileEntity.username] ?? [],
@@ -220,17 +215,12 @@ class _ProfileViewState extends State<ProfileView>
                   buildWhen: (previous, current) {
                     if (current is UserSavedPostsPaginationLoaded) {
                       return current.username == widget.profileEntity.username;
-                    } else if (current is ReloadUserSavedLoading) {
-                      return current.username == widget.profileEntity.username;
                     } else {
                       return false;
                     }
                   },
       
                   builder: (context, state) {
-                    if (state is ReloadUserSavedLoading) {
-                      return Center(child: CircularProgressLoading());
-                    }
                     return UserPostsTab(
                       isUserPosts: false,
                       posts: UserSavedPostsHelper.posts[widget.profileEntity.username] ?? [],

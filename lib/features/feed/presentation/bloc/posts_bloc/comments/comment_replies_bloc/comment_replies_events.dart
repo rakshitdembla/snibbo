@@ -10,12 +10,12 @@ class FetchCommentReplies extends GetCommentRepliesEvents {
   final String commentId;
 
   FetchCommentReplies({required this.commentId});
-
-  @override
-  List<Object> get props => [commentId];
 }
 
-class ResetCommentsReplies extends GetCommentRepliesEvents {}
+class ResetCommentsReplies extends GetCommentRepliesEvents {
+  final String commentId;
+  ResetCommentsReplies({required this.commentId});
+}
 
 class AddNewCommentReply extends GetCommentRepliesEvents {
   final String commentId;
@@ -24,4 +24,13 @@ class AddNewCommentReply extends GetCommentRepliesEvents {
 
   @override
   List<Object> get props => [commentId, reply];
+}
+
+class RemoveCommentReply extends GetCommentRepliesEvents {
+  final String commentId;
+  final String replyId;
+  RemoveCommentReply({required this.commentId, required this.replyId});
+
+  @override
+  List<Object> get props => [commentId, replyId];
 }

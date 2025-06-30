@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -12,12 +11,12 @@ import 'package:snibbo_app/core/constants/my_keys.dart';
 import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
 import 'package:snibbo_app/core/models/cloud_image_model.dart';
 import 'package:snibbo_app/core/network/base_api/api_services.dart';
-import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
-import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_events.dart';
-import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
-import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_events.dart';
+import 'package:snibbo_app/core/utils/ui_utils.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
+import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uuid/uuid.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +24,7 @@ import 'package:pro_image_editor/core/models/editor_callbacks/pro_image_editor_c
 import 'package:pro_image_editor/features/main_editor/main_editor.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
 import 'package:snibbo_app/service_locator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServicesUtils {
   // @Email Validator Helper
@@ -215,23 +215,8 @@ class ServicesUtils {
     }
   }
 
-  //Refresh UserPosts & UserSavedPosts on Pop;
-
-  static void onPopRefreshPosts({
-    required BuildContext context,
-    required String onPopRefreshUsername,
-  }) {
-    BlocProvider.of<UserPostsPaginationBloc>(
-      context,
-    ).add(ReloadInitialUserPosts(username: onPopRefreshUsername));
-    BlocProvider.of<UserSavedPostsPaginationBloc>(
-      context,
-    ).add(ReloadInitialUserSavedPosts(username: onPopRefreshUsername));
-  }
-
   //Conditional DateFormat
   static String formattedDate(DateTime? date) {
-
     if (date == null) {
       return "";
     }
@@ -250,6 +235,80 @@ class ServicesUtils {
       return DateFormat('EEE').format(date);
     } else {
       return DateFormat('dd/MM/yyyy').format(date);
+    }
+  }
+
+  static Future<void> openEmailApp({
+    required String reportFor,
+    required String uniqueID,
+    required BuildContext context,
+  }) async {
+    String? encodeQueryParameters(Map<String, String> params) {
+      return params.entries
+          .map(
+            (MapEntry<String, String> e) =>
+                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+          )
+          .join('&');
+    }
+
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+    final Uri emailLaunchUri = Uri(
+      scheme: "mailto",
+      path: "app.snibbo@gmail.com",
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'Report for $reportFor - $uniqueID ',
+        'body': '',
+      }),
+    );
+    try {
+      await launchUrl(emailLaunchUri);
+    } catch (e) {
+      if (context.mounted) {
+        UiUtils.showToast(
+          title: "Couldn't open your mail app.",
+          isDark: isDark,
+          description: e.toString(),
+          context: context,
+          isSuccess: false,
+          isWarning: false,
+        );
+      }
+    }
+  }
+
+  static void copyLink({
+    required String uniqueID,
+    required String type,
+    required BuildContext context,
+  }) async {
+    final link = "https://www.snibbo.com/?type=$type&uniqueId=$uniqueID";
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+
+    try {
+      await Clipboard.setData(ClipboardData(text: link));
+
+      if (context.mounted) {
+        UiUtils.showToast(
+          title: "Link Copied!",
+          description: "The $type link has been copied to clipboard.",
+          context: context,
+          isDark: isDark,
+          isSuccess: true,
+          isWarning: false,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        UiUtils.showToast(
+          title: "Failed to copy link",
+          isDark: isDark,
+          description: e.toString(),
+          context: context,
+          isSuccess: false,
+          isWarning: false,
+        );
+      }
     }
   }
 }

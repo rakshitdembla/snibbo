@@ -57,7 +57,6 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
             .map(
               (story) => StoryItem.pageImage(
                 loadingWidget: CircularProgressLoading(),
-                // errorWidget: ,
                 duration: Duration(seconds: 15),
                 url: story.storyContent,
                 controller: controller,
@@ -155,7 +154,6 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
 
                   if (index == widget.stories.length - 1) {
                     if (!widget.isMyStory) {
-                      debugPrint("Adding all stories seen event for ${widget.username}");
                       BlocProvider.of<ViewStoryBloc>(
                         context,
                       ).add(AllStoriesSeen(username: widget.username));
@@ -236,7 +234,9 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                           ),
                           Spacer(),
                           deleteLoadingState
-                              ? SecondaryCircularProgress()
+                              ? SecondaryCircularProgress(
+                                scaleSize: height * 0.0010 ,
+                              )
                               : IconWithText._(
                                 height: height,
                                 icon: Icons.delete_outline,

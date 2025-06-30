@@ -8,7 +8,6 @@ import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/comment_input_field.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/reply_input_field.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/user_comment_widget.dart';
-import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
@@ -92,100 +91,98 @@ class ShowCommentsSheet {
             } else if (current is GetPostCommentsLoading &&
                 current.postId == post.id) {
               return true;
+            } else if (current is CommentsUpdated &&
+                current.postId == post.id) {
+              return true;
             }
             return false;
           },
           builder: (context, state) {
             controller.addListener(listener);
 
-            return SizedBox(
-              width: width,
-              height: height * 0.6,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: height * 0.013),
-                    child: Text(
-                      "Comments",
-                      style: TextStyle(
-                        fontSize: width * 0.037,
-                        fontWeight: FontWeight.w700,
+            return PopScope(
+              child: SizedBox(
+                width: width,
+                height: height * 0.6,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.013),
+                      child: Text(
+                        "Comments",
+                        style: TextStyle(
+                          fontSize: width * 0.037,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: height * 0.0015),
-                    child: Opacity(
-                      opacity: 0.15,
-                      child: Divider(
-                        color: MyColors.grey,
-                        thickness: 1.0.r,
-                        radius: BorderRadius.circular(10.r),
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.0015),
+                      child: Opacity(
+                        opacity: 0.15,
+                        child: Divider(
+                          color: MyColors.grey,
+                          thickness: 1.0.r,
+                          radius: BorderRadius.circular(10.r),
+                        ),
                       ),
                     ),
-                  ),
 
-                  if (state is GetPostCommentsLoading) ...[
-                    SizedBox(height: height * 0.265),
-                    Center(child: CircularProgressLoading()),
-                  ] else if (state is GetPostCommentsError)
-                    Expanded(
-                      child: Center(child: Text("Failed to load comments")),
-                    )
-                  else if (state is GetPostCommentsLoaded) ...[
-                    Expanded(
-                      child:
-                          getPostCommentsBloc.allComments.isEmpty
-                              ? Center(child: Text("No comments yet"))
-                              : ListView.builder(
-                                controller: controller,
-                                itemCount:
-                                    getPostCommentsBloc.allComments.length + 1,
-                                itemBuilder: (context, index) {
-                                  if (index ==
-                                      getPostCommentsBloc.allComments.length) {
-                                    return getPostCommentsBloc.hasMore
-                                        ? Padding(
-                                          padding: EdgeInsetsGeometry.only(
-                                            bottom: height * 0.02
-                                          ),
-                                          child: CircularProgressLoading(),
-                                        )
-                                        : SizedBox.shrink();
-                                  }
-                                  final comment =
-                                      getPostCommentsBloc.allComments[index];
-                                  return UserCommentWidget(
-                                    post: post,
-                                    commentEntity: PostCommentEntity(
-                                      id: comment.id,
-                                      isMyComment: comment.isMyComment,
-                                      isLikedByMe: comment.isLikedByMe,
-                                      userId: comment.userId,
-                                      commentContent: comment.commentContent,
-                                      commentLikes: comment.commentLikes,
-                                      commentReplies: comment.commentReplies,
-                                      createdAt: comment.createdAt,
-                                      updatedAt: comment.updatedAt,
-                                      v: comment.v,
-                                    ),
-                                  );
-                                },
-                              ),
-                    ),
-                    BlocBuilder<InputFieldBloc, InputFieldState>(
-                      builder: (context, state) {
-                        if (state is ReplyFieldState) {
-                          return ReplyInputField(
-                            comment: state.comment,
-                            post: post,
-                          );
-                        }
-                        return CommentInputField(post: post);
-                      },
-                    ),
+                    if (state is GetPostCommentsLoading) ...[
+                      SizedBox(height: height * 0.265),
+                      Center(child: CircularProgressLoading()),
+                    ] else if (state is GetPostCommentsError)
+                      Expanded(
+                        child: Center(child: Text("Failed to load comments")),
+                      )
+                    else if (state is GetPostCommentsLoaded) ...[
+                      Expanded(
+                        child:
+                            getPostCommentsBloc.allComments.isEmpty
+                                ? Center(child: Text("No comments yet"))
+                                : ListView.builder(
+                                  controller: controller,
+                                  itemCount:
+                                      getPostCommentsBloc.allComments.length +
+                                      1,
+                                  itemBuilder: (context, index) {
+                                    if (index ==
+                                        getPostCommentsBloc
+                                            .allComments
+                                            .length) {
+                                      return getPostCommentsBloc.hasMore
+                                          ? Padding(
+                                            padding: EdgeInsetsGeometry.only(
+                                              bottom: height * 0.02,
+                                            ),
+                                            child: CircularProgressLoading(),
+                                          )
+                                          : SizedBox.shrink();
+                                    }
+                                    final comment =
+                                        getPostCommentsBloc.allComments[index];
+                                    return UserCommentWidget(
+                                      key: ValueKey(comment.id),
+                                      post: post,
+                                      commentEntity: comment,
+                                    );
+                                  },
+                                ),
+                      ),
+                      BlocBuilder<InputFieldBloc, InputFieldState>(
+                        builder: (context, state) {
+                          if (state is ReplyFieldState) {
+                            return ReplyInputField(
+                              comment: state.comment,
+                              post: post,
+                            );
+                          }
+                          return CommentInputField(post: post);
+                        },
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             );
           },

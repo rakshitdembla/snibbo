@@ -10,9 +10,10 @@ abstract class UpdatePostEvent extends Equatable {
 class UpdatePost extends UpdatePostEvent {
   final String postId;
   final String caption;
+  final String username;
 
-  const UpdatePost({required this.postId, required this.caption});
+  const UpdatePost({required this.postId, required this.caption,required this.username});
 
   @override
-  List<Object?> get props => [postId, caption];
+  List<Object?> get props => [postId, caption,username];
 }

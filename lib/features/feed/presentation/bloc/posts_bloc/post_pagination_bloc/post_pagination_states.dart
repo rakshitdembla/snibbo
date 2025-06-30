@@ -4,7 +4,6 @@ abstract class PostPaginationStates {}
 
 class PostPaginationInitial extends PostPaginationStates {}
 
-class PostPaginationLoading extends PostPaginationStates {}
 
 class PostPaginationLoaded extends PostPaginationStates {
   final List<PostEntity> postLists;
@@ -19,3 +18,5 @@ class PostPaginationError extends PostPaginationStates {
   
   PostPaginationError({required this.title, required this.description});
 }
+
+class RefreshFeedPosts extends PostPaginationStates{}

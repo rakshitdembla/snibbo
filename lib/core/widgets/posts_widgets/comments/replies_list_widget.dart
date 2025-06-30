@@ -4,10 +4,10 @@ import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/comments/user_reply_widget.dart';
-import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/comment_replies_bloc/comment_replies_states.dart';
+import 'package:snibbo_app/core/local_data_manager/replies_storage_helper.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
@@ -15,14 +15,12 @@ class RepliesListWidget extends StatefulWidget {
   final int replies;
   final String commentId;
   final String postId;
-  final GetCommentRepliesBloc getCommentRepliesBloc;
 
   const RepliesListWidget({
     super.key,
     required this.replies,
     required this.postId,
     required this.commentId,
-    required this.getCommentRepliesBloc,
   });
 
   @override
@@ -33,134 +31,151 @@ class _RepliesListWidgetState extends State<RepliesListWidget> {
   bool showReplies = false;
 
   @override
+  void initState() {
+    super.initState();
+    ReplyStorageHelper.repliesLength.putIfAbsent(
+      widget.commentId,
+      () => widget.replies,
+    );
+
+    if (ReplyStorageHelper.repliesLength[widget.commentId]! > 0) {
+      ReplyStorageHelper.hasMore.putIfAbsent(widget.commentId, () => true);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
-    return // --> Get Comment Replies BLoc Consumer
-    widget.replies > 0
-        ? BlocConsumer<GetCommentRepliesBloc, GetCommentRepliesStates>(
-          // -> Listen When Validations (Get Comment Replies BLoc)
-          listenWhen: (previous, current) {
-            if (current is GetCommentRepliesLoaded &&
-                current.commentId == widget.commentId) {
-              return true;
-            } else if (current is GetCommentRepliesLoaded &&
-                current.commentId == widget.commentId) {
-              return true;
-            }
-            return false;
-          },
+    return BlocConsumer<GetCommentRepliesBloc, GetCommentRepliesStates>(
+      listener: (context, state) {
+        if (state is GetCommentRepliesError) {
+          UiUtils.showToast(
+            title: state.title,
+            isDark: isDark,
+            description: state.description,
+            context: context,
+            isSuccess: false,
+            isWarning: false,
+          );
+        } else if (state is GetCommentRepliesLoaded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              showReplies = true;
+            });
+          });
+        }
+      },
+      listenWhen: (previous, current) {
+        if (current is GetCommentRepliesError) {
+          return current.commentId == widget.commentId;
+        } else if (current is GetCommentRepliesLoaded) {
+          return current.commentId == widget.commentId;
+        }
+        return false;
+      },
 
-          // -> Listener for Get Comment Replies BLoc
-          listener: (context, state) {
-            if (state is GetCommentRepliesError) {
-              UiUtils.showToast(
-                title: state.title,
-                isDark: isDark,
-                description: state.description,
-                context: context,
-                isSuccess: false,
-                isWarning: false,
-              );
-            }
-          },
-          // -> Build When Validations (Get Comment Replies BLoc)
-          buildWhen: (previous, current) {
-            if (current is GetCommentRepliesLoaded &&
-                current.commentId == widget.commentId) {
-              return true;
-            }
-            return false;
-          },
-          // -> Builder for Get Comment Replies BLoc
-          builder: (context, state) {
-            final bool showLoading = widget.getCommentRepliesBloc.isLoading;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // -> Replies ListView Builder
-                showReplies
-                    ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: widget.getCommentRepliesBloc.allReplies.length,
-                      itemBuilder: (context, index) {
-                        final reply =
-                            widget.getCommentRepliesBloc.allReplies[index];
-                        // -> User Reply Widget
-                        return UserReplyWidget(
-                          commendId: widget.commentId,
-                          postId: widget.postId,
-                          replyEntity: CommentReplyEntity(
-                            id: reply.id,
-                            isMyReply: reply.isMyReply,
-                            isLikedByMe: reply.isLikedByMe,
-                            userId: reply.userId,
-                            replyContent: reply.replyContent,
-                            replyLikes: reply.replyLikes,
-                            createdAt: reply.createdAt,
-                            updatedAt: reply.updatedAt,
-                            v: reply.v,
-                          ),
-                        );
-                      },
-                    )
-                    : SizedBox.shrink(),
-                // Toogle Button for Show & Hide Replies
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: width * 0.02,
-                    top: height * 0.01,
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showReplies =
-                            widget.getCommentRepliesBloc.hasMore ? true : false;
-                      });
-                      showReplies
-                          ? widget.getCommentRepliesBloc.add(
-                            FetchCommentReplies(commentId: widget.commentId),
-                          )
-                          : widget.getCommentRepliesBloc.add(
-                            ResetCommentsReplies(),
-                          );
+      buildWhen: (previous, current) {
+        if (current is GetCommentRepliesLoading) {
+          return current.commentId == widget.commentId;
+        } else if (current is GetCommentRepliesLoaded) {
+          return current.commentId == widget.commentId;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        final allReplies = ReplyStorageHelper.replies[widget.commentId] ?? [];
+        final initialRepliesLength =
+            ReplyStorageHelper.repliesLength[widget.commentId]!;
+        final showLoading = state is GetCommentRepliesLoading;
+        if (initialRepliesLength > 0 || allReplies.isNotEmpty) {
+          
+          final hasMore = ReplyStorageHelper.hasMore[widget.commentId] == true;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // -> Replies ListView Builder
+              showReplies
+                  ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: allReplies.length,
+                    itemBuilder: (context, index) {
+                      final reply = allReplies[index];
+                      return UserReplyWidget(
+                        key: ValueKey(reply.id),
+                        commendId: widget.commentId,
+                        postId: widget.postId,
+                        replyEntity: reply,
+                      );
                     },
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.only(left: width * 0.08),
-                      child: Row(
-                        children: [
-                          Text(
-                            widget.getCommentRepliesBloc.hasMore
-                                ? "- View ${widget.replies - widget.getCommentRepliesBloc.allReplies.length} more reply"
-                                : "- hide replies",
-                            style: TextStyle(
-                              color:
-                                  isDark
-                                      ? MyColors.darkRefresh
-                                      : MyColors.refresh,
-                              fontWeight: FontWeight.w500,
-                              fontSize: height * 0.012,
-                            ),
+                  )
+                  : SizedBox.shrink(),
+
+              // Toggle Button for Show & Hide Replies
+              Padding(
+                padding: EdgeInsets.only(
+                  left: width * 0.02,
+                  top: height * 0.01,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    if (hasMore) {
+                      BlocProvider.of<GetCommentRepliesBloc>(
+                        context,
+                      ).add(FetchCommentReplies(commentId: widget.commentId));
+                      setState(() {
+                        showReplies = true;
+                      });
+                    } else {
+                      BlocProvider.of<GetCommentRepliesBloc>(
+                        context,
+                      ).add(ResetCommentsReplies(commentId: widget.commentId));
+                      setState(() {
+                        showReplies = false;
+                      });
+                    }
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: width * 0.08),
+                    child: Row(
+                      children: [
+                        Text(
+                          hasMore
+                              ? initialRepliesLength - allReplies.length <= 0
+                                  ? "- view replies"
+                                  : "- view replies (${initialRepliesLength - allReplies.length})"
+                              : "- hide replies",
+                          style: TextStyle(
+                            color:
+                                isDark
+                                    ? MyColors.darkRefresh
+                                    : MyColors.refresh,
+                            fontWeight: FontWeight.w500,
+                            fontSize: height * 0.012,
                           ),
-                          showLoading
-                              ? Padding(
-                                padding: EdgeInsets.only(left: width * 0.01),
-                                child: SecondaryCircularProgress(
-                                  scaleSize: width * 0.0015,
-                                ),
-                              )
-                              : SizedBox.shrink(),
-                        ],
-                      ),
+                        ),
+                        showLoading
+                            ? Padding(
+                              padding: EdgeInsets.only(left: width * 0.01),
+                              child: SecondaryCircularProgress(
+                                scaleSize: width * 0.0015,
+                              ),
+                            )
+                            : SizedBox.shrink(),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            );
-          },
-        )
-        : SizedBox.shrink();
+              ),
+            ],
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
+    );
   }
 }

@@ -25,10 +25,24 @@ class InitializeUserPosts extends UserPostsPaginationEvents {
   List<Object?> get props => [initialPosts];
 }
 
-class ReloadInitialUserPosts extends UserPostsPaginationEvents {
+class UpdateUserPost extends UserPostsPaginationEvents {
+  final String postId;
+  final String updatedCaptions;
   final String username;
-  ReloadInitialUserPosts({required this.username});
+
+  UpdateUserPost({required this.postId, required this.username,required this.updatedCaptions});
+
   @override
-  List<Object?> get props => [username];
+  List<Object?> get props => [postId,username,updatedCaptions];
 }
 
+
+class DeleteUserPost extends UserPostsPaginationEvents {
+  final String postId;
+  final String username;
+
+  DeleteUserPost({required this.postId, required this.username});
+
+  @override
+  List<Object?> get props => [postId,username];
+}

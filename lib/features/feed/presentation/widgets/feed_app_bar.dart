@@ -54,22 +54,6 @@ class FeedAppBar extends StatelessWidget {
                         size: width * 0.075,
                         color: isDark ? MyColors.white : MyColors.black,
                       ),
-                      Positioned(
-                        top: height * 0,
-                        right: width * 0,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.red,
-                          radius: width * 0.018,
-                          child: Text(
-                            "9+",
-                            style: TextStyle(
-                              color: MyColors.white,
-                              fontSize: width * 0.018,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

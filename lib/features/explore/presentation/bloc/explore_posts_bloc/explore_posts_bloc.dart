@@ -14,6 +14,7 @@ class ExplorePostsBloc extends Bloc<ExplorePostsEvents, ExplorePostsStates> {
 
   ExplorePostsBloc() : super(ExplorePostsInitial()) {
     on<GetPosts>((event, emit) async {
+      emit(ExplorePostsLoading());
       final userId = await ServicesUtils.getTokenId();
       final (
         bool success,
@@ -82,6 +83,34 @@ class ExplorePostsBloc extends Bloc<ExplorePostsEvents, ExplorePostsStates> {
         ),
       );
       isLoading = false;
+    });
+
+    on<UpdateExplorePost>((event, emit) {
+      emit(ExplorePostsLoading());
+
+      if (allPosts.isNotEmpty) {
+        final index = allPosts.indexWhere((post) => post.id == event.postId);
+
+        if (index != -1) {
+          allPosts[index].postCaption = event.updatedCaptions.trim();
+        }
+      }
+
+      emit(ExplorePostsLoaded(posts: allPosts));
+    });
+
+    on<DeleteExplorePost>((event, emit) {
+      emit(ExplorePostsLoading());
+
+      if (allPosts.isNotEmpty) {
+        final index = allPosts.indexWhere((post) => post.id == event.postId);
+
+        if (index != -1) {
+          allPosts.removeAt(index);
+        }
+      }
+
+      emit(ExplorePostsLoaded(posts: allPosts));
     });
   }
 }

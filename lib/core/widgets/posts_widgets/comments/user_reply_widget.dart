@@ -78,7 +78,7 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // here
+                        context.router.push(UserProfileScreenRoute(username: widget.replyEntity.userId.username));
                       },
                       child: Text(
                         widget.replyEntity.userId.username,

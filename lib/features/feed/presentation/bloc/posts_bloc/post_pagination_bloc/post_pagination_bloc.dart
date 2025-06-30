@@ -22,7 +22,7 @@ class PostPaginationBloc
       hasMoreFollowingPosts = event.initialPosts.length == 8;
       page = 2;
       currentFeedMode = FeedMode.following;
-      emit(PostPaginationLoaded(postLists: allposts,));
+      emit(PostPaginationLoaded(postLists: allposts));
     });
 
     on<LoadMorePosts>((event, emit) async {
@@ -38,7 +38,6 @@ class PostPaginationBloc
       }
 
       isLoading = true;
-      emit((PostPaginationLoading()));
       final tokenId = await ServicesUtils.getTokenId();
 
       try {
@@ -51,11 +50,7 @@ class PostPaginationBloc
             page++;
             allposts.addAll(newPosts);
             hasMoreFollowingPosts = newPosts.length == 8;
-            emit(
-              PostPaginationLoaded(
-                postLists: allposts,
-              ),
-            );
+            emit(PostPaginationLoaded(postLists: allposts));
           } else {
             emit(
               PostPaginationError(
@@ -74,11 +69,7 @@ class PostPaginationBloc
             hasMoreAllPosts = newPosts.length == 8;
             page++;
             allposts.addAll(newPosts);
-            emit(
-              PostPaginationLoaded(
-                postLists: allposts,
-              ),
-            );
+            emit(PostPaginationLoaded(postLists: allposts));
           } else {
             emit(
               PostPaginationError(
@@ -98,6 +89,32 @@ class PostPaginationBloc
       } finally {
         isLoading = false;
       }
+    });
+
+    on<UpdateFeedPost>((event, emit) {
+      emit(RefreshFeedPosts());
+      if (allposts.isNotEmpty) {
+        final index = allposts.indexWhere((post) => post.id == event.postId);
+
+        if (index != -1) {
+          allposts[index].postCaption = event.updatedCaptions.trim();
+        }
+      }
+
+      emit(PostPaginationLoaded(postLists: allposts));
+    });
+
+    on<DeleteFeedPost>((event, emit) {
+      emit(RefreshFeedPosts());
+      if (allposts.isNotEmpty) {
+        final index = allposts.indexWhere((post) => post.id == event.postId);
+
+        if (index != -1) {
+          allposts.removeAt(index);
+        }
+      }
+
+      emit(PostPaginationLoaded(postLists: allposts));
     });
   }
 }

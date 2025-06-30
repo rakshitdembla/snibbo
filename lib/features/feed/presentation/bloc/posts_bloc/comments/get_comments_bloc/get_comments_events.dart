@@ -33,6 +33,15 @@ class AddNewPostComment extends GetPostCommentsEvents {
   List<Object> get props => [postId, comment];
 }
 
+class DeletePostComment extends GetPostCommentsEvents {
+  final String postId;
+  final String commentId;
+  DeletePostComment({required this.commentId, required this.postId});
+
+  @override
+  List<Object> get props => [postId, commentId];
+}
+
 class RefreshComments extends GetPostCommentsEvents {
   final String postId;
   RefreshComments({required this.postId});

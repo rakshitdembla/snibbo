@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
-import 'package:snibbo_app/core/theme/myfonts.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
@@ -31,7 +31,7 @@ class UserListTile extends StatelessWidget {
         isStatic: isStatic,
         username: user.username,
         profileUrl: user.profilePicture,
-        margins: EdgeInsets.symmetric(),
+        margins: EdgeInsets.zero,
         storySize: 0.06,
         isAllStoriesViewed: user.isAllStoriesViewed,
         hasActiveStories: user.hasActiveStories,
@@ -41,7 +41,6 @@ class UserListTile extends StatelessWidget {
         style: TextStyle(
           fontSize: width * 0.038,
           fontWeight: FontWeight.w600,
-          fontFamily: MyFonts.assetsFontFamily(),
         ),
       ),
       subtitle: Text(
@@ -52,6 +51,7 @@ class UserListTile extends StatelessWidget {
         color: isDark ? MyColors.darkPrimary : MyColors.primary,
         onSelected: (String value) {
           debugPrint("You selected $value");
+          ServicesUtils.openEmailApp(reportFor: "User", uniqueID: user.username, context: context);
         },
         icon: Icon(
           Icons.more_vert_outlined,

@@ -7,9 +7,10 @@ abstract class DeletePostEvent extends Equatable {
 
 class DeletePost extends DeletePostEvent {
   final String postId;
+  final String username;
 
-  DeletePost({required this.postId,});
+  DeletePost({required this.postId,required this.username});
 
   @override
-  List<Object?> get props => [postId,];
+  List<Object?> get props => [postId,username];
 }

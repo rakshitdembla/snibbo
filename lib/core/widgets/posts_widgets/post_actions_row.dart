@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/widgets/posts_widgets/post_action_icon.dart';
@@ -11,6 +12,7 @@ import 'package:snibbo_app/core/widgets/posts_widgets/comments/show_comments_she
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
+import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_states.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_states.dart';
@@ -102,18 +104,37 @@ class PostActionsRow extends StatelessWidget {
             },
           ),
           SizedBox(width: width * 0.04),
-          PostActionIcon(
-            onTap: () {
-              BlocProvider.of<GetPostCommentsBloc>(context).add(FetchPostComments(postId: post.id));
-              ShowCommentsSheet.show(context: context, isDark: isDark,post: post);
+          BlocBuilder<GetPostCommentsBloc, GetPostCommentsStates>(
+            buildWhen: (previous, current) {
+              if (current is CommentsUpdated) {
+                return current.postId == post.id;
+              }
+              return false;
             },
-            count: post.commentsLength.toString(),
-            icon: CommonIcon._(icon: LineIcons.comments),
+            builder: (context, state) {
+              return PostActionIcon(
+                onTap: () {
+                  BlocProvider.of<GetPostCommentsBloc>(
+                    context,
+                  ).add(FetchPostComments(postId: post.id));
+                  ShowCommentsSheet.show(
+                    context: context,
+                    isDark: isDark,
+                    post: post,
+                  );
+                },
+                count:
+                    PostInteractionManager.postCommentCount[post.id].toString(),
+                icon: CommonIcon._(icon: LineIcons.comments),
+              );
+            },
           ),
           SizedBox(width: width * 0.04),
 
           PostActionIcon(
-            onTap: () {},
+            onTap: () {
+              ServicesUtils.copyLink(uniqueID: post.id, type: "post", context: context);
+            },
             count: "",
             icon: CommonIcon._(icon: LineIcons.telegramPlane),
           ),
@@ -155,7 +176,7 @@ class PostActionsRow extends StatelessWidget {
                         ? (state is ShowSaveAnimationState &&
                                 state.postId == post.id)
                             ? CommonIcon._(
-                              icon: Icons.bookmark_rounded
+                              icon: Icons.bookmark_rounded,
                             ).animate().scale(
                               duration: 400.ms,
                               curve: Curves.elasticOut,
@@ -163,7 +184,10 @@ class PostActionsRow extends StatelessWidget {
                               end: Offset(1.2, 1.2),
                             )
                             : CommonIcon._(icon: Icons.bookmark_rounded)
-                        : CommonIcon._(icon: LucideIcons.bookmark,iconSize: width * 0.065,),
+                        : CommonIcon._(
+                          icon: LucideIcons.bookmark,
+                          iconSize: width * 0.065,
+                        ),
               );
             },
           ),
@@ -177,7 +201,7 @@ class CommonIcon extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
   final double? iconSize;
-  const CommonIcon._({required this.icon, this.iconColor,this.iconSize});
+  const CommonIcon._({required this.icon, this.iconColor, this.iconSize});
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,6 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/c
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_reply_bloc/delete_reply_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_reply_bloc/delete_reply_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/delete_reply_bloc/delete_reply_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
@@ -24,7 +22,7 @@ class ReplyDeleteIcon extends StatelessWidget {
     required this.isMyReply,
     required this.commentId,
     required this.replyId,
-    required this.postId
+    required this.postId,
   });
 
   @override
@@ -53,7 +51,9 @@ class ReplyDeleteIcon extends StatelessWidget {
                 isWarning: false,
               );
 
-              BlocProvider.of<GetPostCommentsBloc>(context).add(FetchPostComments(postId: postId ));
+              BlocProvider.of<GetCommentRepliesBloc>(
+                context,
+              ).add(RemoveCommentReply(commentId: commentId, replyId: state.replyId));
             } else if (state is DeleteReplyFailure) {
               UiUtils.showToast(
                 title: state.title,
@@ -70,7 +70,7 @@ class ReplyDeleteIcon extends StatelessWidget {
               return true;
             } else if (current is DeleteReplyFailure &&
                 current.replyId == replyId) {
-             return true;
+              return true;
             } else if (current is DeleteReplyLoading &&
                 current.replyId == replyId) {
               return true;
@@ -86,8 +86,6 @@ class ReplyDeleteIcon extends StatelessWidget {
                 BlocProvider.of<DeleteReplyBloc>(
                   context,
                 ).add(SubmitDeleteReplyEvent(replyId: replyId));
-
-                BlocProvider.of<GetCommentRepliesBloc>(context).add(ResetCommentsReplies());
               },
               child: Icon(
                 LineIcons.alternateTrashAlt,

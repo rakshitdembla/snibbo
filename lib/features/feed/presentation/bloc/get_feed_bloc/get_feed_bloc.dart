@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart';
@@ -11,6 +12,10 @@ class GetFeedBloc extends Bloc<GetFeedEvents, GetFeedStates> {
   GetFeedBloc() : super(GetFeedInitialState()) {
     on<GetFeedData>((event, emit) async {
       emit(GetFeedLoadingState());
+
+      PostInteractionManager.clear();
+      StoryViewsManager.cleanStories();
+
       final tokenId = await ServicesUtils.getTokenId();
       debugPrint("token id : $tokenId");
       StoryViewsManager.storyViewStatus.clear();
@@ -43,6 +48,25 @@ class GetFeedBloc extends Bloc<GetFeedEvents, GetFeedStates> {
           posts != null &&
           stories != null &&
           myStories != null) {
+        if (posts.isEmpty || posts.length < 3) {
+          final (
+            allPostsSuccess,
+            allPosts,
+            allPostsMessage,
+          ) = await sl<GetFeedPostsUsecase>().getAllPosts(tokenId, 1, 15);
+
+          if (allPostsSuccess && allPosts != null) {
+            posts.addAll(allPosts);
+          } else {
+            emit(
+              GetFeedErrorState(
+                title: "Failed to Load Feed",
+                description: "An unknown error occurred.",
+              ),
+            );
+            return;
+          }
+        }
         emit(
           GetFeedSuccessState(
             title: "Feed Loaded",
@@ -58,8 +82,7 @@ class GetFeedBloc extends Bloc<GetFeedEvents, GetFeedStates> {
       emit(
         GetFeedErrorState(
           title: "Failed to Load Feed",
-          description:
-              "An unknown error occurred.",
+          description: "An unknown error occurred.",
         ),
       );
     });

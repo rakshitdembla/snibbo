@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/bottom_modal_sheet.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
@@ -20,27 +22,31 @@ class StoryViewersSheet {
       isDark: isDark,
       controller: controller,
       builder: (context) {
+        final height = UiUtils.screenHeight(context);
         return BlocBuilder<StoryViewersBloc, StoryViewersStates>(
           builder: (context, state) {
             if (state is StoryViewersErrorState) {
               return SheetHeading(
-                widget: Center(
-                  child: Text("Error Users"),
-                ), //@ Error PlaceHolder
+                widget: Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.05),
+                  child: Center(
+                    child: Lottie.asset(MyAssets.cat404, height: height * 0.1),
+                  ),
+                ), 
               );
             } else if (state is StoryViewersSuccessState) {
               final users = state.users;
               return SheetHeading(
                 widget:
                     users.isEmpty
-                        ? Center(child: Text("No Users"))
-                        //@ No Users PlaceHolder,
+                        ? Padding(
+                          padding: EdgeInsets.only(bottom: height * 0.05),
+                          child: Center(child: Text("No Views Yet")))
                         : ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: users.length,
                           itemBuilder: (context, index) {
                             final user = users[index];
-                            debugPrint("${user.name},${user.profilePicture}");
                             return UserListTile(
                               user: user,
                               isStatic: true,

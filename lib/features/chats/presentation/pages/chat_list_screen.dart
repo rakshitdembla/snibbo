@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
-import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
+import 'package:snibbo_app/core/widgets/error_screen.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
 import 'package:snibbo_app/features/chats/presentation/bloc/get_chats_bloc/get_chats_bloc.dart';
 import 'package:snibbo_app/features/chats/presentation/bloc/get_chats_bloc/get_chats_events.dart';
@@ -53,6 +53,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ),
       body: MyRefreshBar(
         onRefresh: () async {
+          await Future.delayed(500.ms);
           chatsListBloc.add(GetChatsList());
         },
         widget: SafeArea(
@@ -82,9 +83,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               if (state is ChatsListLoading) {
                 return Center(child: CircularProgressLoading());
               } else if (state is ChatsListError) {
-                return Center(
-                  child: Lottie.asset(MyAssets.cat404, height: height * 0.15),
-                );
+                return ErrorScreen(isFeedError: false,);
               }
               return ListView.builder(
                 physics: AlwaysScrollableScrollPhysics(),

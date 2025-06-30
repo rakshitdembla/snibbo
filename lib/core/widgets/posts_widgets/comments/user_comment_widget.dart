@@ -35,11 +35,11 @@ class UserCommentWidget extends StatefulWidget {
 }
 
 class _UserCommentWidgetState extends State<UserCommentWidget> {
-  late GetCommentRepliesBloc getCommentRepliesBloc;
+  late GetCommentRepliesBloc getGetCommentRepliesBloc;
 
   @override
   void initState() {
-    getCommentRepliesBloc =
+    getGetCommentRepliesBloc =
         context.read<GetCommentRepliesBloc>(); // Initialize getComments BLoc
     PostInteractionManager.commentLikeStatus.putIfAbsent(
       widget.commentEntity.id,
@@ -49,6 +49,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
       widget.commentEntity.id,
       () => widget.commentEntity.commentLikes,
     ); // Initialize likes vount in cache
+
     super.initState();
   }
 
@@ -57,6 +58,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(
         horizontal: width * 0.02,
@@ -75,8 +77,9 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                 profileUrl: widget.commentEntity.userId.profilePicture,
                 margins: EdgeInsets.only(right: width * 0.016),
                 storySize: 0.04,
-              isAllStoriesViewed: widget.commentEntity.userId.isAllStoriesViewed,
-               hasActiveStories: widget.commentEntity.userId.hasActiveStories,
+                isAllStoriesViewed:
+                    widget.commentEntity.userId.isAllStoriesViewed,
+                hasActiveStories: widget.commentEntity.userId.hasActiveStories,
               ),
               // --> Comment Info
               Expanded(
@@ -90,7 +93,11 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                         // -> Username
                         GestureDetector(
                           onTap: () {
-                            // add here
+                            context.router.push(
+                              UserProfileScreenRoute(
+                                username: widget.commentEntity.userId.username,
+                              ),
+                            );
                           },
                           child: Text(
                             widget.commentEntity.userId.username,
@@ -280,7 +287,6 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
             postId: widget.post.id,
             replies: widget.commentEntity.commentReplies,
             commentId: widget.commentEntity.id,
-            getCommentRepliesBloc: getCommentRepliesBloc,
           ),
         ],
       ),

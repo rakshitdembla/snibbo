@@ -10,6 +10,11 @@ abstract class GetCommentRepliesStates extends Equatable {
 
 class GetCommentRepliesInitial extends GetCommentRepliesStates {}
 
+class GetCommentRepliesLoading extends GetCommentRepliesStates {
+  final String commentId;
+  const GetCommentRepliesLoading({required this.commentId});
+}
+
 class GetCommentRepliesLoaded extends GetCommentRepliesStates {
   final List<CommentReplyEntity> replies;
   final String commentId;
@@ -37,4 +42,3 @@ class GetCommentRepliesError extends GetCommentRepliesStates {
   @override
   List<Object?> get props => [title, description, commentId];
 }
-

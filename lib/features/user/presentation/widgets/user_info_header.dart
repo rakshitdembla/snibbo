@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
 import 'package:snibbo_app/core/widgets/elevated_outlined_cta.dart';
@@ -182,7 +183,9 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                             ),
                         profile.isMyProfile
                             ? ElevatedOutlinedCTA(
-                              onPressed: () {},
+                              onPressed: () {
+                                ServicesUtils.copyLink(uniqueID: profile.username, type: "profile", context: context);
+                              },
                               buttonName: "Share Profile",
                               isShort: true,
                             )

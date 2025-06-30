@@ -73,7 +73,7 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
           else if (index == widget.allStories.length + 1) {
             return paginationBloc.hasMore
                 ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                   child: Center(child: CircularProgressLoading()),
                 )
                 : SizedBox.shrink();

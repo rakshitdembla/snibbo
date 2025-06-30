@@ -7,7 +7,9 @@ import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagi
 import 'package:snibbo_app/features/user/presentation/helpers/user_saved_posts_helper.dart';
 import 'package:snibbo_app/service_locator.dart';
 
-class UserSavedPostsPaginationBloc extends Bloc<UserSavedPostsPaginationEvents, UserSavedPostsPaginationStates> {
+class UserSavedPostsPaginationBloc
+    extends
+        Bloc<UserSavedPostsPaginationEvents, UserSavedPostsPaginationStates> {
   UserSavedPostsPaginationBloc() : super(UserSavedPostsPaginationInitial()) {
     final allPosts = UserSavedPostsHelper.posts;
     final hasMore = UserSavedPostsHelper.hasMore;
@@ -36,12 +38,13 @@ class UserSavedPostsPaginationBloc extends Bloc<UserSavedPostsPaginationEvents, 
       final tokenId = await ServicesUtils.getTokenId();
 
       try {
-        final (success, posts, message) = await sl<GetUserSavedPostsUsecase>().call(
-          userId: tokenId!,
-          username: event.username,
-          page: page[event.username]!,
-          limit: 15,
-        );
+        final (success, posts, message) = await sl<GetUserSavedPostsUsecase>()
+            .call(
+              userId: tokenId!,
+              username: event.username,
+              page: page[event.username]!,
+              limit: 15,
+            );
 
         if (success && posts != null) {
           page[event.username] = page[event.username]! + 1;
@@ -77,39 +80,45 @@ class UserSavedPostsPaginationBloc extends Bloc<UserSavedPostsPaginationEvents, 
       isLoading[event.username] = false;
     });
 
-    on<ReloadInitialUserSavedPosts>((event, emit) async {
-      emit(ReloadUserSavedLoading(username: event.username));
-      page[event.username] = 1;
-      isLoading[event.username] = false;
-      allPosts[event.username] = [];
-
-      final tokenId = await ServicesUtils.getTokenId();
-
-      final (success, posts, message) = await sl<GetUserSavedPostsUsecase>().call(
-        userId: tokenId!,
-        username: event.username,
-        page: page[event.username]!,
-        limit: 15,
-      );
-
-      if (success && posts != null) {
-        hasMore[event.username] = posts.length == 15;
-        page[event.username] = 2;
-        allPosts[event.username]!.addAll(posts);
-        emit(
-          UserSavedPostsPaginationLoaded(
-            username: event.username,
-            postLists: posts,
-          ),
+    on<UpdateUserSavedPost>((event, emit) {
+      emit(RefreshUserSavedPostsPagination(username: event.username));
+      if (allPosts[event.username] != null &&
+          allPosts[event.username]!.isNotEmpty) {
+        final index = allPosts[event.username]!.indexWhere(
+          (post) => post.id == event.postId,
         );
-        return;
+
+        if (index != -1) {
+          allPosts[event.username]![index].postCaption =
+              event.updatedCaptions.trim();
+        }
       }
 
       emit(
-        UserSavedPostsPaginationError(
+        UserSavedPostsPaginationLoaded(
+          postLists: allPosts[event.username] ?? [],
           username: event.username,
-          title: "Failed to load saved posts",
-          description: message ?? "An unknown error occurred.",
+        ),
+      );
+    });
+
+    on<DeleteUserSavedPost>((event, emit) {
+      emit(RefreshUserSavedPostsPagination(username: event.username));
+      if (allPosts[event.username] != null &&
+          allPosts[event.username]!.isNotEmpty) {
+        final index = allPosts[event.username]!.indexWhere(
+          (post) => post.id == event.postId,
+        );
+
+        if (index != -1) {
+          allPosts[event.username]!.removeAt(index);
+        }
+      }
+
+      emit(
+        UserSavedPostsPaginationLoaded(
+          postLists: allPosts[event.username] ?? [],
+          username: event.username,
         ),
       );
     });

@@ -15,7 +15,7 @@ import 'package:snibbo_app/core/entities/user_entity.dart' as _i30;
 import 'package:snibbo_app/features/auth/presentation/pages/forget_password_screen.dart'
     as _i8;
 import 'package:snibbo_app/features/auth/presentation/pages/login_screen.dart'
-    as _i10;
+    as _i11;
 import 'package:snibbo_app/features/auth/presentation/pages/register_screen.dart'
     as _i16;
 import 'package:snibbo_app/features/chats/presentation/pages/chat_list_screen.dart'
@@ -38,8 +38,10 @@ import 'package:snibbo_app/features/feed/presentation/pages/comment_liked_users_
     as _i3;
 import 'package:snibbo_app/features/feed/presentation/pages/fetch_stories_loading.dart'
     as _i7;
+import 'package:snibbo_app/presentation/deep_link_post_view/presentation/pages/link_post_view_screen.dart'
+    as _i10;
 import 'package:snibbo_app/features/feed/presentation/pages/post_liked_users_screen.dart'
-    as _i12;
+    as _i13;
 import 'package:snibbo_app/features/feed/presentation/pages/reply_liked_users_screen.dart'
     as _i17;
 import 'package:snibbo_app/features/feed/presentation/pages/story_view_screen.dart'
@@ -69,9 +71,7 @@ import 'package:snibbo_app/features/user/presentation/widgets/profile_view.dart'
 import 'package:snibbo_app/presentation/general/presentation/pages/general_page.dart'
     as _i9;
 import 'package:snibbo_app/presentation/onboard/presentation/pages/onboard_screen.dart'
-    as _i11;
-import 'package:snibbo_app/presentation/posts_view/presentation/pages/posts_view_screen.dart'
-    as _i13;
+    as _i12;
 import 'package:snibbo_app/presentation/splash/presentation/pages/splash_screen.dart'
     as _i21;
 
@@ -416,7 +416,45 @@ class GeneralPageRoute extends _i27.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.LoginScreen]
+/// [_i10.LinkPostViewScreen]
+class LinkPostViewScreenRoute
+    extends _i27.PageRouteInfo<LinkPostViewScreenRouteArgs> {
+  LinkPostViewScreenRoute({
+    _i28.Key? key,
+    required String postId,
+    List<_i27.PageRouteInfo>? children,
+  }) : super(
+         LinkPostViewScreenRoute.name,
+         args: LinkPostViewScreenRouteArgs(key: key, postId: postId),
+         initialChildren: children,
+       );
+
+  static const String name = 'LinkPostViewScreenRoute';
+
+  static _i27.PageInfo page = _i27.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<LinkPostViewScreenRouteArgs>();
+      return _i10.LinkPostViewScreen(key: args.key, postId: args.postId);
+    },
+  );
+}
+
+class LinkPostViewScreenRouteArgs {
+  const LinkPostViewScreenRouteArgs({this.key, required this.postId});
+
+  final _i28.Key? key;
+
+  final String postId;
+
+  @override
+  String toString() {
+    return 'LinkPostViewScreenRouteArgs{key: $key, postId: $postId}';
+  }
+}
+
+/// generated route for
+/// [_i11.LoginScreen]
 class LoginScreenRoute extends _i27.PageRouteInfo<LoginScreenRouteArgs> {
   LoginScreenRoute({
     _i28.Key? key,
@@ -437,7 +475,7 @@ class LoginScreenRoute extends _i27.PageRouteInfo<LoginScreenRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<LoginScreenRouteArgs>();
-      return _i10.LoginScreen(
+      return _i11.LoginScreen(
         key: args.key,
         routedFromRegister: args.routedFromRegister,
       );
@@ -459,7 +497,7 @@ class LoginScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i11.OnboardScreen]
+/// [_i12.OnboardScreen]
 class OnboardScreenRoute extends _i27.PageRouteInfo<void> {
   const OnboardScreenRoute({List<_i27.PageRouteInfo>? children})
     : super(OnboardScreenRoute.name, initialChildren: children);
@@ -469,13 +507,13 @@ class OnboardScreenRoute extends _i27.PageRouteInfo<void> {
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      return const _i11.OnboardScreen();
+      return const _i12.OnboardScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i12.PostLikedUsersScreen]
+/// [_i13.PostLikedUsersScreen]
 class PostLikedUsersScreenRoute
     extends _i27.PageRouteInfo<PostLikedUsersScreenRouteArgs> {
   PostLikedUsersScreenRoute({
@@ -494,7 +532,7 @@ class PostLikedUsersScreenRoute
     name,
     builder: (data) {
       final args = data.argsAs<PostLikedUsersScreenRouteArgs>();
-      return _i12.PostLikedUsersScreen(key: args.key, post: args.post);
+      return _i13.PostLikedUsersScreen(key: args.key, post: args.post);
     },
   );
 }
@@ -509,59 +547,6 @@ class PostLikedUsersScreenRouteArgs {
   @override
   String toString() {
     return 'PostLikedUsersScreenRouteArgs{key: $key, post: $post}';
-  }
-}
-
-/// generated route for
-/// [_i13.PostsViewScreen]
-class PostsViewScreenRoute
-    extends _i27.PageRouteInfo<PostsViewScreenRouteArgs> {
-  PostsViewScreenRoute({
-    _i28.Key? key,
-    required String appbarTitle,
-    required List<dynamic> posts,
-    List<_i27.PageRouteInfo>? children,
-  }) : super(
-         PostsViewScreenRoute.name,
-         args: PostsViewScreenRouteArgs(
-           key: key,
-           appbarTitle: appbarTitle,
-           posts: posts,
-         ),
-         initialChildren: children,
-       );
-
-  static const String name = 'PostsViewScreenRoute';
-
-  static _i27.PageInfo page = _i27.PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<PostsViewScreenRouteArgs>();
-      return _i13.PostsViewScreen(
-        key: args.key,
-        appbarTitle: args.appbarTitle,
-        posts: args.posts,
-      );
-    },
-  );
-}
-
-class PostsViewScreenRouteArgs {
-  const PostsViewScreenRouteArgs({
-    this.key,
-    required this.appbarTitle,
-    required this.posts,
-  });
-
-  final _i28.Key? key;
-
-  final String appbarTitle;
-
-  final List<dynamic> posts;
-
-  @override
-  String toString() {
-    return 'PostsViewScreenRouteArgs{key: $key, appbarTitle: $appbarTitle, posts: $posts}';
   }
 }
 
@@ -878,6 +863,7 @@ class UpdatePostScreenRoute
   UpdatePostScreenRoute({
     _i28.Key? key,
     required String postId,
+    required String username,
     required String imageUrl,
     required String initialCaption,
     List<_i27.PageRouteInfo>? children,
@@ -886,6 +872,7 @@ class UpdatePostScreenRoute
          args: UpdatePostScreenRouteArgs(
            key: key,
            postId: postId,
+           username: username,
            imageUrl: imageUrl,
            initialCaption: initialCaption,
          ),
@@ -901,6 +888,7 @@ class UpdatePostScreenRoute
       return _i23.UpdatePostScreen(
         key: args.key,
         postId: args.postId,
+        username: args.username,
         imageUrl: args.imageUrl,
         initialCaption: args.initialCaption,
       );
@@ -912,6 +900,7 @@ class UpdatePostScreenRouteArgs {
   const UpdatePostScreenRouteArgs({
     this.key,
     required this.postId,
+    required this.username,
     required this.imageUrl,
     required this.initialCaption,
   });
@@ -920,13 +909,15 @@ class UpdatePostScreenRouteArgs {
 
   final String postId;
 
+  final String username;
+
   final String imageUrl;
 
   final String initialCaption;
 
   @override
   String toString() {
-    return 'UpdatePostScreenRouteArgs{key: $key, postId: $postId, imageUrl: $imageUrl, initialCaption: $initialCaption}';
+    return 'UpdatePostScreenRouteArgs{key: $key, postId: $postId, username: $username, imageUrl: $imageUrl, initialCaption: $initialCaption}';
   }
 }
 
@@ -1042,11 +1033,16 @@ class UserProfileScreenRoute
     extends _i27.PageRouteInfo<UserProfileScreenRouteArgs> {
   UserProfileScreenRoute({
     _i28.Key? key,
-    required String username,
+    String? username,
+    bool? isMyProfile,
     List<_i27.PageRouteInfo>? children,
   }) : super(
          UserProfileScreenRoute.name,
-         args: UserProfileScreenRouteArgs(key: key, username: username),
+         args: UserProfileScreenRouteArgs(
+           key: key,
+           username: username,
+           isMyProfile: isMyProfile,
+         ),
          initialChildren: children,
        );
 
@@ -1055,21 +1051,29 @@ class UserProfileScreenRoute
   static _i27.PageInfo page = _i27.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<UserProfileScreenRouteArgs>();
-      return _i26.UserProfileScreen(key: args.key, username: args.username);
+      final args = data.argsAs<UserProfileScreenRouteArgs>(
+        orElse: () => const UserProfileScreenRouteArgs(),
+      );
+      return _i26.UserProfileScreen(
+        key: args.key,
+        username: args.username,
+        isMyProfile: args.isMyProfile,
+      );
     },
   );
 }
 
 class UserProfileScreenRouteArgs {
-  const UserProfileScreenRouteArgs({this.key, required this.username});
+  const UserProfileScreenRouteArgs({this.key, this.username, this.isMyProfile});
 
   final _i28.Key? key;
 
-  final String username;
+  final String? username;
+
+  final bool? isMyProfile;
 
   @override
   String toString() {
-    return 'UserProfileScreenRouteArgs{key: $key, username: $username}';
+    return 'UserProfileScreenRouteArgs{key: $key, username: $username, isMyProfile: $isMyProfile}';
   }
 }

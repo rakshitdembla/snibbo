@@ -23,16 +23,17 @@ class UserPostsPaginationError extends UserPostsPaginationStates {
   final String description;
   final String username;
 
-  UserPostsPaginationError({required this.title, required this.description,required this.username});
+  UserPostsPaginationError({
+    required this.title,
+    required this.description,
+    required this.username,
+  });
 
   @override
-  List<Object?> get props => [title, description,username];
+  List<Object?> get props => [title, description, username];
 }
 
-class ReloadUserPostsLoading extends UserPostsPaginationStates {
+class RefreshUserPostsPagination extends UserPostsPaginationStates {
   final String username;
-
-  ReloadUserPostsLoading({required this.username});
-  @override
-  List<Object?> get props => [username];
+  RefreshUserPostsPagination({required this.username});
 }

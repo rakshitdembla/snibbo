@@ -11,12 +11,19 @@ class DeletePostLoading extends DeletePostState {}
 
 class DeletePostSuccess extends DeletePostState {
   final String title;
+  final String postId;
+  final String username;
   final String description;
 
-  DeletePostSuccess({required this.title, required this.description});
+  DeletePostSuccess({
+    required this.title,
+    required this.description,
+    required this.postId,
+    required this.username,
+  });
 
   @override
-  List<Object?> get props => [title, description];
+  List<Object?> get props => [title, description, postId];
 }
 
 class DeletePostError extends DeletePostState {

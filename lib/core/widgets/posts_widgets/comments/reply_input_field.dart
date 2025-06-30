@@ -12,8 +12,6 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/c
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/create_reply_bloc/create_reply_states.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_bloc.dart';
-import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/input_field_mode_bloc/input_field_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/input_field_mode_bloc/input_field_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
@@ -55,7 +53,8 @@ class _ReplyInputFieldState extends State<ReplyInputField> {
               padding: EdgeInsets.symmetric(vertical: height * 0.005),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF2C2F33) : const Color(0xFFF0F2F5),
+                color:
+                    isDark ? const Color(0xFF2C2F33) : const Color(0xFFF0F2F5),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20.r),
                   topRight: Radius.circular(20.r),
@@ -124,40 +123,24 @@ class _ReplyInputFieldState extends State<ReplyInputField> {
                 ),
                 BlocConsumer<CreateReplyBloc, CreateReplyState>(
                   listener: (context, state) {
-                    if (state is CreateReplyFailure) {
-                      UiUtils.showToast(
-                    title: state.title,
-                    isDark: isDark,
-                    description: state.description,
-                    context: context,
-                    isSuccess: false,
-                    isWarning: false,
-                  );
-                } else if (state is CreateReplySuccess) {
-                  UiUtils.showToast(
-                    title: state.title,
-                    isDark: isDark,
-                    description: state.description,
-                    context: context,
-                    isSuccess: true,
-                    isWarning: false,
-                  );
-                  _controller.clear();
-                  BlocProvider.of<GetCommentRepliesBloc>(
-                    context,
-                  ).add(AddNewCommentReply(commentId: widget.comment.id,reply: state.reply));
-
-                  BlocProvider.of<GetPostCommentsBloc>(context).add(RefreshComments(postId: widget.post.id));
-                }
-        
+                    if (state is CreateReplySuccess) {
+                      _controller.clear();
+                      BlocProvider.of<GetCommentRepliesBloc>(context).add(
+                        AddNewCommentReply(
+                          commentId: widget.comment.id,
+                          reply: state.reply,
+                        ),
+                      );
+                      
+                    }
                   },
                   builder: (context, state) {
-                  if (state is CreateReplyLoading) 
-                  {
-                    return Padding(
-                    padding: EdgeInsets.only(right: width * 0.025),
-                    child: Center(child: CircularProgressLoading()));
-                  }
+                    if (state is CreateReplyLoading) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: width * 0.025),
+                        child: Center(child: CircularProgressLoading()),
+                      );
+                    }
                     return IconButton(
                       onPressed: () {
                         BlocProvider.of<CreateReplyBloc>(context).add(

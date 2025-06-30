@@ -58,3 +58,13 @@ class GetPostCommentsPaginationError extends GetPostCommentsStates {
   @override
   List<Object?> get props => [title, description, postId];
 }
+
+class CommentsUpdated extends GetPostCommentsStates {
+  final String postId;
+    final List<PostCommentEntity> comments;
+
+  const CommentsUpdated({required this.postId,required this.comments});
+
+  @override
+  List<Object?> get props => [postId,comments];
+}

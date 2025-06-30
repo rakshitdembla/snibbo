@@ -52,6 +52,11 @@ class _PostWidgetState extends State<PostWidget> {
       post.id,
       () => post.isSavedByMe,
     );
+
+    PostInteractionManager.postCommentCount.putIfAbsent(
+      post.id,
+      () => post.commentsLength,
+    );
   }
 
   @override
@@ -120,15 +125,24 @@ class _PostWidgetState extends State<PostWidget> {
                   color: isDark ? MyColors.white : MyColors.black,
                 ),
               ),
-           post.isMyPost ?   IconButton(
-                onPressed: () {
-                 context.router.push(UpdatePostScreenRoute(postId: post.id, imageUrl: post.postContent, initialCaption: post.postCaption.toString()));
-                },
-                icon: Icon(
-                  LineIcons.edit,
-                  color: isDark ? MyColors.white : MyColors.black,
-                ),
-              ) : SizedBox.shrink()
+              post.isMyPost
+                  ? IconButton(
+                    onPressed: () {
+                      context.router.push(
+                        UpdatePostScreenRoute(
+                          username: post.userId.username,
+                          postId: post.id,
+                          imageUrl: post.postContent,
+                          initialCaption: post.postCaption.toString(),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      LineIcons.edit,
+                      color: isDark ? MyColors.white : MyColors.black,
+                    ),
+                  )
+                  : SizedBox.shrink(),
             ],
           ),
         ),

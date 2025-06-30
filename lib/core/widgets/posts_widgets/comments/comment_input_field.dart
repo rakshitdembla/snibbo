@@ -86,18 +86,11 @@ class _CommentInputFieldState extends State<CommentInputField> {
             BlocConsumer<CreateCommentBloc, CreateCommentState>(
               listener: (context, state) {
                 if (state is CreateCommentSuccess) {
-                  UiUtils.showToast(
-                    title: state.title,
-                    isDark: isDark,
-                    description: state.description,
-                    context: context,
-                    isSuccess: true,
-                    isWarning: false,
-                  );
                   _controller.clear();
                   BlocProvider.of<GetPostCommentsBloc>(
                     context,
                   ).add(AddNewPostComment(postId: widget.post.id,comment: state.comment));
+                  
                 } else if (state is CreateCommentFailure) {
                   UiUtils.showToast(
                     title: state.title,

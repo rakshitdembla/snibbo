@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/rendering.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/comments/get_comments_bloc/get_comments_states.dart';
+import 'package:snibbo_app/core/local_data_manager/replies_storage_helper.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class GetPostCommentsBloc
@@ -28,6 +29,8 @@ class GetPostCommentsBloc
         page: page,
         limit: 8,
       );
+
+      ReplyStorageHelper.clear();
 
       if (result.success && result.postComments != null) {
         allComments.addAll(result.postComments ?? []);
@@ -65,7 +68,13 @@ class GetPostCommentsBloc
       );
 
       if (result.success && result.postComments != null) {
-        allComments.addAll(result.postComments ?? []);
+        for (var comment in result.postComments!) {
+          ReplyStorageHelper.repliesLength[comment.id] = comment.commentReplies;
+
+          if (!allComments.any((c) => c.id == comment.id)) {
+            allComments.add(comment);
+          }
+        }
         hasMore = result.postComments?.length == 8;
         page++;
 
@@ -93,7 +102,16 @@ class GetPostCommentsBloc
     on<AddNewPostComment>((event, emit) {
       final comment = event.comment;
 
+      ReplyStorageHelper.repliesLength[comment.id] = comment.commentReplies;
+
       allComments.insert(0, comment);
+
+      PostInteractionManager.postCommentCount[event.postId] =
+          (PostInteractionManager.postCommentCount[event.postId] ?? 0) + 1;
+
+      emit(
+        CommentsUpdated(comments: List.from(allComments), postId: event.postId),
+      );
 
       emit(
         GetPostCommentsLoaded(
@@ -103,8 +121,23 @@ class GetPostCommentsBloc
       );
     });
 
-    on<RefreshComments>((event, emit) {
-      debugPrint("refresh comments called!");
+    on<DeletePostComment>((event, emit) {
+      final commentId = event.commentId;
+
+      final index = allComments.indexWhere(
+        (comment) => comment.id == commentId,
+      );
+
+      if (index != -1) {
+        allComments.removeAt(index);
+        PostInteractionManager.postCommentCount[event.postId] =
+            (PostInteractionManager.postCommentCount[event.postId] ?? 1) - 1;
+      }
+
+      emit(
+        CommentsUpdated(comments: List.from(allComments), postId: event.postId),
+      );
+
       emit(
         GetPostCommentsLoaded(
           comments: List.from(allComments),

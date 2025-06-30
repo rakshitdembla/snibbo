@@ -48,3 +48,6 @@ class ExplorePaginationError extends ExplorePostsStates {
   List<Object?> get props => [title, descrition];
 }
 
+class ExplorePostsLoading extends ExplorePostsStates {}
+
+

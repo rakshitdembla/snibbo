@@ -13,7 +13,11 @@ import 'package:snibbo_app/features/user/presentation/widgets/tabs/user_followin
 class UserConnectionsScreen extends StatefulWidget {
   final String username;
   final int initialIndex;
-  const UserConnectionsScreen({super.key, required this.username,required this.initialIndex});
+  const UserConnectionsScreen({
+    super.key,
+    required this.username,
+    required this.initialIndex,
+  });
 
   @override
   State<UserConnectionsScreen> createState() => _UserConnectionsScreenState();
@@ -42,66 +46,63 @@ class _UserConnectionsScreenState extends State<UserConnectionsScreen>
     final height = UiUtils.screenHeight(context);
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return Scaffold(
-        body: SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: true,
-              title: Text(widget.username),
-            ),
+      body: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: true,
+            title: Text(widget.username),
+          ),
 
-            body: Column(
-              children: [
-                TabBarWidget(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.28),
-                  tabs: [
-                    Padding(
-                      padding: EdgeInsetsGeometry.symmetric(
-                        vertical: height * 0.008,
-                      ),
-                      child: Text(
-                        "Followers",
-                        style: TextStyle(
-                          fontSize: width * 0.04,
-                          color:
-                              isDark ? MyColors.primary : MyColors.darkPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+          body: Column(
+            children: [
+              TabBarWidget(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.28),
+                tabs: [
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      vertical: height * 0.008,
                     ),
-                    Padding(
-                      padding: EdgeInsetsGeometry.symmetric(
-                        vertical: height * 0.008,
+                    child: Text(
+                      "Followers",
+                      style: TextStyle(
+                        fontSize: width * 0.04,
+                        color: isDark ? MyColors.primary : MyColors.darkPrimary,
+                        fontWeight: FontWeight.w600,
                       ),
-                      child: Text(
-                        "Followings",
-                        style: TextStyle(
-                          fontSize: width * 0.04,
-                          color:
-                              isDark ? MyColors.primary : MyColors.darkPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                  tabcontroller: _controller,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: height * 0.007),
-                    child: TabBarView(
-                      controller: _controller,
-                      children: [
-                        UserFollowersTab(username: widget.username),
-                        UserFollowingsTab(username: widget.username)
-                      ],
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      vertical: height * 0.008,
+                    ),
+                    child: Text(
+                      "Followings",
+                      style: TextStyle(
+                        fontSize: width * 0.04,
+                        color: isDark ? MyColors.primary : MyColors.darkPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+                tabcontroller: _controller,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: height * 0.007),
+                  child: TabBarView(
+                    controller: _controller,
+                    children: [
+                      UserFollowersTab(username: widget.username),
+                      UserFollowingsTab(username: widget.username),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
-   
+      ),
+    );
   }
 }

@@ -24,8 +24,7 @@ class _FeedPostsListState extends State<FeedPostsList> {
 
   Future<void> _getUsername() async {
     username = await ServicesUtils.getUsername();
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _controllerListener() {
@@ -76,6 +75,9 @@ class _FeedPostsListState extends State<FeedPostsList> {
         }
       },
       builder: (context, state) {
+        if (state is RefreshFeedPosts) {
+          return Center(child: CircularProgressLoading());
+        }
         final hasMore =
             paginationBloc.hasMoreAllPosts ||
             paginationBloc.hasMoreFollowingPosts;
@@ -97,7 +99,7 @@ class _FeedPostsListState extends State<FeedPostsList> {
                       : const SizedBox.shrink();
                 } else {
                   final post = paginationBloc.allposts[index];
-                  return PostWidget(postEntity: post);
+                  return PostWidget(key: ValueKey(post.id), postEntity: post);
                 }
               },
             ),

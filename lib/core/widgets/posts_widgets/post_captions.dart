@@ -23,18 +23,14 @@ class PostCaptions extends StatefulWidget {
 class _PostCaptionsState extends State<PostCaptions> {
   bool isExpanded = false;
   late bool isExpandable;
+
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     if (widget.postCaption.length > 70) {
       isExpandable = true;
     } else {
       isExpandable = false;
     }
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final width = UiUtils.screenWidth(context);
     return RichText(

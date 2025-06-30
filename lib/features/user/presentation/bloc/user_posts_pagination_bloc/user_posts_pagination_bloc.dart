@@ -1,4 +1,3 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/user/domain/usecases/get_user_posts_usecase.dart';
@@ -32,8 +31,6 @@ class UserPostsPaginationBloc
       if (isLoading[event.username]! || !hasMore[event.username]!) {
         return;
       }
-
-      debugPrint("Got event!!");
       isLoading[event.username] = true;
       final tokenId = await ServicesUtils.getTokenId();
 
@@ -57,8 +54,6 @@ class UserPostsPaginationBloc
               username: event.username,
             ),
           );
-
-          debugPrint("emitted sucecess");
         } else {
           emit(
             UserPostsPaginationError(
@@ -81,35 +76,45 @@ class UserPostsPaginationBloc
       isLoading[event.username] = false;
     });
 
-    on<ReloadInitialUserPosts>((event, emit) async {
-      emit(ReloadUserPostsLoading(username: event.username));
-      page[event.username] = 1;
-      isLoading[event.username] = false;
-      allPosts[event.username] = [];
-      final tokenId = await ServicesUtils.getTokenId();
-
-      final (success, posts, message) = await sl<GetUserPostsUsecase>().call(
-        userId: tokenId!,
-        username: event.username,
-        page: page[event.username]!,
-        limit: 15,
-      );
-
-      if (success && posts != null) {
-        hasMore[event.username] = posts.length == 15;
-        page[event.username] = 2;
-        allPosts[event.username]!.addAll(posts);
-        emit(
-          UserPostsPaginationLoaded(username: event.username, postLists: posts),
+    on<UpdateUserPost>((event, emit) {
+      emit(RefreshUserPostsPagination(username: event.username));
+      if (allPosts[event.username] != null &&
+          allPosts[event.username]!.isNotEmpty) {
+        final index = allPosts[event.username]!.indexWhere(
+          (post) => post.id == event.postId,
         );
-        return;
+
+        if (index != -1) {
+          allPosts[event.username]![index].postCaption =
+              event.updatedCaptions.trim();
+        }
       }
 
       emit(
-        UserPostsPaginationError(
+        UserPostsPaginationLoaded(
+          postLists: allPosts[event.username] ?? [],
           username: event.username,
-          title: "Failed to load more user posts",
-          description: message ?? "An unknown error occurred.",
+        ),
+      );
+    });
+
+    on<DeleteUserPost>((event, emit) {
+      emit(RefreshUserPostsPagination(username: event.username));
+      if (allPosts[event.username] != null &&
+          allPosts[event.username]!.isNotEmpty) {
+        final index = allPosts[event.username]!.indexWhere(
+          (post) => post.id == event.postId,
+        );
+
+        if (index != -1) {
+          allPosts[event.username]!.removeAt(index);
+        }
+      }
+
+      emit(
+        UserPostsPaginationLoaded(
+          postLists: allPosts[event.username] ?? [],
+          username: event.username,
         ),
       );
     });

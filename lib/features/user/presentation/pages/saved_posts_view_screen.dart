@@ -32,9 +32,10 @@ class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
   void _listener() {
     if (autoScrollController.position.pixels ==
         autoScrollController.position.maxScrollExtent) {
-
-    final hasMoreUserSavedPosts = UserSavedPostsHelper.hasMore[widget.profileEntity.username] == true;
-    final userSavedPostsLoading = UserSavedPostsHelper.isLoading[widget.profileEntity.username] == true;
+      final hasMoreUserSavedPosts =
+          UserSavedPostsHelper.hasMore[widget.profileEntity.username] == true;
+      final userSavedPostsLoading =
+          UserSavedPostsHelper.isLoading[widget.profileEntity.username] == true;
 
       if (hasMoreUserSavedPosts && !userSavedPostsLoading) {
         userSavedPostsBloc.add(
@@ -76,17 +77,26 @@ class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
         title: const Text("Saved Posts"),
         automaticallyImplyLeading: true,
       ),
-      body: BlocBuilder<UserSavedPostsPaginationBloc, UserSavedPostsPaginationStates>(
+      body: BlocBuilder<
+        UserSavedPostsPaginationBloc,
+        UserSavedPostsPaginationStates
+      >(
         buildWhen: (previous, current) {
           if (current is UserSavedPostsPaginationLoaded) {
+            return current.username == widget.profileEntity.username;
+          } else if (current is RefreshUserSavedPostsPagination) {
             return current.username == widget.profileEntity.username;
           }
           return false;
         },
         builder: (context, state) {
-             final allPosts = UserSavedPostsHelper.posts[widget.profileEntity.username];
+          if (state is RefreshUserSavedPostsPagination) {
+            return Center(child: CircularProgressLoading());
+          }
+          final allPosts =
+              UserSavedPostsHelper.posts[widget.profileEntity.username];
 
-              if (allPosts == null) {
+          if (allPosts == null) {
             return SizedBox.shrink();
           }
 
@@ -95,7 +105,9 @@ class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
             itemCount: allPosts.length + 1,
             itemBuilder: (context, index) {
               if (index == allPosts.length) {
-                return UserSavedPostsHelper.hasMore[widget.profileEntity.username] ==
+                return UserSavedPostsHelper.hasMore[widget
+                            .profileEntity
+                            .username] ==
                         true
                     ? const Center(child: CircularProgressLoading())
                     : const SizedBox.shrink();
@@ -106,7 +118,7 @@ class _SavedPostsViewScreenState extends State<SavedPostsViewScreen> {
                 key: ValueKey(index),
                 controller: autoScrollController,
                 index: index,
-                child: PostWidget(postEntity: post),
+                child: PostWidget(key: ValueKey(post.id), postEntity: post),
               );
             },
           );

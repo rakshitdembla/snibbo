@@ -13,6 +13,7 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/update_pos
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/update_post_bloc/update_post_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/update_post_bloc/update_post_states.dart';
 import 'package:snibbo_app/features/create/presentation/widgets/captions_text_field.dart';
+import 'package:snibbo_app/features/feed/presentation/helpers/update_post_events.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 
@@ -20,11 +21,13 @@ import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart
 class UpdatePostScreen extends StatefulWidget {
   final String postId;
   final String imageUrl;
+  final String username;
   final String initialCaption;
 
   const UpdatePostScreen({
     super.key,
     required this.postId,
+    required this.username,
     required this.imageUrl,
     required this.initialCaption,
   });
@@ -63,15 +66,19 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
           BlocConsumer<DeletePostBloc, DeletePostState>(
             listener: (context, state) {
               if (state is DeletePostSuccess) {
-                UiUtils.showToast(
-                  title: state.title,
-                  isDark: isDark,
-                  description: state.description,
-                  context: context,
-                  isSuccess: true,
-                  isWarning: false,
-                );
-                context.router.pop();
+                UpdatePostEvents.delete(context: context, state: state);
+
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  UiUtils.showToast(
+                    title: state.title,
+                    isDark: isDark,
+                    description: state.description,
+                    context: context,
+                    isSuccess: true,
+                    isWarning: false,
+                  );
+                  context.router.pop();
+                });
               } else if (state is DeletePostError) {
                 UiUtils.showToast(
                   title: state.title,
@@ -94,9 +101,12 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
               }
               return IconButton(
                 onPressed: () {
-                  BlocProvider.of<DeletePostBloc>(
-                    context,
-                  ).add(DeletePost(postId: widget.postId));
+                  BlocProvider.of<DeletePostBloc>(context).add(
+                    DeletePost(
+                      postId: widget.postId,
+                      username: widget.username,
+                    ),
+                  );
                 },
                 icon: Icon(
                   Icons.delete_forever_rounded,
@@ -129,15 +139,19 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   isWarning: false,
                 );
               } else if (state is UpdatePostSuccess) {
-                UiUtils.showToast(
-                  title: state.title,
-                  description: state.description,
-                  context: context,
-                  isDark: isDark,
-                  isSuccess: true,
-                  isWarning: false,
-                );
-                context.router.pop();
+                UpdatePostEvents.update(context: context, state: state);
+
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  UiUtils.showToast(
+                    title: state.title,
+                    isDark: isDark,
+                    description: state.description,
+                    context: context,
+                    isSuccess: true,
+                    isWarning: false,
+                  );
+                  context.router.pop();
+                });
               }
             },
             builder: (context, state) {
@@ -180,6 +194,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                         onPressed: () {
                           context.read<UpdatePostBloc>().add(
                             UpdatePost(
+                              username: widget.username,
                               postId: widget.postId,
                               caption: captionController.text.trim(),
                             ),

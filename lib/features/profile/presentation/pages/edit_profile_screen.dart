@@ -107,6 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   }
                 },
                 child: UserCircularProfileWidget(
+                  username: widget.username,
                   isStatic: true,
                   profileUrl: updatedProfile ?? widget.profileUrl,
                   margins: EdgeInsets.only(bottom: height * 0.005),
@@ -174,8 +175,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 focusNode: _bioFocus,
                 isPassword: false,
                 textEditingController: _bioController,
-                maxLength: 600,
-                maxLines: null,
+                maxLength: 150,
+                maxLines: 4,
                 onSubmit: (String value) {
                   FocusScope.of(context).unfocus();
                 },

@@ -32,3 +32,32 @@ class ReloadInitialUserSavedPosts extends UserSavedPostsPaginationEvents {
   @override
   List<Object?> get props => [username];
 }
+
+class UpdateUserSavedPost extends UserSavedPostsPaginationEvents {
+  final String postId;
+  final String updatedCaptions;
+  final String username;
+
+  UpdateUserSavedPost({
+    required this.postId,
+    required this.updatedCaptions,
+    required this.username,
+  });
+
+  @override
+  List<Object?> get props => [postId, updatedCaptions, username];
+}
+
+class DeleteUserSavedPost extends UserSavedPostsPaginationEvents {
+  final String postId;
+  final String username;
+
+  DeleteUserSavedPost({
+    required this.postId,
+    required this.username,
+  });
+
+  @override
+  List<Object?> get props => [postId, username];
+}
+

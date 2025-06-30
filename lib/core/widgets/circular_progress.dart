@@ -37,9 +37,9 @@ class SecondaryCircularProgress extends StatefulWidget {
 class _SecondaryCircularProgressState extends State<SecondaryCircularProgress> {
   @override
   Widget build(BuildContext context) {
-    final width = UiUtils.screenWidth(context);
+    final height = UiUtils.screenHeight(context);
     return Transform.scale(
-      scale: widget.scaleSize  ??  width * 0.0035,
+      scale: widget.scaleSize  ??  height * 0.0018,
       child: CircularProgressIndicator.adaptive(
         valueColor: AlwaysStoppedAnimation<Color>(MyColors.white),
       ),

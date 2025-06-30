@@ -17,7 +17,8 @@ class UserCircularProfileWidget extends StatefulWidget {
   final dynamic profileUrl;
   final bool? isFile;
   final double storySize;
-  final String? username;
+  final String username;
+  final bool? stopRoute;
   final bool? hasActiveStories;
   final bool? isAllStoriesViewed;
   final bool isStatic;
@@ -28,7 +29,8 @@ class UserCircularProfileWidget extends StatefulWidget {
     required this.profileUrl,
     required this.margins,
     required this.storySize,
-    this.username,
+    this.stopRoute,
+    required this.username,
     required this.hasActiveStories,
     required this.isAllStoriesViewed,
     required this.isStatic,
@@ -45,12 +47,12 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
 
   @override
   void initState() {
-    isAllViewed = StoryViewsManager.storyViewStatus[widget.username] ??
+    isAllViewed =
+        StoryViewsManager.storyViewStatus[widget.username] ??
         widget.isAllStoriesViewed ??
         widget.hasActiveStories ??
         false;
 
-        debugPrint("init state isAllViewed 💁$isAllViewed for ${widget.username}");
     super.initState();
   }
 
@@ -72,13 +74,8 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
         }
       },
       builder: (context, state) {
-        debugPrint(
-          "Rebuilt the user circular profile widget for ${widget.username} & status is 💁$isAllViewed",
-        );
-
         if (state is AllStoriesSeenState) {
           isAllViewed = state.status[widget.username] ?? isAllViewed;
-          debugPrint("State AllStoriesSeenState  isAllViewed 💁$isAllViewed for ${widget.username}");
         }
 
         return Container(
@@ -93,7 +90,12 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
                         widget.isStatic != true
                     ? MyColors.gradient
                     : null,
-            color: isAllViewed && !widget.isStatic ? MyColors.lowOpacitySecondary : null,
+            color:
+                isAllViewed &&
+                        !widget.isStatic &&
+                        widget.hasActiveStories != false
+                    ? MyColors.lowOpacitySecondary
+                    : null,
             shape: BoxShape.circle,
           ),
           child: Container(
@@ -146,18 +148,21 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
       },
     );
 
-    return widget.username != null && !widget.isStatic
+    return !widget.isStatic && widget.stopRoute != true
         ? GestureDetector(
           onTap: () {
-            debugPrint("tapped on ${widget.username}");
-            {
+            if (widget.hasActiveStories == true) {
               context.router.push(
                 FetchStoriesLoadingRoute(
                   storyUsers: widget.storyUsers,
-                  username: widget.username!,
+                  username: widget.username,
                   isPreviousSlide: false,
                   profilePicture: widget.profileUrl,
                 ),
+              );
+            } else {
+              context.router.push(
+                UserProfileScreenRoute(username: widget.username),
               );
             }
           },

@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class StoryUserDetailsWidget extends StatelessWidget {
   final List<StoryEntitiy>? stories;
@@ -22,14 +24,13 @@ class StoryUserDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = UiUtils.screenWidth(context);
     return GestureDetector(
-      // onTap: () {
-      //   context.router.push(
-      //     UserProfileScreenRoute(
-      //       username: username,
-      //       onPopRefreshUsername: null,
-      //     ),
-      //   );
-      // },
+      onTap: () {
+        context.router.push(
+          UserProfileScreenRoute(
+            username: username,
+          ),
+        );
+      },
       child: Row(
         children: [
           UserCircularProfileWidget(

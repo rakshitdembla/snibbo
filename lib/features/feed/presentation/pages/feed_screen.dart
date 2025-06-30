@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
+import 'package:snibbo_app/core/widgets/error_screen.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_bloc.dart';
 import 'package:snibbo_app/features/create/presentation/bloc/create_story_bloc/create_story_states.dart';
@@ -124,10 +124,14 @@ class _FeedScreenState extends State<FeedScreen> {
               builder: (context, state) {
                 return MyRefreshBar(
                   onRefresh: () async {
-                    context.read<GetFeedBloc>().add(GetFeedData());
+                    await Future.delayed(500.ms);
+                    if (context.mounted) {
+                      context.read<GetFeedBloc>().add(GetFeedData());
+                    }
                   },
                   widget: CustomScrollView(
                     controller: controller,
+                    physics: AlwaysScrollableScrollPhysics(),
                     slivers: [
                       FeedAppBar(navController: widget.navController),
                       //# Success State Handling ->
@@ -168,18 +172,14 @@ class _FeedScreenState extends State<FeedScreen> {
                       //#Error State Handling ->
                       else if (state is GetFeedErrorState) ...[
                         SliverToBoxAdapter(
-                          child: SizedBox(
-                            height:
-                                height -
-                                kBottomNavigationBarHeight -
-                                height * 0.25,
-                            width: width,
-                            child: Center(
-                              child: LottieBuilder.asset(
-                                MyAssets.space404,
-                                height: height * 0.15,
-                              ),
-                            ),
+                          child: MyRefreshBar(
+                            onRefresh: () async {
+                              await Future.delayed(500.ms);
+                              if (context.mounted) {
+                                context.read<GetFeedBloc>().add(GetFeedData());
+                              }
+                            },
+                            widget: ErrorScreen(isFeedError: true),
                           ),
                         ),
                       ]

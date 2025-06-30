@@ -50,6 +50,7 @@ class MyStoryWidget extends StatelessWidget {
                 UserCircularProfileWidget(
                   isAllStoriesViewed: hasActiveStories,
                   hasActiveStories: hasActiveStories,
+                  username: username,
                   isStatic: false,
                   profileUrl: profileUrl,
                   margins: EdgeInsets.fromLTRB(

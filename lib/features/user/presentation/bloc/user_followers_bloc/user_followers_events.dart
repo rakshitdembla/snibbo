@@ -35,3 +35,4 @@ class SearchFollower extends UserFollowersEvents {
   @override
   List<Object> get props => [username,userToSearch];
 }
+

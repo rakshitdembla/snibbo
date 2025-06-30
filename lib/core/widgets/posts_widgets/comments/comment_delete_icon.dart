@@ -20,7 +20,7 @@ class CommentDeleteIcon extends StatelessWidget {
     super.key,
     required this.isMyComment,
     required this.commentId,
-    required this.postId
+    required this.postId,
   });
 
   @override
@@ -30,11 +30,13 @@ class CommentDeleteIcon extends StatelessWidget {
     return isMyComment
         ? BlocConsumer<DeleteCommentBloc, DeleteCommentState>(
           listenWhen: (previous, current) {
-            if (current is DeleteCommentSuccess && current.commentId == commentId) {
-return true;
-            } else if (current is DeleteCommentFailure && current.commentId == commentId) {
-             return true;
-            } 
+            if (current is DeleteCommentSuccess &&
+                current.commentId == commentId) {
+              return true;
+            } else if (current is DeleteCommentFailure &&
+                current.commentId == commentId) {
+              return true;
+            }
             return false;
           },
           listener: (context, state) {
@@ -48,7 +50,9 @@ return true;
                 isWarning: false,
               );
 
-              BlocProvider.of<GetPostCommentsBloc>(context).add(FetchPostComments(postId: postId ));
+              BlocProvider.of<GetPostCommentsBloc>(context).add(
+                DeletePostComment(postId: postId, commentId: state.commentId),
+              );
             } else if (state is DeleteCommentFailure) {
               UiUtils.showToast(
                 title: state.title,
@@ -61,18 +65,21 @@ return true;
             }
           },
           buildWhen: (previous, current) {
-                        if (current is DeleteCommentSuccess && current.commentId == commentId) {
-return true;
-            } else if (current is DeleteCommentFailure && current.commentId == commentId) {
+            if (current is DeleteCommentSuccess &&
+                current.commentId == commentId) {
               return true;
-            } else if (current is DeleteCommentLoading && current.commentId == commentId) {
+            } else if (current is DeleteCommentFailure &&
+                current.commentId == commentId) {
+              return true;
+            } else if (current is DeleteCommentLoading &&
+                current.commentId == commentId) {
               return true;
             }
             return false;
           },
           builder: (context, state) {
             if (state is DeleteCommentLoading) {
-              return SecondaryCircularProgress(scaleSize: height * 0.00065,);
+              return SecondaryCircularProgress(scaleSize: height * 0.00065);
             }
             return GestureDetector(
               onTap: () {
@@ -83,7 +90,7 @@ return true;
               child: Icon(
                 LineIcons.alternateTrash,
                 size: height * 0.018,
-                color: MyColors.secondaryDense
+                color: MyColors.secondaryDense,
               ),
             );
           },

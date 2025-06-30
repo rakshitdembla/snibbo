@@ -35,11 +35,7 @@ class UserSavedPostsPaginationError extends UserSavedPostsPaginationStates {
   @override
   List<Object?> get props => [title, description,username];
 }
-
-class ReloadUserSavedLoading extends UserSavedPostsPaginationStates {
+class RefreshUserSavedPostsPagination extends UserSavedPostsPaginationStates {
   final String username;
-
-  ReloadUserSavedLoading({required this.username});
-  @override
-  List<Object?> get props => [username];
+  RefreshUserSavedPostsPagination({required this.username});
 }

@@ -19,6 +19,8 @@ class DeletePostBloc extends Bloc<DeletePostEvent, DeletePostState> {
       if (success) {
         emit(
           DeletePostSuccess(
+            postId: event.postId,
+            username: event.username,
             title: "Post Deleted",
             description: message ?? "Your post has been deleted successfully.",
           ),

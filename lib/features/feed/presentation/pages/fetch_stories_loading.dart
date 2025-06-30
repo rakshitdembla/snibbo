@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
@@ -35,6 +36,7 @@ class FetchStoriesLoading extends StatefulWidget {
 class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
   bool showLoading = true;
   late UserStoriesEntity user;
+  late bool isMyStory;
   @override
   void initState() {
     super.initState();
@@ -57,9 +59,13 @@ class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
         }
         return false;
       },
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is UserStoriesSuccessState &&
             state.userStories.userStories.isNotEmpty) {
+          final username = await ServicesUtils.getUsername();
+
+          isMyStory = state.userStories.username == username;
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
             setState(() {
               showLoading = false;
@@ -119,10 +125,10 @@ class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
                 ),
               )
               : StoryViewScreen(
+                isMyStory: isMyStory,
                 stories: user.userStories,
                 username: user.username,
                 profilePicture: user.profilePicture,
-                isMyStory: false,
                 storyUsers: widget.storyUsers,
               ),
     );

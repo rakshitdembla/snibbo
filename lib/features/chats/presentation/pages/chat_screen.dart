@@ -116,6 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   UserCircularProfileWidget(
+                    username: widget.username,
                     isStatic: true,
                     profileUrl: widget.profilePicture,
                     margins: EdgeInsets.zero,

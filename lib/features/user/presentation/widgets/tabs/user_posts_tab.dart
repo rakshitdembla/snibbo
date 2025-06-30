@@ -27,11 +27,12 @@ class UserPostsTab extends StatefulWidget {
 
 class _UserPostsTabState extends State<UserPostsTab>
     with AutomaticKeepAliveClientMixin {
+      
   @override
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
-    debugPrint("initialized for ${widget.profileEntity.username}");
+
     super.build(context);
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);
@@ -101,7 +102,7 @@ class _UserPostsTabState extends State<UserPostsTab>
                       top: height * 0.02,
                       bottom:
                           UiUtils.bottomNavBar(context: context) +
-                          height * 0.02,
+                          height * 0.01,
                     ),
                     child: CircularProgressLoading(),
                   )

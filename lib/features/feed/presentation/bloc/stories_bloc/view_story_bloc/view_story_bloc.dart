@@ -41,7 +41,7 @@ class ViewStoryBloc extends Bloc<ViewStoryEvents, ViewStoryStates> {
 
     on<AllStoriesSeen>((event, emit) {
       debugPrint('Got all stories seen event!');
-      StoryViewsManager.storyViewStatus.putIfAbsent(event.username, () => true);
+      StoryViewsManager.storyViewStatus[event.username] = true;
       emit(
         AllStoriesSeenState(
           username: event.username,

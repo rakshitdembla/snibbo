@@ -29,10 +29,8 @@ class _UserPostsViewScreenState extends State<UserPostsViewScreen> {
   late AutoScrollController autoScrollController;
 
   void _listener() {
-
     if (autoScrollController.position.pixels ==
         autoScrollController.position.maxScrollExtent) {
-
       final hasMoreUserPosts =
           UserPostsHelper.hasMore[widget.profileEntity.username] == true;
 
@@ -85,10 +83,16 @@ class _UserPostsViewScreenState extends State<UserPostsViewScreen> {
         buildWhen: (previous, current) {
           if (current is UserPostsPaginationLoaded) {
             return current.username == widget.profileEntity.username;
+          } else if (current is RefreshUserPostsPagination) {
+            return current.username == widget.profileEntity.username;
           }
           return false;
         },
         builder: (context, state) {
+          if (state is RefreshUserPostsPagination ) {
+            return Center(child: CircularProgressLoading(),);
+          }
+          
           final allPosts = UserPostsHelper.posts[widget.profileEntity.username];
 
           if (allPosts == null) {
@@ -109,7 +113,7 @@ class _UserPostsViewScreenState extends State<UserPostsViewScreen> {
                 key: ValueKey(index),
                 controller: autoScrollController,
                 index: index,
-                child: PostWidget(postEntity: post),
+                child: PostWidget(key: ValueKey(post.id), postEntity: post),
               );
             },
           );

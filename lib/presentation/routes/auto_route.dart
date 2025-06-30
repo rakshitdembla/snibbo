@@ -8,19 +8,19 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-    AutoRoute(page: SplashScreenRoute.page),
+    AutoRoute(page: SplashScreenRoute.page, path: "/", initial: true),
     AutoRoute(page: LoginScreenRoute.page),
     AutoRoute(page: RegisterScreenRoute.page),
     AutoRoute(page: ForgotPasswordScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: OnboardScreenRoute.page),
     AutoRoute(page: ProfileViewRoute.page),
-    AutoRoute(page: PostsViewScreenRoute.page),
+    AutoRoute(page: LinkPostViewScreenRoute.page),
     AutoRoute(page: SearchUserScreenRoute.page),
     AutoRoute(page: StoryViewScreenRoute.page),
     AutoRoute(page: FetchStoriesLoadingRoute.page),
     AutoRoute(page: EditProfileScreenRoute.page),
-    AutoRoute(page: GeneralPageRoute.page, path: "/", initial: true),
+    AutoRoute(page: GeneralPageRoute.page),
     AutoRoute(page: UserProfileScreenRoute.page),
     AutoRoute(page: UserConnectionsScreenRoute.page),
     AutoRoute(page: ProfileScreenRoute.page),
