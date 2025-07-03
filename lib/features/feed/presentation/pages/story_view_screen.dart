@@ -56,7 +56,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
         widget.stories
             .map(
               (story) => StoryItem.pageImage(
-                loadingWidget: CircularProgressLoading(),
+                loadingWidget: Center(child: CircularProgressLoading()),
                 duration: Duration(seconds: 15),
                 url: story.storyContent,
                 controller: controller,
@@ -234,8 +234,8 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                           ),
                           Spacer(),
                           deleteLoadingState
-                              ? SecondaryCircularProgress(
-                                scaleSize: height * 0.0010 ,
+                              ? CircularProgressLoading(
+                           androidScaleSize: height * 0.001,iosScaleSize: height * 0.0002,
                               )
                               : IconWithText._(
                                 height: height,

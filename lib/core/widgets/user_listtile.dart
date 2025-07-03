@@ -11,7 +11,12 @@ class UserListTile extends StatelessWidget {
   final UserEntity user;
   final bool isDark;
   final bool isStatic;
-  const UserListTile({super.key, required this.user, required this.isDark,required this.isStatic});
+  const UserListTile({
+    super.key,
+    required this.user,
+    required this.isDark,
+    required this.isStatic,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +24,7 @@ class UserListTile extends StatelessWidget {
     final height = UiUtils.screenHeight(context);
     return ListTile(
       onTap: () {
-        context.router.push(
-          UserProfileScreenRoute(
-            username: user.username,
-          ),
-        );
+        context.router.push(UserProfileScreenRoute(username: user.username));
       },
       minTileHeight: height * 0.08,
       dense: false,
@@ -38,10 +39,7 @@ class UserListTile extends StatelessWidget {
       ),
       title: Text(
         user.username,
-        style: TextStyle(
-          fontSize: width * 0.038,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(fontSize: width * 0.038, fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
         user.name,
@@ -51,7 +49,12 @@ class UserListTile extends StatelessWidget {
         color: isDark ? MyColors.darkPrimary : MyColors.primary,
         onSelected: (String value) {
           debugPrint("You selected $value");
-          ServicesUtils.openEmailApp(reportFor: "User", uniqueID: user.username, context: context);
+          ServicesUtils.openEmailApp(
+            reportFor: "User",
+            uniqueID: user.username,
+            context: context,
+            isReport: true,
+          );
         },
         icon: Icon(
           Icons.more_vert_outlined,

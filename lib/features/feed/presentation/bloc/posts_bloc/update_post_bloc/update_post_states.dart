@@ -9,7 +9,11 @@ abstract class UpdatePostState extends Equatable {
 
 class UpdatePostInitial extends UpdatePostState {}
 
-class UpdatePostLoading extends UpdatePostState {}
+class UpdatePostLoading extends UpdatePostState {
+  final String postId;
+
+  const UpdatePostLoading({required this.postId});
+}
 
 class UpdatePostSuccess extends UpdatePostState {
   final String title;
@@ -33,8 +37,9 @@ class UpdatePostSuccess extends UpdatePostState {
 class UpdatePostError extends UpdatePostState {
   final String title;
   final String description;
+  final String postId;
 
-  const UpdatePostError({required this.title, required this.description});
+  const UpdatePostError({required this.title, required this.description,required this.postId});
 
   @override
   List<Object?> get props => [title, description];

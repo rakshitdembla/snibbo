@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/explore/domain/use_cases/get_explore_posts.dart';
 import 'package:snibbo_app/features/explore/presentation/bloc/explore_posts_bloc/explore_posts_events.dart';
@@ -15,6 +16,12 @@ class ExplorePostsBloc extends Bloc<ExplorePostsEvents, ExplorePostsStates> {
   ExplorePostsBloc() : super(ExplorePostsInitial()) {
     on<GetPosts>((event, emit) async {
       emit(ExplorePostsLoading());
+
+      allPosts.clear();
+      page = 1;
+      hasMore = true;
+      isLoading = false;
+
       final userId = await ServicesUtils.getTokenId();
       final (
         bool success,
@@ -23,13 +30,15 @@ class ExplorePostsBloc extends Bloc<ExplorePostsEvents, ExplorePostsStates> {
       ) = await sl<GetExplorePostsUsecase>().call(
         userId: userId!,
         page: page,
-        limit: 20,
+        limit: 25,
       );
 
       if (success && posts != null) {
         allPosts.addAll(posts);
 
-        hasMore = posts.length == 20;
+        PostInteractionManager.clearPosts(posts: posts);
+
+        hasMore = posts.length == 25;
 
         page = 2;
 
@@ -61,13 +70,15 @@ class ExplorePostsBloc extends Bloc<ExplorePostsEvents, ExplorePostsStates> {
       ) = await sl<GetExplorePostsUsecase>().call(
         userId: userId!,
         page: page,
-        limit: 20,
+        limit: 25,
       );
 
       if (success && posts != null) {
         allPosts.addAll(posts);
 
-        hasMore = posts.length == 20;
+        PostInteractionManager.clearPosts(posts: posts);
+
+        hasMore = posts.length == 25;
 
         page++;
 

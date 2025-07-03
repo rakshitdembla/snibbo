@@ -1,10 +1,12 @@
+import 'dart:io';
+
 class ApiMainUrl {
   ApiMainUrl._();
 
-static String baseUrl = "http://192.168.31.10:3000"; 
+  static String baseUrl =
+      Platform.isAndroid ? "http://10.0.2.2:3000" : "http://172.20.10.8:3000";
 
   static String url = "$baseUrl/api";
-  
 }
 
 class ApiEndPoints {
@@ -53,6 +55,7 @@ class ApiRoutes {
   static String searchPostLikedUser = "$postRoute/search-post-liked-user";
   static String searchCommentLikedUser = "$postRoute/search-comment-liked-user";
   static String searchReplyLikedUser = "$postRoute/search-reply-liked-user";
+  static String getSinglePost = "$postRoute/get-post";
 
   static String storyRoute = "${ApiMainUrl.url}${ApiEndPoints.story}";
   static String followingStories = "$storyRoute/followings/stories";
@@ -68,8 +71,8 @@ class ApiRoutes {
   static String unfollowUser = "$userRoute/unfollow";
   static String userProfile = "$userRoute/profile";
   static String userFollowings = "$userRoute/followings";
-  static String userFollowers= "$userRoute/followers";
-  static String updateProfile= "$userRoute/update-profile";
+  static String userFollowers = "$userRoute/followers";
+  static String updateProfile = "$userRoute/update-profile";
   static String searchUser = "$userRoute/search-user";
   static String searchFollower = "$userRoute/search-follower";
   static String searchFollowing = "$userRoute/search-following";

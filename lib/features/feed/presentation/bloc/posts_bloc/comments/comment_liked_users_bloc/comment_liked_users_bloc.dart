@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart';
@@ -43,6 +44,7 @@ class CommentLikedUsersBloc extends Bloc<CommentLikedUsersEvents, CommentLikedUs
       if (success && users != null) {
         allUsers.addAll(users);
         hasMore = users.length == 13;
+        StoryViewsManager.clearStoriesByUsers(users: users);
         page = 2;
 
         emit(CommentLikedUsersLoaded(users: users, commentId: event.commentId));
@@ -77,6 +79,7 @@ class CommentLikedUsersBloc extends Bloc<CommentLikedUsersEvents, CommentLikedUs
         allUsers.addAll(users);
         hasMore = users.length == 13;
         page++;
+        StoryViewsManager.clearStoriesByUsers(users: users);
 
         isLoading = false;
         emit(CommentLikedUsersPaginationSuccess(users: users, commentId: event.commentId));
@@ -108,6 +111,7 @@ class CommentLikedUsersBloc extends Bloc<CommentLikedUsersEvents, CommentLikedUs
       );
 
       allUsers = users ?? [];
+      StoryViewsManager.clearStoriesByUsers(users: users ?? []);
 
       emit(CommentLikedUsersLoaded(users: users ?? [], commentId: event.commentId));
     });

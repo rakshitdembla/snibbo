@@ -1,10 +1,11 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/user/domain/usecases/get_user_saved_posts.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_states.dart';
-import 'package:snibbo_app/features/user/presentation/helpers/user_saved_posts_helper.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_saved_posts_helper.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class UserSavedPostsPaginationBloc
@@ -17,6 +18,7 @@ class UserSavedPostsPaginationBloc
     final page = UserSavedPostsHelper.page;
 
     on<InitializeUserSavedPosts>((event, emit) {
+      PostInteractionManager.clearPosts(posts: event.initialPosts);
       isLoading[event.username] = false;
       allPosts[event.username] = event.initialPosts;
       page[event.username] = 2;
@@ -47,6 +49,7 @@ class UserSavedPostsPaginationBloc
             );
 
         if (success && posts != null) {
+          PostInteractionManager.clearPosts(posts: posts);
           page[event.username] = page[event.username]! + 1;
           hasMore[event.username] = posts.length == 15;
           allPosts[event.username]!.addAll(posts);

@@ -169,9 +169,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                     top: height * 0.02,
                                     bottom:
                                         UiUtils.bottomNavBar(context: context) +
-                                        height * 0.02,
+                                        height * 0.01,
                                   ),
-                                  child: CircularProgressLoading(),
+                                  child: Center(child: CircularProgressLoading(androidScaleSize: height * 0.0008,)),
                                 )
                                 : SizedBox.shrink(),
                       ),

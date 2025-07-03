@@ -9,81 +9,79 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i27;
-import 'package:flutter/material.dart' as _i28;
-import 'package:snibbo_app/core/entities/user_entity.dart' as _i30;
+import 'package:auto_route/auto_route.dart' as _i25;
+import 'package:flutter/material.dart' as _i26;
+import 'package:snibbo_app/core/entities/user_entity.dart' as _i28;
 import 'package:snibbo_app/features/auth/presentation/pages/forget_password_screen.dart'
-    as _i8;
+    as _i6;
 import 'package:snibbo_app/features/auth/presentation/pages/login_screen.dart'
-    as _i11;
+    as _i9;
 import 'package:snibbo_app/features/auth/presentation/pages/register_screen.dart'
-    as _i16;
+    as _i14;
 import 'package:snibbo_app/features/chats/presentation/pages/chat_list_screen.dart'
     as _i1;
-import 'package:snibbo_app/features/chats/presentation/pages/chat_screen.dart'
-    as _i2;
+import 'package:snibbo_app/features/chats/presentation/pages/chat_screen.dart';
+import 'package:snibbo_app/features/deep_link_view/presentation/pages/single_post_view_screen.dart'
+    as _i8;
 import 'package:snibbo_app/features/explore/presentation/pages/explore_posts_view_screen.dart'
-    as _i5;
-import 'package:snibbo_app/features/explore/presentation/pages/explore_screen.dart'
-    as _i6;
-import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart'
-    as _i33;
-import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart'
-    as _i29;
-import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart'
-    as _i31;
-import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart'
-    as _i34;
-import 'package:snibbo_app/features/feed/presentation/pages/comment_liked_users_screen.dart'
-    as _i3;
-import 'package:snibbo_app/features/feed/presentation/pages/fetch_stories_loading.dart'
-    as _i7;
-import 'package:snibbo_app/presentation/deep_link_post_view/presentation/pages/link_post_view_screen.dart'
-    as _i10;
-import 'package:snibbo_app/features/feed/presentation/pages/post_liked_users_screen.dart'
-    as _i13;
-import 'package:snibbo_app/features/feed/presentation/pages/reply_liked_users_screen.dart'
-    as _i17;
-import 'package:snibbo_app/features/feed/presentation/pages/story_view_screen.dart'
-    as _i22;
-import 'package:snibbo_app/features/feed/presentation/pages/update_post_screen.dart'
-    as _i23;
-import 'package:snibbo_app/features/profile/presentation/pages/edit_profile_screen.dart'
     as _i4;
-import 'package:snibbo_app/features/profile/presentation/pages/profile_screen.dart'
-    as _i14;
-import 'package:snibbo_app/features/settings/presentation/pages/settings_page.dart'
-    as _i20;
-import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart'
+import 'package:snibbo_app/features/explore/presentation/pages/explore_screen.dart';
+import 'package:snibbo_app/features/feed/domain/entities/comment_reply_entity.dart'
+    as _i31;
+import 'package:snibbo_app/features/feed/domain/entities/post_comment_entity.dart'
+    as _i27;
+import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart'
+    as _i29;
+import 'package:snibbo_app/features/feed/domain/entities/user_stories_entity.dart'
     as _i32;
-import 'package:snibbo_app/features/user/presentation/pages/saved_posts_view_screen.dart'
-    as _i18;
-import 'package:snibbo_app/features/user/presentation/pages/search_user_screen.dart'
-    as _i19;
-import 'package:snibbo_app/features/user/presentation/pages/user_connections_screen.dart'
-    as _i24;
-import 'package:snibbo_app/features/user/presentation/pages/user_posts_view_screen.dart'
-    as _i25;
-import 'package:snibbo_app/features/user/presentation/pages/user_profile_screen.dart'
-    as _i26;
-import 'package:snibbo_app/features/user/presentation/widgets/profile_view.dart'
+import 'package:snibbo_app/features/feed/presentation/pages/comment_liked_users_screen.dart'
+    as _i2;
+import 'package:snibbo_app/features/feed/presentation/pages/fetch_stories_loading.dart'
+    as _i5;
+import 'package:snibbo_app/features/feed/presentation/pages/post_liked_users_screen.dart'
+    as _i11;
+import 'package:snibbo_app/features/feed/presentation/pages/reply_liked_users_screen.dart'
     as _i15;
-import 'package:snibbo_app/presentation/general/presentation/pages/general_page.dart'
-    as _i9;
-import 'package:snibbo_app/presentation/onboard/presentation/pages/onboard_screen.dart'
+import 'package:snibbo_app/features/feed/presentation/pages/story_view_screen.dart'
+    as _i19;
+import 'package:snibbo_app/features/feed/presentation/pages/update_post_screen.dart'
+    as _i20;
+import 'package:snibbo_app/features/profile/presentation/pages/edit_profile_screen.dart'
+    as _i3;
+import 'package:snibbo_app/features/profile/presentation/pages/profile_screen.dart'
     as _i12;
-import 'package:snibbo_app/presentation/splash/presentation/pages/splash_screen.dart'
+import 'package:snibbo_app/features/settings/presentation/pages/settings_page.dart'
+    as _i18;
+import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart'
+    as _i30;
+import 'package:snibbo_app/features/user/presentation/pages/saved_posts_view_screen.dart'
+    as _i16;
+import 'package:snibbo_app/features/user/presentation/pages/search_user_screen.dart'
+    as _i17;
+import 'package:snibbo_app/features/user/presentation/pages/user_connections_screen.dart'
     as _i21;
+import 'package:snibbo_app/features/user/presentation/pages/user_posts_view_screen.dart'
+    as _i22;
+import 'package:snibbo_app/features/user/presentation/pages/user_profile_screen.dart'
+    as _i23;
+import 'package:snibbo_app/features/user/presentation/widgets/profile_view.dart'
+    as _i13;
+import 'package:snibbo_app/presentation/general/presentation/pages/general_page.dart'
+    as _i7;
+import 'package:snibbo_app/presentation/onboard/presentation/pages/onboard_screen.dart'
+    as _i10;
+import 'package:snibbo_app/presentation/splash/presentation/pages/splash_screen.dart';
+import 'package:snibbo_app/presentation/web_view/web_view_screen.dart' as _i24;
 
 /// generated route for
 /// [_i1.ChatListScreen]
-class ChatListScreenRoute extends _i27.PageRouteInfo<void> {
-  const ChatListScreenRoute({List<_i27.PageRouteInfo>? children})
+class ChatListScreenRoute extends _i25.PageRouteInfo<void> {
+  const ChatListScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(ChatListScreenRoute.name, initialChildren: children);
 
   static const String name = 'ChatListScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       return const _i1.ChatListScreen();
@@ -92,15 +90,15 @@ class ChatListScreenRoute extends _i27.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.ChatScreen]
-class ChatScreenRoute extends _i27.PageRouteInfo<ChatScreenRouteArgs> {
+/// [ChatScreen]
+class ChatScreenRoute extends _i25.PageRouteInfo<ChatScreenRouteArgs> {
   ChatScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required String? profilePicture,
     required String username,
     required bool isOnline,
     required String? lastSeen,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          ChatScreenRoute.name,
          args: ChatScreenRouteArgs(
@@ -115,11 +113,11 @@ class ChatScreenRoute extends _i27.PageRouteInfo<ChatScreenRouteArgs> {
 
   static const String name = 'ChatScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ChatScreenRouteArgs>();
-      return _i2.ChatScreen(
+      return ChatScreen(
         key: args.key,
         profilePicture: args.profilePicture,
         username: args.username,
@@ -139,7 +137,7 @@ class ChatScreenRouteArgs {
     required this.lastSeen,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String? profilePicture;
 
@@ -156,13 +154,13 @@ class ChatScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i3.CommentLikedUsersScreen]
+/// [_i2.CommentLikedUsersScreen]
 class CommentLikedUsersScreenRoute
-    extends _i27.PageRouteInfo<CommentLikedUsersScreenRouteArgs> {
+    extends _i25.PageRouteInfo<CommentLikedUsersScreenRouteArgs> {
   CommentLikedUsersScreenRoute({
-    _i28.Key? key,
-    required _i29.PostCommentEntity comment,
-    List<_i27.PageRouteInfo>? children,
+    _i26.Key? key,
+    required _i27.PostCommentEntity comment,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          CommentLikedUsersScreenRoute.name,
          args: CommentLikedUsersScreenRouteArgs(key: key, comment: comment),
@@ -171,11 +169,11 @@ class CommentLikedUsersScreenRoute
 
   static const String name = 'CommentLikedUsersScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<CommentLikedUsersScreenRouteArgs>();
-      return _i3.CommentLikedUsersScreen(key: args.key, comment: args.comment);
+      return _i2.CommentLikedUsersScreen(key: args.key, comment: args.comment);
     },
   );
 }
@@ -183,9 +181,9 @@ class CommentLikedUsersScreenRoute
 class CommentLikedUsersScreenRouteArgs {
   const CommentLikedUsersScreenRouteArgs({this.key, required this.comment});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final _i29.PostCommentEntity comment;
+  final _i27.PostCommentEntity comment;
 
   @override
   String toString() {
@@ -194,16 +192,16 @@ class CommentLikedUsersScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i4.EditProfileScreen]
+/// [_i3.EditProfileScreen]
 class EditProfileScreenRoute
-    extends _i27.PageRouteInfo<EditProfileScreenRouteArgs> {
+    extends _i25.PageRouteInfo<EditProfileScreenRouteArgs> {
   EditProfileScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required String bio,
     required String name,
     required String profileUrl,
     required String username,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          EditProfileScreenRoute.name,
          args: EditProfileScreenRouteArgs(
@@ -218,11 +216,11 @@ class EditProfileScreenRoute
 
   static const String name = 'EditProfileScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<EditProfileScreenRouteArgs>();
-      return _i4.EditProfileScreen(
+      return _i3.EditProfileScreen(
         key: args.key,
         bio: args.bio,
         name: args.name,
@@ -242,7 +240,7 @@ class EditProfileScreenRouteArgs {
     required this.username,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String bio;
 
@@ -259,13 +257,13 @@ class EditProfileScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i5.ExplorePostsViewScreen]
+/// [_i4.ExplorePostsViewScreen]
 class ExplorePostsViewScreenRoute
-    extends _i27.PageRouteInfo<ExplorePostsViewScreenRouteArgs> {
+    extends _i25.PageRouteInfo<ExplorePostsViewScreenRouteArgs> {
   ExplorePostsViewScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required int initialIndex,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          ExplorePostsViewScreenRoute.name,
          args: ExplorePostsViewScreenRouteArgs(
@@ -277,11 +275,11 @@ class ExplorePostsViewScreenRoute
 
   static const String name = 'ExplorePostsViewScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ExplorePostsViewScreenRouteArgs>();
-      return _i5.ExplorePostsViewScreen(
+      return _i4.ExplorePostsViewScreen(
         key: args.key,
         initialIndex: args.initialIndex,
       );
@@ -292,7 +290,7 @@ class ExplorePostsViewScreenRoute
 class ExplorePostsViewScreenRouteArgs {
   const ExplorePostsViewScreenRouteArgs({this.key, required this.initialIndex});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final int initialIndex;
 
@@ -303,32 +301,32 @@ class ExplorePostsViewScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i6.ExploreScreen]
-class ExploreScreenRoute extends _i27.PageRouteInfo<void> {
-  const ExploreScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [ExploreScreen]
+class ExploreScreenRoute extends _i25.PageRouteInfo<void> {
+  const ExploreScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(ExploreScreenRoute.name, initialChildren: children);
 
   static const String name = 'ExploreScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i6.ExploreScreen();
+      return const ExploreScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i7.FetchStoriesLoading]
+/// [_i5.FetchStoriesLoading]
 class FetchStoriesLoadingRoute
-    extends _i27.PageRouteInfo<FetchStoriesLoadingRouteArgs> {
+    extends _i25.PageRouteInfo<FetchStoriesLoadingRouteArgs> {
   FetchStoriesLoadingRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required String username,
     required bool isPreviousSlide,
     required String profilePicture,
-    List<_i30.UserEntity>? storyUsers,
-    List<_i27.PageRouteInfo>? children,
+    List<_i28.UserEntity>? storyUsers,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          FetchStoriesLoadingRoute.name,
          args: FetchStoriesLoadingRouteArgs(
@@ -343,11 +341,11 @@ class FetchStoriesLoadingRoute
 
   static const String name = 'FetchStoriesLoadingRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<FetchStoriesLoadingRouteArgs>();
-      return _i7.FetchStoriesLoading(
+      return _i5.FetchStoriesLoading(
         key: args.key,
         username: args.username,
         isPreviousSlide: args.isPreviousSlide,
@@ -367,7 +365,7 @@ class FetchStoriesLoadingRouteArgs {
     this.storyUsers,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String username;
 
@@ -375,7 +373,7 @@ class FetchStoriesLoadingRouteArgs {
 
   final String profilePicture;
 
-  final List<_i30.UserEntity>? storyUsers;
+  final List<_i28.UserEntity>? storyUsers;
 
   @override
   String toString() {
@@ -384,45 +382,45 @@ class FetchStoriesLoadingRouteArgs {
 }
 
 /// generated route for
-/// [_i8.ForgotPasswordScreen]
-class ForgotPasswordScreenRoute extends _i27.PageRouteInfo<void> {
-  const ForgotPasswordScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [_i6.ForgotPasswordScreen]
+class ForgotPasswordScreenRoute extends _i25.PageRouteInfo<void> {
+  const ForgotPasswordScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(ForgotPasswordScreenRoute.name, initialChildren: children);
 
   static const String name = 'ForgotPasswordScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i8.ForgotPasswordScreen();
+      return const _i6.ForgotPasswordScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i9.GeneralPage]
-class GeneralPageRoute extends _i27.PageRouteInfo<void> {
-  const GeneralPageRoute({List<_i27.PageRouteInfo>? children})
+/// [_i7.GeneralPage]
+class GeneralPageRoute extends _i25.PageRouteInfo<void> {
+  const GeneralPageRoute({List<_i25.PageRouteInfo>? children})
     : super(GeneralPageRoute.name, initialChildren: children);
 
   static const String name = 'GeneralPageRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i9.GeneralPage();
+      return const _i7.GeneralPage();
     },
   );
 }
 
 /// generated route for
-/// [_i10.LinkPostViewScreen]
+/// [_i8.LinkPostViewScreen]
 class LinkPostViewScreenRoute
-    extends _i27.PageRouteInfo<LinkPostViewScreenRouteArgs> {
+    extends _i25.PageRouteInfo<LinkPostViewScreenRouteArgs> {
   LinkPostViewScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required String postId,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          LinkPostViewScreenRoute.name,
          args: LinkPostViewScreenRouteArgs(key: key, postId: postId),
@@ -431,11 +429,11 @@ class LinkPostViewScreenRoute
 
   static const String name = 'LinkPostViewScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<LinkPostViewScreenRouteArgs>();
-      return _i10.LinkPostViewScreen(key: args.key, postId: args.postId);
+      return _i8.LinkPostViewScreen(key: args.key, postId: args.postId);
     },
   );
 }
@@ -443,7 +441,7 @@ class LinkPostViewScreenRoute
 class LinkPostViewScreenRouteArgs {
   const LinkPostViewScreenRouteArgs({this.key, required this.postId});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String postId;
 
@@ -454,12 +452,12 @@ class LinkPostViewScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i11.LoginScreen]
-class LoginScreenRoute extends _i27.PageRouteInfo<LoginScreenRouteArgs> {
+/// [_i9.LoginScreen]
+class LoginScreenRoute extends _i25.PageRouteInfo<LoginScreenRouteArgs> {
   LoginScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required bool routedFromRegister,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          LoginScreenRoute.name,
          args: LoginScreenRouteArgs(
@@ -471,11 +469,11 @@ class LoginScreenRoute extends _i27.PageRouteInfo<LoginScreenRouteArgs> {
 
   static const String name = 'LoginScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<LoginScreenRouteArgs>();
-      return _i11.LoginScreen(
+      return _i9.LoginScreen(
         key: args.key,
         routedFromRegister: args.routedFromRegister,
       );
@@ -486,7 +484,7 @@ class LoginScreenRoute extends _i27.PageRouteInfo<LoginScreenRouteArgs> {
 class LoginScreenRouteArgs {
   const LoginScreenRouteArgs({this.key, required this.routedFromRegister});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final bool routedFromRegister;
 
@@ -497,29 +495,29 @@ class LoginScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i12.OnboardScreen]
-class OnboardScreenRoute extends _i27.PageRouteInfo<void> {
-  const OnboardScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [_i10.OnboardScreen]
+class OnboardScreenRoute extends _i25.PageRouteInfo<void> {
+  const OnboardScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(OnboardScreenRoute.name, initialChildren: children);
 
   static const String name = 'OnboardScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i12.OnboardScreen();
+      return const _i10.OnboardScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i13.PostLikedUsersScreen]
+/// [_i11.PostLikedUsersScreen]
 class PostLikedUsersScreenRoute
-    extends _i27.PageRouteInfo<PostLikedUsersScreenRouteArgs> {
+    extends _i25.PageRouteInfo<PostLikedUsersScreenRouteArgs> {
   PostLikedUsersScreenRoute({
-    _i28.Key? key,
-    required _i31.PostEntity post,
-    List<_i27.PageRouteInfo>? children,
+    _i26.Key? key,
+    required _i29.PostEntity post,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          PostLikedUsersScreenRoute.name,
          args: PostLikedUsersScreenRouteArgs(key: key, post: post),
@@ -528,11 +526,11 @@ class PostLikedUsersScreenRoute
 
   static const String name = 'PostLikedUsersScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<PostLikedUsersScreenRouteArgs>();
-      return _i13.PostLikedUsersScreen(key: args.key, post: args.post);
+      return _i11.PostLikedUsersScreen(key: args.key, post: args.post);
     },
   );
 }
@@ -540,9 +538,9 @@ class PostLikedUsersScreenRoute
 class PostLikedUsersScreenRouteArgs {
   const PostLikedUsersScreenRouteArgs({this.key, required this.post});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final _i31.PostEntity post;
+  final _i29.PostEntity post;
 
   @override
   String toString() {
@@ -551,28 +549,28 @@ class PostLikedUsersScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i14.ProfileScreen]
-class ProfileScreenRoute extends _i27.PageRouteInfo<void> {
-  const ProfileScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [_i12.ProfileScreen]
+class ProfileScreenRoute extends _i25.PageRouteInfo<void> {
+  const ProfileScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(ProfileScreenRoute.name, initialChildren: children);
 
   static const String name = 'ProfileScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i14.ProfileScreen();
+      return const _i12.ProfileScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i15.ProfileView]
-class ProfileViewRoute extends _i27.PageRouteInfo<ProfileViewRouteArgs> {
+/// [_i13.ProfileView]
+class ProfileViewRoute extends _i25.PageRouteInfo<ProfileViewRouteArgs> {
   ProfileViewRoute({
-    _i28.Key? key,
-    required _i32.ProfileEntity profileEntity,
-    List<_i27.PageRouteInfo>? children,
+    _i26.Key? key,
+    required _i30.ProfileEntity profileEntity,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          ProfileViewRoute.name,
          args: ProfileViewRouteArgs(key: key, profileEntity: profileEntity),
@@ -581,11 +579,11 @@ class ProfileViewRoute extends _i27.PageRouteInfo<ProfileViewRouteArgs> {
 
   static const String name = 'ProfileViewRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ProfileViewRouteArgs>();
-      return _i15.ProfileView(key: args.key, profileEntity: args.profileEntity);
+      return _i13.ProfileView(key: args.key, profileEntity: args.profileEntity);
     },
   );
 }
@@ -593,9 +591,9 @@ class ProfileViewRoute extends _i27.PageRouteInfo<ProfileViewRouteArgs> {
 class ProfileViewRouteArgs {
   const ProfileViewRouteArgs({this.key, required this.profileEntity});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final _i32.ProfileEntity profileEntity;
+  final _i30.ProfileEntity profileEntity;
 
   @override
   String toString() {
@@ -604,12 +602,12 @@ class ProfileViewRouteArgs {
 }
 
 /// generated route for
-/// [_i16.RegisterScreen]
-class RegisterScreenRoute extends _i27.PageRouteInfo<RegisterScreenRouteArgs> {
+/// [_i14.RegisterScreen]
+class RegisterScreenRoute extends _i25.PageRouteInfo<RegisterScreenRouteArgs> {
   RegisterScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required bool routedFromLogin,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          RegisterScreenRoute.name,
          args: RegisterScreenRouteArgs(
@@ -621,11 +619,11 @@ class RegisterScreenRoute extends _i27.PageRouteInfo<RegisterScreenRouteArgs> {
 
   static const String name = 'RegisterScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<RegisterScreenRouteArgs>();
-      return _i16.RegisterScreen(
+      return _i14.RegisterScreen(
         key: args.key,
         routedFromLogin: args.routedFromLogin,
       );
@@ -636,7 +634,7 @@ class RegisterScreenRoute extends _i27.PageRouteInfo<RegisterScreenRouteArgs> {
 class RegisterScreenRouteArgs {
   const RegisterScreenRouteArgs({this.key, required this.routedFromLogin});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final bool routedFromLogin;
 
@@ -647,13 +645,13 @@ class RegisterScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i17.ReplyLikedUsersScreen]
+/// [_i15.ReplyLikedUsersScreen]
 class ReplyLikedUsersScreenRoute
-    extends _i27.PageRouteInfo<ReplyLikedUsersScreenRouteArgs> {
+    extends _i25.PageRouteInfo<ReplyLikedUsersScreenRouteArgs> {
   ReplyLikedUsersScreenRoute({
-    _i28.Key? key,
-    required _i33.CommentReplyEntity reply,
-    List<_i27.PageRouteInfo>? children,
+    _i26.Key? key,
+    required _i31.CommentReplyEntity reply,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          ReplyLikedUsersScreenRoute.name,
          args: ReplyLikedUsersScreenRouteArgs(key: key, reply: reply),
@@ -662,11 +660,11 @@ class ReplyLikedUsersScreenRoute
 
   static const String name = 'ReplyLikedUsersScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ReplyLikedUsersScreenRouteArgs>();
-      return _i17.ReplyLikedUsersScreen(key: args.key, reply: args.reply);
+      return _i15.ReplyLikedUsersScreen(key: args.key, reply: args.reply);
     },
   );
 }
@@ -674,9 +672,9 @@ class ReplyLikedUsersScreenRoute
 class ReplyLikedUsersScreenRouteArgs {
   const ReplyLikedUsersScreenRouteArgs({this.key, required this.reply});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final _i33.CommentReplyEntity reply;
+  final _i31.CommentReplyEntity reply;
 
   @override
   String toString() {
@@ -685,14 +683,14 @@ class ReplyLikedUsersScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i18.SavedPostsViewScreen]
+/// [_i16.SavedPostsViewScreen]
 class SavedPostsViewScreenRoute
-    extends _i27.PageRouteInfo<SavedPostsViewScreenRouteArgs> {
+    extends _i25.PageRouteInfo<SavedPostsViewScreenRouteArgs> {
   SavedPostsViewScreenRoute({
-    _i28.Key? key,
-    required _i32.ProfileEntity profileEntity,
+    _i26.Key? key,
+    required _i30.ProfileEntity profileEntity,
     required int initialIndex,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          SavedPostsViewScreenRoute.name,
          args: SavedPostsViewScreenRouteArgs(
@@ -705,11 +703,11 @@ class SavedPostsViewScreenRoute
 
   static const String name = 'SavedPostsViewScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<SavedPostsViewScreenRouteArgs>();
-      return _i18.SavedPostsViewScreen(
+      return _i16.SavedPostsViewScreen(
         key: args.key,
         profileEntity: args.profileEntity,
         initialIndex: args.initialIndex,
@@ -725,9 +723,9 @@ class SavedPostsViewScreenRouteArgs {
     required this.initialIndex,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final _i32.ProfileEntity profileEntity;
+  final _i30.ProfileEntity profileEntity;
 
   final int initialIndex;
 
@@ -738,65 +736,65 @@ class SavedPostsViewScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i19.SearchUserScreen]
-class SearchUserScreenRoute extends _i27.PageRouteInfo<void> {
-  const SearchUserScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [_i17.SearchUserScreen]
+class SearchUserScreenRoute extends _i25.PageRouteInfo<void> {
+  const SearchUserScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(SearchUserScreenRoute.name, initialChildren: children);
 
   static const String name = 'SearchUserScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i19.SearchUserScreen();
+      return const _i17.SearchUserScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i20.SettingsScreen]
-class SettingsScreenRoute extends _i27.PageRouteInfo<void> {
-  const SettingsScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [_i18.SettingsScreen]
+class SettingsScreenRoute extends _i25.PageRouteInfo<void> {
+  const SettingsScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(SettingsScreenRoute.name, initialChildren: children);
 
   static const String name = 'SettingsScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i20.SettingsScreen();
+      return const _i18.SettingsScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i21.SplashScreen]
-class SplashScreenRoute extends _i27.PageRouteInfo<void> {
-  const SplashScreenRoute({List<_i27.PageRouteInfo>? children})
+/// [SplashScreen]
+class SplashScreenRoute extends _i25.PageRouteInfo<void> {
+  const SplashScreenRoute({List<_i25.PageRouteInfo>? children})
     : super(SplashScreenRoute.name, initialChildren: children);
 
   static const String name = 'SplashScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
-      return const _i21.SplashScreen();
+      return const SplashScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i22.StoryViewScreen]
+/// [_i19.StoryViewScreen]
 class StoryViewScreenRoute
-    extends _i27.PageRouteInfo<StoryViewScreenRouteArgs> {
+    extends _i25.PageRouteInfo<StoryViewScreenRouteArgs> {
   StoryViewScreenRoute({
-    _i28.Key? key,
-    required List<_i34.StoryEntitiy> stories,
+    _i26.Key? key,
+    required List<_i32.StoryEntitiy> stories,
     required String username,
     required String profilePicture,
     required bool isMyStory,
-    List<_i30.UserEntity>? storyUsers,
-    List<_i27.PageRouteInfo>? children,
+    List<_i28.UserEntity>? storyUsers,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          StoryViewScreenRoute.name,
          args: StoryViewScreenRouteArgs(
@@ -812,11 +810,11 @@ class StoryViewScreenRoute
 
   static const String name = 'StoryViewScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<StoryViewScreenRouteArgs>();
-      return _i22.StoryViewScreen(
+      return _i19.StoryViewScreen(
         key: args.key,
         stories: args.stories,
         username: args.username,
@@ -838,9 +836,9 @@ class StoryViewScreenRouteArgs {
     this.storyUsers,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final List<_i34.StoryEntitiy> stories;
+  final List<_i32.StoryEntitiy> stories;
 
   final String username;
 
@@ -848,7 +846,7 @@ class StoryViewScreenRouteArgs {
 
   final bool isMyStory;
 
-  final List<_i30.UserEntity>? storyUsers;
+  final List<_i28.UserEntity>? storyUsers;
 
   @override
   String toString() {
@@ -857,16 +855,16 @@ class StoryViewScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i23.UpdatePostScreen]
+/// [_i20.UpdatePostScreen]
 class UpdatePostScreenRoute
-    extends _i27.PageRouteInfo<UpdatePostScreenRouteArgs> {
+    extends _i25.PageRouteInfo<UpdatePostScreenRouteArgs> {
   UpdatePostScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required String postId,
     required String username,
     required String imageUrl,
     required String initialCaption,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          UpdatePostScreenRoute.name,
          args: UpdatePostScreenRouteArgs(
@@ -881,11 +879,11 @@ class UpdatePostScreenRoute
 
   static const String name = 'UpdatePostScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<UpdatePostScreenRouteArgs>();
-      return _i23.UpdatePostScreen(
+      return _i20.UpdatePostScreen(
         key: args.key,
         postId: args.postId,
         username: args.username,
@@ -905,7 +903,7 @@ class UpdatePostScreenRouteArgs {
     required this.initialCaption,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String postId;
 
@@ -922,14 +920,14 @@ class UpdatePostScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i24.UserConnectionsScreen]
+/// [_i21.UserConnectionsScreen]
 class UserConnectionsScreenRoute
-    extends _i27.PageRouteInfo<UserConnectionsScreenRouteArgs> {
+    extends _i25.PageRouteInfo<UserConnectionsScreenRouteArgs> {
   UserConnectionsScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     required String username,
     required int initialIndex,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          UserConnectionsScreenRoute.name,
          args: UserConnectionsScreenRouteArgs(
@@ -942,11 +940,11 @@ class UserConnectionsScreenRoute
 
   static const String name = 'UserConnectionsScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<UserConnectionsScreenRouteArgs>();
-      return _i24.UserConnectionsScreen(
+      return _i21.UserConnectionsScreen(
         key: args.key,
         username: args.username,
         initialIndex: args.initialIndex,
@@ -962,7 +960,7 @@ class UserConnectionsScreenRouteArgs {
     required this.initialIndex,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String username;
 
@@ -975,14 +973,14 @@ class UserConnectionsScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i25.UserPostsViewScreen]
+/// [_i22.UserPostsViewScreen]
 class UserPostsViewScreenRoute
-    extends _i27.PageRouteInfo<UserPostsViewScreenRouteArgs> {
+    extends _i25.PageRouteInfo<UserPostsViewScreenRouteArgs> {
   UserPostsViewScreenRoute({
-    _i28.Key? key,
-    required _i32.ProfileEntity profileEntity,
+    _i26.Key? key,
+    required _i30.ProfileEntity profileEntity,
     required int initialIndex,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          UserPostsViewScreenRoute.name,
          args: UserPostsViewScreenRouteArgs(
@@ -995,11 +993,11 @@ class UserPostsViewScreenRoute
 
   static const String name = 'UserPostsViewScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<UserPostsViewScreenRouteArgs>();
-      return _i25.UserPostsViewScreen(
+      return _i22.UserPostsViewScreen(
         key: args.key,
         profileEntity: args.profileEntity,
         initialIndex: args.initialIndex,
@@ -1015,9 +1013,9 @@ class UserPostsViewScreenRouteArgs {
     required this.initialIndex,
   });
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
-  final _i32.ProfileEntity profileEntity;
+  final _i30.ProfileEntity profileEntity;
 
   final int initialIndex;
 
@@ -1028,14 +1026,14 @@ class UserPostsViewScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i26.UserProfileScreen]
+/// [_i23.UserProfileScreen]
 class UserProfileScreenRoute
-    extends _i27.PageRouteInfo<UserProfileScreenRouteArgs> {
+    extends _i25.PageRouteInfo<UserProfileScreenRouteArgs> {
   UserProfileScreenRoute({
-    _i28.Key? key,
+    _i26.Key? key,
     String? username,
     bool? isMyProfile,
-    List<_i27.PageRouteInfo>? children,
+    List<_i25.PageRouteInfo>? children,
   }) : super(
          UserProfileScreenRoute.name,
          args: UserProfileScreenRouteArgs(
@@ -1048,13 +1046,13 @@ class UserProfileScreenRoute
 
   static const String name = 'UserProfileScreenRoute';
 
-  static _i27.PageInfo page = _i27.PageInfo(
+  static _i25.PageInfo page = _i25.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<UserProfileScreenRouteArgs>(
         orElse: () => const UserProfileScreenRouteArgs(),
       );
-      return _i26.UserProfileScreen(
+      return _i23.UserProfileScreen(
         key: args.key,
         username: args.username,
         isMyProfile: args.isMyProfile,
@@ -1066,7 +1064,7 @@ class UserProfileScreenRoute
 class UserProfileScreenRouteArgs {
   const UserProfileScreenRouteArgs({this.key, this.username, this.isMyProfile});
 
-  final _i28.Key? key;
+  final _i26.Key? key;
 
   final String? username;
 
@@ -1075,5 +1073,42 @@ class UserProfileScreenRouteArgs {
   @override
   String toString() {
     return 'UserProfileScreenRouteArgs{key: $key, username: $username, isMyProfile: $isMyProfile}';
+  }
+}
+
+/// generated route for
+/// [_i24.WebViewScreen]
+class WebViewScreenRoute extends _i25.PageRouteInfo<WebViewScreenRouteArgs> {
+  WebViewScreenRoute({
+    _i26.Key? key,
+    required String url,
+    List<_i25.PageRouteInfo>? children,
+  }) : super(
+         WebViewScreenRoute.name,
+         args: WebViewScreenRouteArgs(key: key, url: url),
+         initialChildren: children,
+       );
+
+  static const String name = 'WebViewScreenRoute';
+
+  static _i25.PageInfo page = _i25.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<WebViewScreenRouteArgs>();
+      return _i24.WebViewScreen(key: args.key, url: args.url);
+    },
+  );
+}
+
+class WebViewScreenRouteArgs {
+  const WebViewScreenRouteArgs({this.key, required this.url});
+
+  final _i26.Key? key;
+
+  final String url;
+
+  @override
+  String toString() {
+    return 'WebViewScreenRouteArgs{key: $key, url: $url}';
   }
 }

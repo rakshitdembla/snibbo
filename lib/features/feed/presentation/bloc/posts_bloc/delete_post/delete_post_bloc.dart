@@ -8,7 +8,7 @@ import 'package:snibbo_app/service_locator.dart';
 class DeletePostBloc extends Bloc<DeletePostEvent, DeletePostState> {
   DeletePostBloc() : super(DeletePostInitial()) {
     on<DeletePost>((event, emit) async {
-      emit(DeletePostLoading());
+      emit(DeletePostLoading(postId : event.postId));
 
       final userId = await ServicesUtils.getTokenId();
       final (success, message) = await sl<PostsUsecase>().deletePost(
@@ -28,6 +28,7 @@ class DeletePostBloc extends Bloc<DeletePostEvent, DeletePostState> {
       } else {
         emit(
           DeletePostError(
+            postId: event.postId,
             title: "Deletion Failed",
             description:
                 message ?? "Could not delete the post. Try again later.",

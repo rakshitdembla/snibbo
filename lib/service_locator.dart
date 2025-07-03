@@ -61,6 +61,10 @@ import "package:snibbo_app/features/user/domain/usecases/unfollow_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/user_followers_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/user_followings_usecase.dart";
 import "package:snibbo_app/features/user/domain/usecases/user_profile_usecase.dart";
+import "package:snibbo_app/features/deep_link_view/data/remote/deep_link_remote_data.dart";
+import "package:snibbo_app/features/deep_link_view/data/repository/deep_link_repository._impl.dart";
+import "package:snibbo_app/features/deep_link_view/domain/repository/deep_link_repository.dart";
+import "package:snibbo_app/features/deep_link_view/domain/usecases/get_single_post_usecase.dart";
 
 final sl = GetIt.instance;
 
@@ -93,6 +97,12 @@ void setupServiceLocator() {
   sl.registerSingleton<PostActionsRemoteData>(PostActionsRemoteData());
   sl.registerSingleton<StoriesRemoteData>(StoriesRemoteData());
   sl.registerSingleton<FeedRepository>(FeedRepositoryImpl());
+  sl.registerLazySingleton<DeepLinkRemoteData>(() => DeepLinkRemoteData());
+  sl.registerLazySingleton<DeepLinkRepo>(() => DeepLinkRepoImpl(remoteDataSource: sl<DeepLinkRemoteData>()));
+  sl.registerLazySingleton<GetSinglePostUsecase>(
+  () => GetSinglePostUsecase(),
+);
+
 
   sl.registerSingleton<GetFeedPostsUsecase>(
     GetFeedPostsUsecase(feedRepository: sl<FeedRepository>()),

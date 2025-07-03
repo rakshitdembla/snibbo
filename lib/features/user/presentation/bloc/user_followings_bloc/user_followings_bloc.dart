@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/domain/usecases/search_following_usecase.dart';
@@ -45,6 +46,7 @@ class UserFollowingsBloc
         allFollowings.addAll(users);
         hasMore = users.length == 13;
         page = 2;
+        StoryViewsManager.clearStoriesByUsers(users: users);
 
         emit(UserFollowingsLoaded(users: users, username: event.username));
         return;
@@ -83,6 +85,7 @@ class UserFollowingsBloc
         allFollowings.addAll(users);
         hasMore = users.length == 13;
         page++;
+        StoryViewsManager.clearStoriesByUsers(users: users);
 
         isLoading = false;
         emit(
@@ -121,6 +124,7 @@ class UserFollowingsBloc
       );
 
       allFollowings = users ?? [];
+      StoryViewsManager.clearStoriesByUsers(users: users ?? []);
 
       emit(UserFollowingsLoaded(users: users ?? [], username: event.username));
     });

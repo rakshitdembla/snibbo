@@ -30,7 +30,7 @@ class GetPostCommentsBloc
         limit: 8,
       );
 
-      ReplyStorageHelper.clear();
+      ReplyStorageHelper.clearAll();
 
       if (result.success && result.postComments != null) {
         allComments.addAll(result.postComments ?? []);

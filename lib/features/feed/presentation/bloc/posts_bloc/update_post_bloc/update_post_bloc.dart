@@ -3,14 +3,14 @@ import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/posts_usecase.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/update_post_bloc/update_post_events.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/update_post_bloc/update_post_states.dart';
-import 'package:snibbo_app/features/user/presentation/helpers/user_posts_helper.dart';
-import 'package:snibbo_app/features/user/presentation/helpers/user_saved_posts_helper.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_posts_helper.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_saved_posts_helper.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 class UpdatePostBloc extends Bloc<UpdatePostEvent, UpdatePostState> {
   UpdatePostBloc() : super(UpdatePostInitial()) {
     on<UpdatePost>((event, emit) async {
-      emit(UpdatePostLoading());
+      emit(UpdatePostLoading(postId: event.postId));
 
       try {
         final userId = await ServicesUtils.getTokenId();
@@ -57,6 +57,7 @@ class UpdatePostBloc extends Bloc<UpdatePostEvent, UpdatePostState> {
           emit(
             UpdatePostError(
               title: "Update Failed",
+              postId: event.postId,
               description:
                   message ?? "Unable to update post. Please try again.",
             ),
@@ -64,7 +65,7 @@ class UpdatePostBloc extends Bloc<UpdatePostEvent, UpdatePostState> {
         }
       } catch (e) {
         emit(
-          UpdatePostError(title: "Unexpected Error", description: e.toString()),
+          UpdatePostError(title: "Unexpected Error", description: e.toString(),postId: event.postId),
         );
       }
     });

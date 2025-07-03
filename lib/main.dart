@@ -51,6 +51,7 @@ import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagi
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_bloc.dart';
+import 'package:snibbo_app/features/deep_link_view/presentation/bloc/get_single_post_bloc.dart';
 import 'package:snibbo_app/presentation/general/presentation/bloc/hide_bottom_nav_bloc/hide_bottom_nav_bloc.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -152,26 +153,15 @@ void main() async {
         BlocProvider<ReplyLikedUsersBloc>(
           create: (context) => ReplyLikedUsersBloc(),
         ),
-        BlocProvider<SearchUserBloc>(
-          create: (context) => SearchUserBloc(),
-        ),
-        BlocProvider<UpdatePostBloc>(
-          create: (context) => UpdatePostBloc(),
-        ),
-        BlocProvider<DeletePostBloc>(
-          create: (context) => DeletePostBloc(),
-        ),
-        BlocProvider<ChatsListBloc>(
-          create: (context) => ChatsListBloc(),
-        ),
-        BlocProvider<MessagesBloc>(
-          create: (context) => MessagesBloc(),
-        ),
-        BlocProvider<UnblockUserBloc>(
-          create: (context) => UnblockUserBloc(),
-        ),
-        BlocProvider<BlockUserBloc>(
-          create: (context) => BlockUserBloc(),
+        BlocProvider<SearchUserBloc>(create: (context) => SearchUserBloc()),
+        BlocProvider<UpdatePostBloc>(create: (context) => UpdatePostBloc()),
+        BlocProvider<DeletePostBloc>(create: (context) => DeletePostBloc()),
+        BlocProvider<ChatsListBloc>(create: (context) => ChatsListBloc()),
+        BlocProvider<MessagesBloc>(create: (context) => MessagesBloc()),
+        BlocProvider<UnblockUserBloc>(create: (context) => UnblockUserBloc()),
+        BlocProvider<BlockUserBloc>(create: (context) => BlockUserBloc()),
+        BlocProvider<GetSinglePostBloc>(
+          create: (context) => GetSinglePostBloc(),
         ),
       ],
 

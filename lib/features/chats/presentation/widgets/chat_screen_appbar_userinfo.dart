@@ -35,7 +35,6 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
           StreamBuilder(
             stream: sl<WebSocketsServices>().socketStream,
             builder: (context, snapshot) {
-              debugPrint("stream builder called");
               if (snapshot.hasData) {
                 final event = snapshot.data;
                 final isTyping = event?["type"] == "typing";

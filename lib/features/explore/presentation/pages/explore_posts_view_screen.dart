@@ -76,7 +76,7 @@ class _ExplorePostsViewScreenState extends State<ExplorePostsViewScreen> {
                     key: ValueKey(index),
                     controller: autoScrollController,
                     index: index,
-                    child: PostWidget(postEntity: post),
+                    child: PostWidget(key: ValueKey(post.id),postEntity: post),
                   );
                 },
               );

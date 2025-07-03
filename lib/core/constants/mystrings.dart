@@ -29,4 +29,9 @@ class MyStrings {
   static const commentContent = "commentContent";
   static const replyContent = "replyContent";
   static const postCaptions = "captions";
+
+  static const aboutSnibboUrl = "https://sites.google.com/view/about-snibbo/about";
+  static const termsConditionsUrl = "https://sites.google.com/view/about-snibbo/terms-conditions";
+  static const privacyPolicyUrl = "https://sites.google.com/view/about-snibbo/privacy-policy";
+
 }

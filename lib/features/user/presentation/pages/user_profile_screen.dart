@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_profile_cleanup.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
@@ -14,6 +15,7 @@ import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/use
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_profile_bloc/user_profile_states.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/profile_view.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 @RoutePage()
 class UserProfileScreen extends StatefulWidget {
@@ -53,10 +55,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          // UserProfileCleanup.call(username: widget.username);
+        if (didPop && widget.username != null) {
+          final shouldCleanup = !isAnotherSameProfileRouteInStack(context);
+
+          if (shouldCleanup) {
+            UserProfileCleanup.call(username: widget.username!);
+          }
         }
       },
+
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -125,5 +132,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
       ),
     );
+  }
+
+  bool isAnotherSameProfileRouteInStack(BuildContext context) {
+    final stack = AutoRouter.of(context).stack;
+    int count = 0;
+
+    for (var route in stack) {
+      if (route.routeData.name == UserProfileScreenRoute.name) {
+        final routeArgs = route.routeData.args;
+        if (routeArgs is UserProfileScreenRouteArgs &&
+            routeArgs.username == widget.username) {
+          count++;
+        }
+      }
+    }
+
+    return count > 1;
   }
 }

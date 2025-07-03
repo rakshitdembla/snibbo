@@ -4,6 +4,7 @@ import 'package:snibbo_app/core/network/helpers/search_debouncing.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/custom_user_tile.dart';
+import 'package:snibbo_app/core/widgets/error_screen.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
 import 'package:snibbo_app/features/explore/presentation/widgets/search_field.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
@@ -117,9 +118,9 @@ class _UserFollowingsTabState extends State<UserFollowingsTab> {
         builder: (context, state) {
           final userFollowingsBloc = context.read<UserFollowingsBloc>();
           if (state is UserFollowingsLoading) {
-            return Center(child: CircularProgressLoading());
+            return const Center(child: CircularProgressLoading());
           } else if (state is UserFollowingsError) {
-            return Center(child: Text("Something went wrong"));
+            return const ErrorScreen(isFeedError: false);
           }
           return ListView.builder(
             physics: AlwaysScrollableScrollPhysics(),
@@ -173,7 +174,6 @@ class _UserFollowingsTabState extends State<UserFollowingsTab> {
               final user = userFollowingsBloc.allFollowings[index - 1];
               return CustomUserTile(
                 user: user,
-                onPopRefreshUsername: widget.username,
               );
             },
           );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/bottom_modal_sheet.dart';
@@ -100,8 +102,7 @@ class ShowCommentsSheet {
           builder: (context, state) {
             controller.addListener(listener);
 
-            return PopScope(
-              child: SizedBox(
+            return SizedBox(
                 width: width,
                 height: height * 0.6,
                 child: Column(
@@ -129,11 +130,11 @@ class ShowCommentsSheet {
                     ),
 
                     if (state is GetPostCommentsLoading) ...[
-                      SizedBox(height: height * 0.265),
+                      SizedBox(height: height * 0.26),
                       Center(child: CircularProgressLoading()),
                     ] else if (state is GetPostCommentsError)
                       Expanded(
-                        child: Center(child: Text("Failed to load comments")),
+                        child: Center(child: Lottie.asset(MyAssets.cat404,height: height * 0.09)),
                       )
                     else if (state is GetPostCommentsLoaded) ...[
                       Expanded(
@@ -183,8 +184,7 @@ class ShowCommentsSheet {
                     ],
                   ],
                 ),
-              ),
-            );
+              );
           },
         );
       },

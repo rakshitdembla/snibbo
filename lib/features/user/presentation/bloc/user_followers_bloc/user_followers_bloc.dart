@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/user/domain/usecases/search_follower_usecase.dart';
@@ -44,6 +45,7 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
         allFollowers.addAll(users);
         hasMore = users.length == 13;
         page = 2;
+        StoryViewsManager.clearStoriesByUsers(users: users);
 
         emit(UserFollowersLoaded(users: users, username: event.username));
         return;
@@ -81,6 +83,7 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
         allFollowers.addAll(users);
         hasMore = users.length == 13;
         page++;
+        StoryViewsManager.clearStoriesByUsers(users: users);
 
         isLoading = false;
         emit(
@@ -118,6 +121,7 @@ class UserFollowersBloc extends Bloc<UserFollowersEvents, UserFollowersStates> {
       );
 
       allFollowers = users ?? [];
+      StoryViewsManager.clearStoriesByUsers(users: users ?? []);
 
       emit(UserFollowersLoaded(users: users ?? [], username: event.username));
     });

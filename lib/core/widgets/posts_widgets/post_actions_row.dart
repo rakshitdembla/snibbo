@@ -87,7 +87,10 @@ class PostActionsRow extends StatelessWidget {
                   }
                 },
                 count:
-                    (PostInteractionManager.likeCount[post.id] ?? 0).toString(),
+                    PostInteractionManager.likeCount[post.id] != null &&
+                            PostInteractionManager.likeCount[post.id]! > 0
+                        ? (PostInteractionManager.likeCount[post.id]).toString()
+                        : "0",
                 icon:
                     PostInteractionManager.likeStatus[post.id] == true
                         ? (state is ShowLikeState && state.postId == post.id)
@@ -124,7 +127,12 @@ class PostActionsRow extends StatelessWidget {
                   );
                 },
                 count:
-                    PostInteractionManager.postCommentCount[post.id].toString(),
+                    PostInteractionManager.postCommentCount[post.id] != null &&
+                            PostInteractionManager.postCommentCount[post.id]! >
+                                0
+                        ? PostInteractionManager.postCommentCount[post.id]
+                            .toString()
+                        : "0",
                 icon: CommonIcon._(icon: LineIcons.comments),
               );
             },
@@ -133,7 +141,11 @@ class PostActionsRow extends StatelessWidget {
 
           PostActionIcon(
             onTap: () {
-              ServicesUtils.copyLink(uniqueID: post.id, type: "post", context: context);
+              ServicesUtils.copyLink(
+                uniqueID: post.id,
+                type: "post",
+                context: context,
+              );
             },
             count: "",
             icon: CommonIcon._(icon: LineIcons.telegramPlane),

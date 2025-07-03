@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
@@ -13,6 +14,7 @@ class MyTextField extends StatefulWidget {
   final FocusNode focusNode;
   final int maxLength;
   final int maxLines;
+  final List<TextInputFormatter>? inputFormatters;
   final String hintText;
   final ValueChanged<String>? onSubmit;
   final IconData prefixIcon;
@@ -22,6 +24,7 @@ class MyTextField extends StatefulWidget {
     required this.focusNode,
     required this.isPassword,
     required this.textEditingController,
+    this.inputFormatters,
     required this.maxLength,
     required this.maxLines,
     required this.onSubmit,
@@ -57,6 +60,7 @@ class _MyTextFieldState extends State<MyTextField> {
         SizedBox(
           width: width,
           child: TextField(
+            inputFormatters: widget.inputFormatters ?? [],
             cursorColor: MyColors.secondaryDense,
             cursorErrorColor: MyColors.secondaryDense,
             controller: widget.textEditingController,

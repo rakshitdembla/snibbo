@@ -27,12 +27,10 @@ class UserPostsTab extends StatefulWidget {
 
 class _UserPostsTabState extends State<UserPostsTab>
     with AutomaticKeepAliveClientMixin {
-      
   @override
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
-
     super.build(context);
     final width = UiUtils.screenWidth(context);
     final height = UiUtils.screenHeight(context);

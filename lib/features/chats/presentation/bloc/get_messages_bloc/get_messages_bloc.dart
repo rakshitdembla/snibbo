@@ -108,7 +108,6 @@ class MessagesBloc extends Bloc<MessagesEvents, MessagesStates> {
         if (message.chat == event.chatId) {
           message.isSeenByOther = true;
         }
-        break;
       }
       emit(SocketMessagesUpdate(messages: List.from(allMessages)));
     });

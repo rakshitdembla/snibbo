@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/bottom_modal_sheet.dart';
 
 class PostMenuBottomSheet {
-  static void call({required BuildContext context, required bool isDark}) {
+  static void call({
+    required BuildContext context,
+    required bool isDark,
+    required String postId,
+  }) {
     final height = UiUtils.screenHeight(context);
     final width = UiUtils.screenWidth(context);
     MyBottomModalSheet.show(
@@ -28,7 +33,14 @@ class PostMenuBottomSheet {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 PostMenuSheetContainer._(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    ServicesUtils.copyLink(
+                      uniqueID: postId,
+                      type: "post",
+                      context: context,
+                    );
+                  },
                   height: height,
                   width: width,
                   isDark: isDark,
@@ -37,7 +49,15 @@ class PostMenuBottomSheet {
                   color: MyColors.secondary,
                 ),
                 PostMenuSheetContainer._(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    ServicesUtils.openEmailApp(
+                      reportFor: "post",
+                      uniqueID: postId,
+                      context: context,
+                      isReport: true,
+                    );
+                  },
                   height: height,
                   width: width,
                   isDark: isDark,
@@ -46,7 +66,15 @@ class PostMenuBottomSheet {
                   color: Colors.red,
                 ),
                 PostMenuSheetContainer._(
-                  onTap: () {},
+                  onTap: () {
+                       Navigator.pop(context);
+                    ServicesUtils.openEmailApp(
+                      reportFor: "",
+                      uniqueID: postId,
+                      context: context,
+                      isReport: false,
+                    );
+                  },
                   height: height,
                   width: width,
                   isDark: isDark,

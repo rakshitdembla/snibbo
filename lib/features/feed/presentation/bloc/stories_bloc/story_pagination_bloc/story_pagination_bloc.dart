@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/entities/user_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart';
@@ -15,6 +16,7 @@ class StoryPaginationBloc
 
   StoryPaginationBloc() : super(StoryPaginationInitial()) {
     on<InitializePaginationStories>((event, emit) {
+      StoryViewsManager.clearStoriesByUsers(users: event.initialStories);
       allStories = event.initialStories;
       page = 2;
       hasMore = event.initialStories.length == 15;
@@ -41,6 +43,8 @@ class StoryPaginationBloc
         );
 
         if (storiesSuccess && stories != null) {
+          StoryViewsManager.clearStoriesByUsers(users: stories);
+
           page++;
 
           hasMore = stories.length == 15;

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/post_interaction_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/feed/domain/usecases/get_feed_usecase.dart';
@@ -18,6 +19,7 @@ class PostPaginationBloc
 
   PostPaginationBloc() : super(PostPaginationInitial()) {
     on<InitializePaginationPosts>((event, emit) {
+      PostInteractionManager.clearPosts(posts: event.initialPosts);
       allposts = event.initialPosts;
       hasMoreFollowingPosts = event.initialPosts.length == 8;
       page = 2;
@@ -49,6 +51,7 @@ class PostPaginationBloc
           if (success && newPosts != null) {
             page++;
             allposts.addAll(newPosts);
+            PostInteractionManager.clearPosts(posts: newPosts);
             hasMoreFollowingPosts = newPosts.length == 8;
             emit(PostPaginationLoaded(postLists: allposts));
           } else {
@@ -101,7 +104,7 @@ class PostPaginationBloc
         }
       }
 
-      emit(PostPaginationLoaded(postLists: allposts));
+      emit(PostPaginationLoaded(postLists: List.from(allposts)));
     });
 
     on<DeleteFeedPost>((event, emit) {
@@ -114,7 +117,7 @@ class PostPaginationBloc
         }
       }
 
-      emit(PostPaginationLoaded(postLists: allposts));
+      emit(PostPaginationLoaded(postLists: List.from(allposts)));
     });
   }
 }

@@ -87,7 +87,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               },
               builder: (context, state) {
                 final createPostBloc = BlocProvider.of<CreatePostBloc>(context);
-                final blocPickedImage = context.read<CreatePostBloc>().pickedFile;
+                final blocPickedImage =
+                    context.read<CreatePostBloc>().pickedFile;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +109,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           isDark: isDark,
                           image: MyAssets.postImage,
                           h1: "Create Post",
-                          h2: "Upload your favorite image to connect with friends.",
+                          h2:
+                              "Upload your favorite image to connect with friends.",
                           cameraSourceTap: () {
                             createPostBloc.add(
                               PickPostImage(
@@ -166,7 +168,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 ),
                                 child:
                                     state is PickingPostImage
-                                        ? CircularProgressLoading()
+                                        ? CircularProgressLoading(
+                                          androidScaleSize: height * 0.0008,
+                                        )
                                         : Icon(
                                           Icons.add,
                                           size: height * 0.025,
@@ -197,7 +201,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         : ElevatedCTA(
                           onPressed: () {
                             createPostBloc.add(
-                              CreatePost(caption: captionController.text.trim()),
+                              CreatePost(
+                                caption: captionController.text.trim(),
+                              ),
                             );
                           },
                           buttonName: "Upload",

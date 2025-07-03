@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:snibbo_app/core/constants/myassets.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
@@ -18,7 +19,7 @@ import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/animated_like_bloc/animated_like_states.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_bloc.dart';
 import 'package:snibbo_app/features/feed/presentation/bloc/posts_bloc/like_post/like_post_bloc/like_post_events.dart';
-import 'package:snibbo_app/features/feed/presentation/widgets/posts/post_menu_bottom_sheet.dart';
+import 'package:snibbo_app/core/widgets/posts_widgets/post_menu_bottom_sheet.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
@@ -34,6 +35,7 @@ class PostWidget extends StatefulWidget {
 class _PostWidgetState extends State<PostWidget> {
   late UserEntity postUser;
   late PostEntity post;
+  bool showShimmer = true;
 
   @override
   void initState() {
@@ -96,29 +98,62 @@ class _PostWidgetState extends State<PostWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      postUser.name,
-                      style: TextStyle(
-                        fontSize: width * 0.033,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    showShimmer
+                        ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            width: width * 0.23,
+                            height: height * 0.015,
+                          ),
+                        )
+                        : Text(
+                          postUser.name,
+                          style: TextStyle(
+                            fontSize: width * 0.033,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                     SizedBox(height: height * 0.0025),
-                    Text(
-                      postUser.username,
-                      style: TextStyle(
-                        fontSize: width * 0.030,
-                        color: MyColors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    showShimmer
+                        ? Padding(
+                          padding: EdgeInsets.only(top: height * 0.006),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              width: width * 0.18,
+                              height: height * 0.013,
+                            ),
+                          ),
+                        )
+                        : Text(
+                          postUser.username,
+                          style: TextStyle(
+                            fontSize: width * 0.030,
+                            color: MyColors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                   ],
                 ),
               ),
               Spacer(),
               IconButton(
                 onPressed: () {
-                  PostMenuBottomSheet.call(context: context, isDark: isDark);
+                  PostMenuBottomSheet.call(
+                    context: context,
+                    isDark: isDark,
+                    postId: post.id,
+                  );
                 },
                 icon: Icon(
                   Icons.more_vert,
@@ -171,28 +206,40 @@ class _PostWidgetState extends State<PostWidget> {
                 post.postContent,
                 width: width,
                 frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                  return UiUtils.showShimmerBuilder(
-                    wasSynchronouslyLoaded: wasSynchronouslyLoaded,
-                    frame: frame,
-                    child: child,
-                  );
+                  if (wasSynchronouslyLoaded || frame != null) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        setState(() {
+                          showShimmer = false;
+                        });
+                      }
+                    });
+                    return child;
+                  } else {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: height * 0.3,
+                      child: UiUtils.showShimmer(),
+                    );
+                  }
                 },
                 errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    MyAssets.demoUser, //@ error builder
+                  return Container(
+                    alignment: Alignment.center,
                     width: width,
-                    frameBuilder: (
-                      context,
-                      child,
-                      frame,
-                      wasSynchronouslyLoaded,
-                    ) {
-                      return UiUtils.showShimmerBuilder(
-                        wasSynchronouslyLoaded: wasSynchronouslyLoaded,
-                        frame: frame,
-                        child: child,
-                      );
-                    },
+                    height: height * 0.3,
+                    color: const Color.fromARGB(11, 117, 117, 117),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Failed to load post"),
+                        SizedBox(width: width * 0.01),
+                        Icon(
+                          LineIcons.exclamationCircle,
+                          color: MyColors.secondaryDense,
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

@@ -7,7 +7,16 @@ abstract class DeletePostState extends Equatable {
 
 class DeletePostInitial extends DeletePostState {}
 
-class DeletePostLoading extends DeletePostState {}
+class DeletePostLoading extends DeletePostState {
+  final String postId;
+
+  DeletePostLoading({required this.postId});
+
+    @override
+  List<Object?> get props => [postId];
+
+
+}
 
 class DeletePostSuccess extends DeletePostState {
   final String title;
@@ -29,9 +38,10 @@ class DeletePostSuccess extends DeletePostState {
 class DeletePostError extends DeletePostState {
   final String title;
   final String description;
+    final String postId;
 
-  DeletePostError({required this.title, required this.description});
+  DeletePostError({required this.title, required this.description,required this.postId});
 
   @override
-  List<Object?> get props => [title, description];
+  List<Object?> get props => [title, description,postId];
 }

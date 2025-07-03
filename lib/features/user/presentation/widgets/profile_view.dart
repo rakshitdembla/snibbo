@@ -11,8 +11,8 @@ import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagi
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_states.dart';
-import 'package:snibbo_app/features/user/presentation/helpers/user_posts_helper.dart';
-import 'package:snibbo_app/features/user/presentation/helpers/user_saved_posts_helper.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_posts_helper.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_saved_posts_helper.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/tabs/tab_mode_enum.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/tabs/user_posts_tab.dart';
@@ -146,9 +146,11 @@ class _ProfileViewState extends State<ProfileView>
           headerSliverBuilder:
               (context, innerBoxIsScrolled) => [
                 SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: height * 0.02),
-                    child: UserInfoHeader(profileEntity: widget.profileEntity),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: height * 0.02),
+                      child: UserInfoHeader(profileEntity: widget.profileEntity),
+                    ),
                   ),
                 ),
                 SliverPersistentHeader(
@@ -176,7 +178,7 @@ class _ProfileViewState extends State<ProfileView>
                           ),
                         ),
                       ],
-                    ),
+                    ), isDark: isDark,
                   ),
                 ),
               ],
@@ -240,8 +242,9 @@ class _ProfileViewState extends State<ProfileView>
 
 class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget tabBar;
+  final bool isDark;
 
-  _TabBarDelegate(this.tabBar);
+  _TabBarDelegate(this.tabBar, {required this.isDark});
 
   @override
   double get minExtent => 37.5;
@@ -259,6 +262,6 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant _TabBarDelegate oldDelegate) {
-    return false;
+    return isDark != oldDelegate.isDark;
   }
 }

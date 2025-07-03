@@ -14,7 +14,7 @@ import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/foll
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_states.dart';
-import 'package:snibbo_app/features/user/presentation/widgets/follow_status_manager.dart';
+import 'package:snibbo_app/core/local_data_manager/follow_status_manager.dart';
 import 'package:snibbo_app/features/user/presentation/widgets/social_stats_widget.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
@@ -50,6 +50,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
             children: [
               UserCircularProfileWidget(
                 isStatic: false,
+                stopRoute: true,
                 hasActiveStories: profile.hasActiveStories,
                 isAllStoriesViewed: profile.viewedAllStories,
                 profileUrl: profile.profilePicture,
@@ -184,7 +185,11 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                         profile.isMyProfile
                             ? ElevatedOutlinedCTA(
                               onPressed: () {
-                                ServicesUtils.copyLink(uniqueID: profile.username, type: "profile", context: context);
+                                ServicesUtils.copyLink(
+                                  uniqueID: profile.username,
+                                  type: "profile",
+                                  context: context,
+                                );
                               },
                               buttonName: "Share Profile",
                               isShort: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/network/web_sockets/web_sockets_services.dart';
 import 'package:snibbo_app/core/utils/sound_effects_utils.dart';
 import 'package:snibbo_app/features/chats/domain/entities/chat_list_entity.dart';
@@ -39,6 +40,7 @@ class ChatsListBloc extends Bloc<ChatsListEvents, ChatsListStates> {
 
       if (success && chats != null) {
         allChats.addAll(chats);
+        StoryViewsManager.clearStoriesByChats(chats: chats);
         hasMore = chats.length == 12;
         page = 2;
 
@@ -75,6 +77,7 @@ class ChatsListBloc extends Bloc<ChatsListEvents, ChatsListStates> {
 
       if (success && chats != null) {
         allChats.addAll(chats);
+        StoryViewsManager.clearStoriesByChats(chats: chats);
         hasMore = chats.length == 12;
         page++;
 
@@ -101,10 +104,9 @@ class ChatsListBloc extends Bloc<ChatsListEvents, ChatsListStates> {
       for (var chat in allChats) {
         if (chat.id == event.chatId) {
           chat.lastMessage?.isSeenByOther = true;
-          break;
         }
       }
-      
+
       emit(SocketUpdateChatList(chats: List.from(allChats)));
     });
 

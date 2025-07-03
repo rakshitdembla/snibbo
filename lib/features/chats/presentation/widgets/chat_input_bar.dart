@@ -30,7 +30,6 @@ class ChatInputBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Expanded TextField with emoji icon
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: width * 0.03),
@@ -81,7 +80,7 @@ class ChatInputBar extends StatelessWidget {
           Container(
             height: height * 0.052,
             decoration: BoxDecoration(
-              color: MyColors.secondary,
+              color: MyColors.secondaryDense,
               shape: BoxShape.circle,
             ),
             child: IconButton(

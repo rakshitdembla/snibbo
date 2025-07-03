@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snibbo_app/core/local_data_manager/story_views_manager.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
 import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
@@ -56,6 +57,7 @@ class UserProfileBloc extends Bloc<UserProfileEvents, UserProfileStates> {
           profileEntity != null &&
           userPosts != null &&
           userSavedPosts != null) {
+            StoryViewsManager.clearStoryByProfile(profile: profileEntity);
         emit(
           UserProfileSuccess(
             isMyProfile: profileEntity.username == myUsername,

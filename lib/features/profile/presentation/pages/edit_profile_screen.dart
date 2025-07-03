@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snibbo_app/core/constants/mystrings.dart';
+import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
@@ -169,18 +171,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               SizedBox(height: height * 0.02),
 
-              MyTextField(
-                hintText: MyStrings.bioHintText,
-                label: "Bio",
-                focusNode: _bioFocus,
-                isPassword: false,
-                textEditingController: _bioController,
-                maxLength: 150,
-                maxLines: 4,
-                onSubmit: (String value) {
-                  FocusScope.of(context).unfocus();
-                },
-                prefixIcon: Icons.info_outline,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  MyTextField(
+                    hintText: MyStrings.bioHintText,
+                    label: "Bio",
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'^.*(\n?.*){0,3}$'),
+                      ),
+                    ],
+                    focusNode: _bioFocus,
+                    isPassword: false,
+                    textEditingController: _bioController,
+                    maxLength: 150,
+                    maxLines: 4,
+                    onSubmit: (String value) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    prefixIcon: Icons.info_outline,
+                  ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.only(right: width * 0.001,top: height * 0.002),
+                    child: Text("Max 4 lines allowed!",style: TextStyle(
+                      color: MyColors.grey,
+                      fontSize: height * 0.013
+                    ),),
+                  )
+                ],
               ),
               SizedBox(height: height * 0.05),
               BlocConsumer<UpdateProfileBloc, UpdateProfileState>(

@@ -4,12 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:lottie/lottie.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
 import 'package:snibbo_app/core/network/web_sockets/web_sockets_services.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
+import 'package:snibbo_app/core/widgets/error_screen.dart';
 import 'package:snibbo_app/core/widgets/user_circular_profile_widget.dart';
 import 'package:snibbo_app/features/chats/presentation/bloc/get_messages_bloc/get_messages_bloc.dart';
 import 'package:snibbo_app/features/chats/presentation/bloc/get_messages_bloc/get_messages_events.dart';
@@ -21,6 +21,7 @@ import 'package:snibbo_app/features/chats/presentation/widgets/my_message_widget
 import 'package:snibbo_app/features/chats/presentation/widgets/user_message_widget.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
+import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 import 'package:snibbo_app/service_locator.dart';
 
 @RoutePage()
@@ -104,51 +105,52 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onPressed: () => context.router.pop(),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.more_vert_outlined, color: MyColors.white),
-                  onPressed: () {},
-                ),
-              ],
               iconTheme: IconThemeData(color: MyColors.white),
               backgroundColor: MyColors.secondaryDense,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  UserCircularProfileWidget(
-                    username: widget.username,
-                    isStatic: true,
-                    profileUrl: widget.profilePicture,
-                    margins: EdgeInsets.zero,
-                    storySize: 0.05,
-                    isAllStoriesViewed: false,
-                    hasActiveStories: false,
-                  ),
-                  SizedBox(width: width * 0.02),
-                  BlocBuilder<MessagesBloc, MessagesStates>(
-                    buildWhen: (previous, current) {
-                      if (current is MessagesLoaded) {
-                        return current.username == widget.username;
-                      }
-                      return false;
-                    },
-                    builder: (context, state) {
-                      if (state is MessagesLoaded) {
+              title: GestureDetector(
+                onTap: () {
+                  context.router.push(
+                    UserProfileScreenRoute(username: widget.username),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    UserCircularProfileWidget(
+                      username: widget.username,
+                      isStatic: true,
+                      profileUrl: widget.profilePicture,
+                      margins: EdgeInsets.zero,
+                      storySize: 0.05,
+                      isAllStoriesViewed: false,
+                      hasActiveStories: false,
+                    ),
+                    SizedBox(width: width * 0.02),
+                    BlocBuilder<MessagesBloc, MessagesStates>(
+                      buildWhen: (previous, current) {
+                        if (current is MessagesLoaded) {
+                          return current.username == widget.username;
+                        }
+                        return false;
+                      },
+                      builder: (context, state) {
+                        if (state is MessagesLoaded) {
+                          return ChatScreenAppbarUserinfo(
+                            chatId: messagesBloc.messagesChatId,
+                            lastSeen: widget.lastSeen,
+                            isOnline: widget.isOnline,
+                            username: widget.username,
+                          );
+                        }
                         return ChatScreenAppbarUserinfo(
-                          chatId: messagesBloc.messagesChatId,
                           lastSeen: widget.lastSeen,
                           isOnline: widget.isOnline,
                           username: widget.username,
                         );
-                      }
-                      return ChatScreenAppbarUserinfo(
-                        lastSeen: widget.lastSeen,
-                        isOnline: widget.isOnline,
-                        username: widget.username,
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
               centerTitle: false,
             ),
@@ -189,7 +191,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   sl<WebSocketsServices>().emitMessagesSeen(
                     chatId: messagesBloc.messagesChatId,
                   );
-                  
                 }
               },
               buildWhen: (previous, current) {
@@ -210,11 +211,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 }
 
                 if (state is MessagesError) {
-                  return Center(
-                    child: Lottie.asset(MyAssets.cat404, height: height * 0.15),
-                  );
+                  return ErrorScreen(isFeedError: false);
                 }
-                debugPrint("Rebuild triggered!");
                 return LayoutBuilder(
                   builder: (context, constraints) {
                     return Stack(
@@ -243,8 +241,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                       return messagesBloc.hasMore
                                           ? Center(
                                             child: Padding(
-                                              padding: EdgeInsets.only(top: height * 0.025,bottom: height * 0.02),
-                                              child: CircularProgressLoading()),
+                                              padding: EdgeInsets.only(
+                                                top: height * 0.025,
+                                                bottom: height * 0.02,
+                                              ),
+                                              child: CircularProgressLoading(),
+                                            ),
                                           )
                                           : SizedBox.shrink();
                                     }

@@ -239,8 +239,10 @@ class ServicesUtils {
   }
 
   static Future<void> openEmailApp({
-    required String reportFor,
-    required String uniqueID,
+    required bool isReport,
+    String? reportFor,
+    String? uniqueID,
+    String? text,
     required BuildContext context,
   }) async {
     String? encodeQueryParameters(Map<String, String> params) {
@@ -257,7 +259,7 @@ class ServicesUtils {
       scheme: "mailto",
       path: "app.snibbo@gmail.com",
       query: encodeQueryParameters(<String, String>{
-        'subject': 'Report for $reportFor - $uniqueID ',
+        'subject': isReport ? 'Report for $reportFor - $uniqueID ' : text ?? "",
         'body': '',
       }),
     );

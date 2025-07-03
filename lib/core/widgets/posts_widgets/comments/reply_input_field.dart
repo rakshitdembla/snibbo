@@ -138,7 +138,7 @@ class _ReplyInputFieldState extends State<ReplyInputField> {
                     if (state is CreateReplyLoading) {
                       return Padding(
                         padding: EdgeInsets.only(right: width * 0.025),
-                        child: Center(child: CircularProgressLoading()),
+                        child: Center(child: CircularProgressLoading(androidScaleSize: height * 0.0007,)),
                       );
                     }
                     return IconButton(

@@ -9,7 +9,6 @@ class MyAssets {
   static String blackGhost = "assets/black_ghost.png";
   static String blueGhost = "assets/blue_ghost.png";
   static String gradient = "assets/gradient.png";
-  static String demoUser = "assets/demo.png";
   static String profilePictureHolder = "assets/user_profile.webp";
   static String storyImage = "assets/story_image.jpg";
   static String postImage = "assets/post.webp";

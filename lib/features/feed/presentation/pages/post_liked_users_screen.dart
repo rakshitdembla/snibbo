@@ -5,6 +5,7 @@ import 'package:snibbo_app/core/network/helpers/search_debouncing.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/custom_user_tile.dart';
+import 'package:snibbo_app/core/widgets/error_screen.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
 import 'package:snibbo_app/features/explore/presentation/widgets/search_field.dart';
 import 'package:snibbo_app/features/feed/domain/entities/post_entity.dart';
@@ -126,7 +127,7 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
             if (state is PostLikedUsersLoading) {
               return const Center(child: CircularProgressLoading());
             } else if (state is PostLikedUsersError) {
-              return const Center(child: Text("Something went wrong"));
+              return const ErrorScreen(isFeedError: false);
             }
 
             return ListView.builder(
@@ -179,7 +180,6 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
                 final user = postLikedUsersBloc.allUsers[index - 1];
                 return CustomUserTile(
                   user: user,
-                  onPopRefreshUsername: widget.post.userId.username,
                 );
               },
             );

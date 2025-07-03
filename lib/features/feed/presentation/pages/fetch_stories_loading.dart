@@ -120,7 +120,7 @@ class _FetchStoriesLoadingState extends State<FetchStoriesLoading> {
                       ),
                     ),
 
-                    Center(child: SecondaryCircularProgress()),
+                    Center(child: CircularProgressLoading()),
                   ],
                 ),
               )

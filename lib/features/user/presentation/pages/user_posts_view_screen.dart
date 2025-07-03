@@ -8,7 +8,7 @@ import 'package:snibbo_app/features/user/domain/entities/profile_entity.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_posts_pagination_bloc/user_posts_pagination_states.dart';
-import 'package:snibbo_app/features/user/presentation/helpers/user_posts_helper.dart';
+import 'package:snibbo_app/core/local_data_manager/profile/user_posts_helper.dart';
 
 @RoutePage()
 class UserPostsViewScreen extends StatefulWidget {

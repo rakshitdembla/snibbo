@@ -11,16 +11,14 @@ import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/foll
 import 'package:snibbo_app/features/user/presentation/bloc/follow_user_bloc/follow_user_events.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_bloc.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/unfollow_user_bloc/unfollow_user_events.dart';
-import 'package:snibbo_app/features/user/presentation/widgets/follow_status_manager.dart';
+import 'package:snibbo_app/core/local_data_manager/follow_status_manager.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class CustomUserTile extends StatefulWidget {
   final UserEntity user;
-  final String onPopRefreshUsername;
   const CustomUserTile({
     super.key,
     required this.user,
-    required this.onPopRefreshUsername,
   });
 
   @override
@@ -28,12 +26,6 @@ class CustomUserTile extends StatefulWidget {
 }
 
 class _CustomUserTileState extends State<CustomUserTile> {
-  @override
-  void initState() {
-    FollowStatusManager.isAlreadyFollwing[widget.user.username] =
-        widget.user.isFollowedByMe == true;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

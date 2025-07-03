@@ -64,6 +64,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
         title: Text("Edit Post"),
         actions: [
           BlocConsumer<DeletePostBloc, DeletePostState>(
+            listenWhen: (previous, current) {
+              if (current is DeletePostSuccess) {
+                return current.postId == widget.postId;
+              } else if (current is DeletePostError) {
+                return current.postId == widget.postId;
+              }
+              return false;
+            },
             listener: (context, state) {
               if (state is DeletePostSuccess) {
                 UpdatePostEvents.delete(context: context, state: state);
@@ -89,6 +97,16 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   isWarning: false,
                 );
               }
+            },
+            buildWhen: (previous, current) {
+              if (current is DeletePostSuccess) {
+                return current.postId == widget.postId;
+              } else if (current is DeletePostError) {
+                return current.postId == widget.postId;
+              } else if (current is DeletePostLoading) {
+                return current.postId == widget.postId;
+              }
+              return false;
             },
             builder: (context, state) {
               if (state is DeletePostLoading) {
@@ -128,6 +146,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
             UiUtils.bottomNavBar(context: context),
           ),
           child: BlocConsumer<UpdatePostBloc, UpdatePostState>(
+            listenWhen: (previous, current) {
+              if (current is UpdatePostError) {
+                return current.postId == widget.postId;
+              } else if (current is UpdatePostSuccess) {
+                return current.postId == widget.postId;
+              }
+              return false;
+            },
             listener: (context, state) {
               if (state is UpdatePostError) {
                 UiUtils.showToast(
@@ -153,6 +179,16 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   context.router.pop();
                 });
               }
+            },
+            buildWhen: (previous, current) {
+              if (current is UpdatePostSuccess) {
+                return current.postId == widget.postId;
+              } else if (current is UpdatePostLoading) {
+                return current.postId == widget.postId;
+              } else if (current is UpdatePostError) {
+                return current.postId == widget.postId;
+              }
+              return false;
             },
             builder: (context, state) {
               return Column(
