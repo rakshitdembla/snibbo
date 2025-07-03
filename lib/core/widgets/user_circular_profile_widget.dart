@@ -46,21 +46,16 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
   late bool isAllViewed;
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
+    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+    final height = UiUtils.screenHeight(context);
+    final storyRadius = height * widget.storySize;
+
     isAllViewed =
         StoryViewsManager.storyViewStatus[widget.username] ??
         widget.isAllStoriesViewed ??
         widget.hasActiveStories ??
         false;
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    final height = UiUtils.screenHeight(context);
-    final storyRadius = height * widget.storySize;
 
     //Base story widget -->
 

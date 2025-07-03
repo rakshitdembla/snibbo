@@ -7,6 +7,8 @@ import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
 import 'package:snibbo_app/core/widgets/error_screen.dart';
 import 'package:snibbo_app/core/widgets/refresh_bar.dart';
+import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
+import 'package:snibbo_app/features/profile/presentation/bloc/update_profile_bloc/update_profile_states.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/features/user/presentation/bloc/user_saved_posts_pagination_bloc/user_saved_posts_pagination_bloc.dart';
@@ -50,97 +52,115 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
     final width = UiUtils.screenWidth(context);
-    return username == null
-        ? Container(
-          color: isDark ? MyColors.darkPrimary : MyColors.primary,
-          child: Center(child: CircularProgressLoading()))
-        : SizedBox(
-          height: UiUtils.screenHeight(context),
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                "@$username",
-                style: TextStyle(overflow: TextOverflow.ellipsis),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    context.router.push(SettingsScreenRoute());
-                  },
-                  icon: Icon(
-                    Icons.settings_outlined,
-                    size: width * 0.065,
-                    color: isDark ? MyColors.primary : MyColors.darkPrimary,
+    return BlocListener<UpdateProfileBloc, UpdateProfileState>(
+      listener: (context, state) async {
+        if (state is UpdateProfileSuccess) {
+          username = await ServicesUtils.getUsername();
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {});
+          });
+        }
+      },
+      child:
+          username == null
+              ? Container(
+                color: isDark ? MyColors.darkPrimary : MyColors.primary,
+                child: Center(child: CircularProgressLoading()),
+              )
+              : SizedBox(
+                height: UiUtils.screenHeight(context),
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: Text(
+                      "@$username",
+                      style: TextStyle(overflow: TextOverflow.ellipsis),
+                    ),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          context.router.push(SettingsScreenRoute());
+                        },
+                        icon: Icon(
+                          Icons.settings_outlined,
+                          size: width * 0.065,
+                          color:
+                              isDark ? MyColors.primary : MyColors.darkPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  body: SafeArea(
+                    child: BlocConsumer<UserProfileBloc, UserProfileStates>(
+                      listenWhen: (previous, current) {
+                        if (current is UserProfileError) {
+                          return current.username == username;
+                        } else if (current is UserProfileSuccess) {
+                          return current.username == username;
+                        }
+                        return false;
+                      },
+                      listener: (context, state) {
+                        if (state is UserProfileError) {
+                          UiUtils.showToast(
+                            title: state.title,
+                            isDark: isDark,
+                            description: state.description,
+                            context: context,
+                            isSuccess: false,
+                            isWarning: false,
+                          );
+                        } else if (state is UserProfileSuccess) {
+                          //Initialize Paginations for User Posts & User Saved Posts
+                          BlocProvider.of<UserPostsPaginationBloc>(context).add(
+                            InitializeUserPosts(
+                              initialPosts: state.userPosts,
+                              username: username!,
+                            ),
+                          );
+
+                          BlocProvider.of<UserSavedPostsPaginationBloc>(
+                            context,
+                          ).add(
+                            InitializeUserSavedPosts(
+                              initialPosts: state.userSavedPosts,
+                              username: username!,
+                            ),
+                          );
+                        }
+                      },
+                      buildWhen: (previous, current) {
+                        if (current is UserProfileSuccess) {
+                          return current.username == username;
+                        } else if (current is UserProfileLoading) {
+                          return current.username == username;
+                        } else if (current is UserProfileError) {
+                          return current.username == username;
+                        }
+                        return false;
+                      },
+                      builder: (context, state) {
+                        if (state is UserProfileSuccess) {
+                          return ProfileView(
+                            profileEntity: state.profileEntity,
+                          );
+                        } else if (state is UserProfileError) {
+                          return MyRefreshBar(
+                            onRefresh: () async {
+                              BlocProvider.of<UserProfileBloc>(
+                                context,
+                              ).add(GetUserProfile(username: username!));
+                            },
+                            widget: ErrorScreen(isFeedError: false),
+                          );
+                        } else {
+                          return Center(child: CircularProgressLoading());
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ],
-            ),
-            body: SafeArea(
-              child: BlocConsumer<UserProfileBloc, UserProfileStates>(
-                listenWhen: (previous, current) {
-                  if (current is UserProfileError) {
-                    return current.username == username;
-                  } else if (current is UserProfileSuccess) {
-                    return current.username == username;
-                  }
-                  return false;
-                },
-                listener: (context, state) {
-                  if (state is UserProfileError) {
-                    UiUtils.showToast(
-                      title: state.title,
-                      isDark: isDark,
-                      description: state.description,
-                      context: context,
-                      isSuccess: false,
-                      isWarning: false,
-                    );
-                  } else if (state is UserProfileSuccess) {
-                    //Initialize Paginations for User Posts & User Saved Posts
-                    BlocProvider.of<UserPostsPaginationBloc>(context).add(
-                      InitializeUserPosts(
-                        initialPosts: state.userPosts,
-                        username: username!,
-                      ),
-                    );
-
-                    BlocProvider.of<UserSavedPostsPaginationBloc>(context).add(
-                      InitializeUserSavedPosts(
-                        initialPosts: state.userSavedPosts,
-                        username: username!,
-                      ),
-                    );
-                  }
-                },
-                buildWhen: (previous, current) {
-                  if (current is UserProfileSuccess) {
-                    return current.username == username;
-                  } else if (current is UserProfileLoading) {
-                    return current.username == username;
-                  } else if (current is UserProfileError) {
-                    return current.username == username;
-                  }
-                  return false;
-                },
-                builder: (context, state) {
-                  if (state is UserProfileSuccess) {
-                    return ProfileView(profileEntity: state.profileEntity);
-                  } else if (state is UserProfileError) {
-                    return MyRefreshBar(
-                      onRefresh: () async {
-                        BlocProvider.of<UserProfileBloc>(
-                          context,
-                        ).add(GetUserProfile(username: username!));
-                      },
-                      widget: ErrorScreen(isFeedError: false)
-                    );
-                  } else {
-                    return Center(child: CircularProgressLoading());
-                  }
-                },
               ),
-            ),
-          ),
-        );
+    );
   }
 }

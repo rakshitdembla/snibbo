@@ -234,8 +234,10 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                           ),
                           Spacer(),
                           deleteLoadingState
-                              ? CircularProgressLoading(
-                           androidScaleSize: height * 0.001,iosScaleSize: height * 0.0002,
+                              ? Center(
+                                child: CircularProgressLoading(
+                                                           androidScaleSize: height * 0.001,iosScaleSize: height * 0.0002,
+                                ),
                               )
                               : IconWithText._(
                                 height: height,

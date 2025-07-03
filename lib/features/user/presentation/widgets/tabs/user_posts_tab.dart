@@ -102,7 +102,7 @@ class _UserPostsTabState extends State<UserPostsTab>
                           UiUtils.bottomNavBar(context: context) +
                           height * 0.01,
                     ),
-                    child: CircularProgressLoading(),
+                    child: Center(child: CircularProgressLoading()),
                   )
                   : SizedBox(height: UiUtils.bottomNavBar(context: context)),
         ),

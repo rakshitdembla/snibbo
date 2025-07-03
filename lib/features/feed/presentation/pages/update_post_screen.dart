@@ -113,7 +113,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.only(right: width * 0.03),
-                    child: CircularProgressLoading(),
+                    child: Center(child: CircularProgressLoading()),
                   ),
                 );
               }

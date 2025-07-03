@@ -245,7 +245,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 top: height * 0.025,
                                                 bottom: height * 0.02,
                                               ),
-                                              child: CircularProgressLoading(),
+                                              child: Center(child: CircularProgressLoading()),
                                             ),
                                           )
                                           : SizedBox.shrink();

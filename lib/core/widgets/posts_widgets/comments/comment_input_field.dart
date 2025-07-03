@@ -106,7 +106,7 @@ class _CommentInputFieldState extends State<CommentInputField> {
                 if (state is CreateCommentLoading) {
                   return Padding(
                     padding: EdgeInsets.only(right: width * 0.025),
-                    child: CircularProgressLoading(androidScaleSize: height * 0.0007,));
+                    child: Center(child: CircularProgressLoading(androidScaleSize: height * 0.0007,)));
                 }
                 return IconButton(
                   onPressed: () {

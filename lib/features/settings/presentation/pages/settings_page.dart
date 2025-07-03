@@ -41,10 +41,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return MyListtile(
                     leadingTitle: "Dark Theme",
                     trailingWidget: MyAdaptiveSwitch(
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         context.read<ThemeBloc>().add(
                           ToogleTheme(isDark: value),
                         );
+
+                        ServicesUtils.saveTheme(isDark: value);
                       },
                       value: value,
                     ),

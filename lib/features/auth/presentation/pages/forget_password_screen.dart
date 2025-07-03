@@ -130,7 +130,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   },
                   builder: (context, state) {
                     return state is ForgetPassLoadingState
-                        ? CircularProgressLoading()
+                        ? Center(child: CircularProgressLoading())
                         : ElevatedCTA(
                           onPressed: () {
                             FocusScope.of(context).unfocus();

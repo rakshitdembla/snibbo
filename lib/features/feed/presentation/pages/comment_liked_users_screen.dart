@@ -183,7 +183,7 @@ class _CommentLikedUsersScreenState extends State<CommentLikedUsersScreen> {
                 if (index == commentLikedUsersBloc.allUsers.length + 1) {
                   return commentLikedUsersBloc.hasMore &&
                           !commentLikedUsersBloc.isSearchMode
-                      ? const CircularProgressLoading()
+                      ? Center(child: const CircularProgressLoading())
                       : const SizedBox.shrink();
                 }
                 final user = commentLikedUsersBloc.allUsers[index - 1];

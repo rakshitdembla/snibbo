@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snibbo_app/core/theme/themedata.dart';
+import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/forget_password_bloc/forget_pass_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:snibbo_app/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
@@ -64,14 +65,21 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  bool? sharedPrefIsDark = await ServicesUtils.getTheme();
   final brightness =
       WidgetsBinding.instance.platformDispatcher.platformBrightness;
+  final spBrightness =
+      sharedPrefIsDark == true
+          ? Brightness.dark
+          : sharedPrefIsDark == false
+          ? Brightness.light
+          : brightness;
   setupServiceLocator();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
-          create: (context) => ThemeBloc(initialBrightness: brightness),
+          create: (context) => ThemeBloc(initialBrightness: spBrightness),
         ),
         BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
         BlocProvider<RegisterBloc>(create: (context) => RegisterBloc()),

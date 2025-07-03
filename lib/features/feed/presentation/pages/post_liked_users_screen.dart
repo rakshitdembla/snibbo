@@ -174,7 +174,7 @@ class _PostLikedUsersScreenState extends State<PostLikedUsersScreen> {
                 }
                 if (index == postLikedUsersBloc.allUsers.length + 1) {
                   return postLikedUsersBloc.hasMore && !postLikedUsersBloc.isSearchMode
-                      ? const CircularProgressLoading()
+                      ? Center(child: const CircularProgressLoading())
                       : const SizedBox.shrink();
                 }
                 final user = postLikedUsersBloc.allUsers[index - 1];

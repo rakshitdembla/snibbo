@@ -16,16 +16,21 @@ import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
 
 class CustomUserTile extends StatefulWidget {
   final UserEntity user;
-  const CustomUserTile({
-    super.key,
-    required this.user,
-  });
+  const CustomUserTile({super.key, required this.user});
 
   @override
   State<CustomUserTile> createState() => _CustomUserTileState();
 }
 
 class _CustomUserTileState extends State<CustomUserTile> {
+  @override
+  void initState() {
+    super.initState();
+    FollowStatusManager.isAlreadyFollwing.putIfAbsent(
+      widget.user.username,
+      () => widget.user.isFollowedByMe ?? false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +61,9 @@ class _CustomUserTileState extends State<CustomUserTile> {
           GestureDetector(
             onTap: () {
               isMySelf
-                  ? context.router.push(
-                    ProfileScreenRoute(
-                    ),
-                  )
+                  ? context.router.push(ProfileScreenRoute())
                   : context.router.push(
-                    UserProfileScreenRoute(
-                      username: user.username,
-                    ),
+                    UserProfileScreenRoute(username: user.username),
                   );
             },
             child: Column(

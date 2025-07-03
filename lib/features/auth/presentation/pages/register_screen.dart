@@ -163,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                   builder: (context, state) {
                     return state is RegisterLoadingState
-                        ? CircularProgressLoading()
+                        ? Center(child: CircularProgressLoading())
                         : ElevatedCTA(
                           onPressed: () {
                             FocusScope.of(context).unfocus();

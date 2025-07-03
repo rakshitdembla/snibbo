@@ -50,7 +50,6 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
             children: [
               UserCircularProfileWidget(
                 isStatic: false,
-                stopRoute: true,
                 hasActiveStories: profile.hasActiveStories,
                 isAllStoriesViewed: profile.viewedAllStories,
                 profileUrl: profile.profilePicture,

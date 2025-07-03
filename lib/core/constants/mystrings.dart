@@ -34,4 +34,6 @@ class MyStrings {
   static const termsConditionsUrl = "https://sites.google.com/view/about-snibbo/terms-conditions";
   static const privacyPolicyUrl = "https://sites.google.com/view/about-snibbo/privacy-policy";
 
+  static const themeKey = "theme";
+
 }

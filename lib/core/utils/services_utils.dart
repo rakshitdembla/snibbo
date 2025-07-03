@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snibbo_app/core/constants/my_keys.dart';
 import 'package:snibbo_app/core/entities/cloud_image_entity.dart';
 import 'package:snibbo_app/core/models/cloud_image_model.dart';
@@ -312,5 +313,15 @@ class ServicesUtils {
         );
       }
     }
+  }
+
+  static Future<void> saveTheme({required bool isDark}) async {
+    final sp = await SharedPreferences.getInstance();
+    sp.setBool(MyStrings.themeKey, isDark);
+  }
+
+  static Future<bool?> getTheme() async {
+    final sp = await SharedPreferences.getInstance();
+    return sp.getBool(MyStrings.themeKey);
   }
 }

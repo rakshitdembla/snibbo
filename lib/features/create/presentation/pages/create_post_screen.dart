@@ -168,8 +168,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 ),
                                 child:
                                     state is PickingPostImage
-                                        ? CircularProgressLoading(
-                                          androidScaleSize: height * 0.0008,
+                                        ? Center(
+                                          child: CircularProgressLoading(
+                                            androidScaleSize: height * 0.0008,
+                                          ),
                                         )
                                         : Icon(
                                           Icons.add,

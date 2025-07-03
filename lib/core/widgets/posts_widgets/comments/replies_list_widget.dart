@@ -160,9 +160,11 @@ class _RepliesListWidgetState extends State<RepliesListWidget> {
                         showLoading
                             ? Padding(
                               padding: EdgeInsets.only(left: width * 0.01),
-                              child: CircularProgressLoading(
-                                androidScaleSize: width * 0.0006,
-                                iosScaleSize: width * 0.001,
+                              child: Center(
+                                child: CircularProgressLoading(
+                                  androidScaleSize: width * 0.0006,
+                                  iosScaleSize: width * 0.001,
+                                ),
                               ),
                             )
                             : SizedBox.shrink(),

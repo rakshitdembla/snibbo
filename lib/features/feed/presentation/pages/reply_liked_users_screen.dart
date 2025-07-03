@@ -176,7 +176,7 @@ class _ReplyLikedUsersScreenState extends State<ReplyLikedUsersScreen> {
                 if (index == replyLikedUsersBloc.allUsers.length + 1) {
                   return replyLikedUsersBloc.hasMore &&
                           !replyLikedUsersBloc.isSearchMode
-                      ? const CircularProgressLoading()
+                      ? Center(child: const CircularProgressLoading())
                       : const SizedBox.shrink();
                 }
 

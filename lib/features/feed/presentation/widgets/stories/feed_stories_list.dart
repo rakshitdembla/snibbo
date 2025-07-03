@@ -43,73 +43,78 @@ class _FeedStoriesListState extends State<FeedStoriesList> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final width = UiUtils.screenWidth(context);
-    final height = UiUtils.screenHeight(context);
-    final isDark = context.read<ThemeBloc>().state is DarkThemeState;
-    return SizedBox(
-      height: height * 0.14,
-      child: ListView.builder(
-        controller: controller,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount:
-            widget.allStories.length + 2, // +1 for "My Story", +1 for loader
-        itemBuilder: (context, index) {
-          //# My Story ->
-          if (index == 0) {
-            final myStory = widget.state.myStories;
-            return MyStoryWidget(
-              myStoryState: myStory,
-              hasActiveStories:
-                  myStory.userStories.isEmpty ? false : true,
-              profileUrl: myStory.profilePicture,
-              username: myStory.username,
-              isDark: isDark,
-            );
-          }
-          //# If has More Stories->
-          else if (index == widget.allStories.length + 1) {
-            return paginationBloc.hasMore
-                ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                  child: Center(child: CircularProgressLoading()),
-                )
-                : SizedBox.shrink();
-          } else {
-            //# User Stories ->
-            final story = widget.allStories[index - 1];
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                
-                UserCircularProfileWidget(
-                  hasActiveStories: true,
-                  isStatic: false,
-                  username: story.username,
-                  isAllStoriesViewed:
-                     story.isAllStoriesViewed ,
-                  profileUrl: story.profilePicture.toString(),
+ @override
+Widget build(BuildContext context) {
+  final width = UiUtils.screenWidth(context);
+  final height = UiUtils.screenHeight(context);
+  final isDark = context.read<ThemeBloc>().state is DarkThemeState;
 
-                  margins: EdgeInsets.fromLTRB(
-                    width * 0.023,
-                    height * 0.015,
-                    width * 0.023,
-                    height * 0.004,
-                  ),
-                  storySize: 0.10,
-                  storyUsers: widget.state.storiesList,
-                ),
-                Text(
-                  story.username,
-                  style: TextStyle(fontSize: height * 0.013),
-                ),
-              ],
-            );
-          }
-        },
+  return SliverToBoxAdapter(
+    child: SizedBox(
+      height: height * 0.14,
+      child: CustomScrollView(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                // # My Story
+                if (index == 0) {
+                  final myStory = widget.state.myStories;
+                  return MyStoryWidget(
+                    myStoryState: myStory,
+                    hasActiveStories: myStory.userStories.isNotEmpty,
+                    profileUrl: myStory.profilePicture,
+                    username: myStory.username,
+                    isDark: isDark,
+                  );
+                }
+
+                // # Loader at end
+                else if (index == widget.allStories.length + 1) {
+                  return paginationBloc.hasMore
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                          child: Center(child: CircularProgressLoading()),
+                        )
+                      : const SizedBox.shrink(); // Can use if inside SliverList
+                }
+
+                // # Normal Stories
+                else {
+                  final story = widget.allStories[index - 1];
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      UserCircularProfileWidget(
+                        hasActiveStories: true,
+                        isStatic: false,
+                        username: story.username,
+                        isAllStoriesViewed: story.isAllStoriesViewed,
+                        profileUrl: story.profilePicture.toString(),
+                        margins: EdgeInsets.fromLTRB(
+                          width * 0.023,
+                          height * 0.015,
+                          width * 0.023,
+                          height * 0.004,
+                        ),
+                        storySize: 0.10,
+                        storyUsers: widget.state.storiesList,
+                      ),
+                      Text(
+                        story.username,
+                        style: TextStyle(fontSize: height * 0.013),
+                      ),
+                    ],
+                  );
+                }
+              },
+              childCount: widget.allStories.length + 2,
+            ),
+          ),
+        ],
       ),
-    );
-  }
-}
+    ),
+  );
+}}

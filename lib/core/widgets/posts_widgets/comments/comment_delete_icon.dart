@@ -79,7 +79,7 @@ class CommentDeleteIcon extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is DeleteCommentLoading) {
-              return CircularProgressLoading(androidScaleSize: height * 0.00035,iosScaleSize: height * 0.0007,);
+              return Center(child: CircularProgressLoading(androidScaleSize: height * 0.00035,iosScaleSize: height * 0.0007,));
             }
             return GestureDetector(
               onTap: () {
