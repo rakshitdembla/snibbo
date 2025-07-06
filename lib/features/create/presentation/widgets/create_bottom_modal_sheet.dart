@@ -59,7 +59,7 @@ class CreateBottomModalSheet {
                     children: [
                       Text(
                         h1,
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w600,
                           fontSize: height * 0.03,
                         ),
@@ -67,7 +67,7 @@ class CreateBottomModalSheet {
                       SizedBox(height: height * 0.003),
                       Text(
                         h2,
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w500,
                           color: MyColors.grey,
                           fontSize: height * 0.017,
@@ -113,7 +113,7 @@ class StorySourceTile extends StatelessWidget {
       leading: Icon(icon, size: UiUtils.screenHeight(context) * 0.035),
       title: Text(
         title,
-        style: TextStyle(
+        style: TextStyle(   overflow: TextOverflow.ellipsis,
           fontWeight: FontWeight.w600,
           fontSize: UiUtils.screenHeight(context) * 0.020,
         ),

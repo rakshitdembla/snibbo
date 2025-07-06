@@ -60,6 +60,7 @@ class _CustomUserTileState extends State<CustomUserTile> {
           SizedBox(width: width * 0.022),
           GestureDetector(
             onTap: () {
+              FocusScope.of(context).unfocus();
               isMySelf
                   ? context.router.push(ProfileScreenRoute())
                   : context.router.push(
@@ -71,7 +72,7 @@ class _CustomUserTileState extends State<CustomUserTile> {
               children: [
                 Text(
                   user.username,
-                  style: TextStyle(
+                  style: TextStyle(   overflow: TextOverflow.ellipsis,
                     fontSize: height * 0.016,
                     fontWeight: FontWeight.w500,
                   ),
@@ -79,7 +80,7 @@ class _CustomUserTileState extends State<CustomUserTile> {
                 SizedBox(height: height * 0.0035),
                 Text(
                   user.name,
-                  style: TextStyle(
+                  style: TextStyle(   overflow: TextOverflow.ellipsis,
                     fontSize: height * 0.012,
                     color: MyColors.grey,
                     fontWeight: FontWeight.w500,

@@ -25,7 +25,7 @@ class CaptionsTextField extends StatelessWidget {
       cursorErrorColor: MyColors.secondaryDense,
       controller: captionController,
       focusNode: captionNode,
-      style: TextStyle(
+      style: TextStyle(   overflow: TextOverflow.ellipsis,
         color: isDark ? MyColors.white : MyColors.grey,
         fontWeight: FontWeight.w500,
         fontSize: height * 0.018,
@@ -49,7 +49,7 @@ class CaptionsTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(color: MyColors.searchField),
         ),
-        counterStyle: TextStyle(color: MyColors.grey),
+        counterStyle: TextStyle(   overflow: TextOverflow.ellipsis,color: MyColors.grey),
         filled: true,
         fillColor: isDark ? MyColors.darkTextFields : MyColors.textFields,
       ),

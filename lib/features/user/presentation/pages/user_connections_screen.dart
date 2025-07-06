@@ -64,7 +64,7 @@ class _UserConnectionsScreenState extends State<UserConnectionsScreen>
                     ),
                     child: Text(
                       "Followers",
-                      style: TextStyle(
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,
                         fontSize: width * 0.04,
                         color: isDark ? MyColors.primary : MyColors.darkPrimary,
                         fontWeight: FontWeight.w600,
@@ -77,7 +77,7 @@ class _UserConnectionsScreenState extends State<UserConnectionsScreen>
                     ),
                     child: Text(
                       "Followings",
-                      style: TextStyle(
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,
                         fontSize: width * 0.04,
                         color: isDark ? MyColors.primary : MyColors.darkPrimary,
                         fontWeight: FontWeight.w600,

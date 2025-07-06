@@ -146,6 +146,7 @@ class _UserStoryWidgetState extends State<UserCircularProfileWidget> {
     return !widget.isStatic && widget.stopRoute != true
         ? GestureDetector(
           onTap: () {
+                FocusScope.of(context).unfocus();
             if (widget.hasActiveStories == true) {
               context.router.push(
                 FetchStoriesLoadingRoute(

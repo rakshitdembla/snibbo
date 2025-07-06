@@ -17,7 +17,7 @@ class H1H2Title extends StatelessWidget {
       children: [
         Text(
           h1,
-          style: TextStyle(
+          style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontSize: width * 0.055,
             fontWeight: FontWeight.w600,
             fontFamily: MyFonts.assetsFontFamily(),
@@ -26,7 +26,7 @@ class H1H2Title extends StatelessWidget {
         SizedBox(height: height * 0.0020),
         Text(
           h2,
-          style: TextStyle(
+          style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontSize: width * 0.037,
             fontWeight: FontWeight.w500,
             color: MyColors.grey,

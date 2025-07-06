@@ -111,7 +111,7 @@ class ShowCommentsSheet {
                       padding: EdgeInsets.only(top: height * 0.013),
                       child: Text(
                         "Comments",
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           fontSize: width * 0.037,
                           fontWeight: FontWeight.w700,
                         ),

@@ -21,7 +21,7 @@ class PostActionIcon extends StatelessWidget {
         children: [
           icon,
           SizedBox(width: width * 0.009),
-          Text(count, style: TextStyle(fontSize: width * 0.045)),
+          Text(count, style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.045)),
         ],
       ),
     );

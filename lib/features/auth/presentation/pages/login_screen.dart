@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   maxLength: 32,
                   maxLines: 1,
                   onSubmit: (String value) {
-                         FocusScope.of(context).unfocus();
+                    FocusScope.of(context).unfocus();
                   },
                   prefixIcon: Icons.lock,
                 ),
@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       "Forgot Password?",
                       style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
                         color: MyColors.secondary,
                         fontSize: width * 0.035,
                         fontWeight: FontWeight.w600,
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         isSuccess: true,
                         isWarning: false,
                       );
-                         context.router.replaceAll([GeneralPageRoute()]);
+                      context.router.replaceAll([GeneralPageRoute()]);
                     }
                   },
                   builder: (context, state) {
@@ -150,7 +151,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             FocusScope.of(context).unfocus();
                             context.read<LoginBloc>().add(
                               Login(
-                                email: emailController.text.trim().toLowerCase(),
+                                email:
+                                    emailController.text.trim().toLowerCase(),
                                 password: passController.text,
                               ),
                             );
@@ -166,22 +168,26 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: height * 0.015),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextSpanBottom(
-                actionTitle: "Sign Up",
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  !widget.routedFromRegister
-                      ? context.router.push(RegisterScreenRoute(routedFromLogin: true))
-                      : context.router.pop();
-                },
-                title: "Don't have an account? ",
-              ),
-            ],
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: height * 0.01),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextSpanBottom(
+                  actionTitle: "Sign Up",
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    !widget.routedFromRegister
+                        ? context.router.push(
+                          RegisterScreenRoute(routedFromLogin: true),
+                        )
+                        : context.router.pop();
+                  },
+                  title: "Don't have an account? ",
+                ),
+              ],
+            ),
           ),
         ),
       ),

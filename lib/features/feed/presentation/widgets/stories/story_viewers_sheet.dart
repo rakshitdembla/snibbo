@@ -83,7 +83,7 @@ class SheetHeading extends StatelessWidget {
           toolbarHeight: height * 0.06,
           title: Text(
             "Story Views",
-            style: TextStyle(
+            style: TextStyle(   overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w600,
               fontSize: width * 0.042,
             ),

@@ -40,7 +40,7 @@ class MyMessageWidget extends StatelessWidget {
                         ? Image.network(messageEntity.media!, fit: BoxFit.contain)
                         : Text(
                           messageEntity.text.toString(),
-                          style: TextStyle(color: MyColors.white),
+                          style: TextStyle(   overflow: TextOverflow.ellipsis,color: MyColors.white),
                         ),
               ),
               Padding(
@@ -56,7 +56,7 @@ class MyMessageWidget extends StatelessWidget {
                       DateFormat(
                         'MMM d, yyyy • hh:mm a',
                       ).format(messageEntity.createdAt),
-                      style: TextStyle(
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,
                         color: MyColors.secondaryGrey,
                         fontSize: height * 0.012,
                         fontWeight: FontWeight.w600,

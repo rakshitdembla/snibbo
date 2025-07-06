@@ -64,6 +64,7 @@ class _UserChatTileState extends State<UserChatTile> {
       ),
       child: InkWell(
         onTap: () {
+          FocusScope.of(context).unfocus();
           context.router.push(
             ChatScreenRoute(
               username: user.username,
@@ -90,6 +91,7 @@ class _UserChatTileState extends State<UserChatTile> {
             children: [
               GestureDetector(
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   context.router.push(
                     FetchStoriesLoadingRoute(
                       username: widget.chat.participantInfo.username,
@@ -106,8 +108,10 @@ class _UserChatTileState extends State<UserChatTile> {
                   username: user.username,
                   storySize: 0.075,
                   isAllStoriesViewed:
-                   user.hasActiveStories != false ?   user.isAllStoriesViewed : null,
-                  hasActiveStories: user.hasActiveStories
+                      user.hasActiveStories != false
+                          ? user.isAllStoriesViewed
+                          : null,
+                  hasActiveStories: user.hasActiveStories,
                 ),
               ),
               SizedBox(width: width * 0.02),
@@ -118,8 +122,8 @@ class _UserChatTileState extends State<UserChatTile> {
                     Text(
                       user.username,
                       style: TextStyle(
-                        fontSize: height * 0.016,
                         overflow: TextOverflow.ellipsis,
+                        fontSize: height * 0.016,
                       ),
                     ),
                     SizedBox(height: height * 0.004),
@@ -149,9 +153,9 @@ class _UserChatTileState extends State<UserChatTile> {
                                     ? "Media"
                                     : lastMessage?.text.toString(),
                             style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
                               color: MyColors.grey,
                               fontSize: height * 0.014,
-                              overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
@@ -164,7 +168,10 @@ class _UserChatTileState extends State<UserChatTile> {
               Spacer(),
               Text(
                 ServicesUtils.formattedDate(lastMessage?.createdAt),
-                style: TextStyle(fontSize: height * 0.013),
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  fontSize: height * 0.013,
+                ),
               ),
             ],
           ),

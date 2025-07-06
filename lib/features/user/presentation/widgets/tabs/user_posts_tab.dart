@@ -53,6 +53,7 @@ class _UserPostsTabState extends State<UserPostsTab>
               (context, index) {
                 return GestureDetector(
                   onTap: () {
+                        FocusScope.of(context).unfocus();
                     widget.isUserPosts
                         ? context.router.push(
                           UserPostsViewScreenRoute(

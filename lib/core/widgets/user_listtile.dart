@@ -24,6 +24,7 @@ class UserListTile extends StatelessWidget {
     final height = UiUtils.screenHeight(context);
     return ListTile(
       onTap: () {
+            FocusScope.of(context).unfocus();
         context.router.push(UserProfileScreenRoute(username: user.username));
       },
       minTileHeight: height * 0.08,
@@ -39,11 +40,11 @@ class UserListTile extends StatelessWidget {
       ),
       title: Text(
         user.username,
-        style: TextStyle(fontSize: width * 0.038, fontWeight: FontWeight.w600),
+        style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.038, fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
         user.name,
-        style: TextStyle(fontSize: width * 0.028, fontWeight: FontWeight.w100),
+        style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.028, fontWeight: FontWeight.w100),
       ),
       trailing: PopupMenuButton<String>(
         color: isDark ? MyColors.darkPrimary : MyColors.primary,
@@ -66,7 +67,7 @@ class UserListTile extends StatelessWidget {
               value: 'report',
               child: Text(
                 'Report',
-                style: TextStyle(
+                style: TextStyle(   overflow: TextOverflow.ellipsis,
                   color: isDark ? MyColors.white : MyColors.black,
                 ),
               ),

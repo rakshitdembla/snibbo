@@ -22,7 +22,7 @@ class TextSpanBottom extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           text: title,
-          style: TextStyle(
+          style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontFamily: MyFonts.assetsFontFamily(),
             color: MyColors.grey,
             fontWeight: FontWeight.w600,
@@ -32,7 +32,7 @@ class TextSpanBottom extends StatelessWidget {
             TextSpan(
               recognizer: TapGestureRecognizer()..onTap = onTap,
               text: actionTitle,
-              style: TextStyle(
+              style: TextStyle(   overflow: TextOverflow.ellipsis,
                 fontFamily: MyFonts.assetsFontFamily(),
                 color: MyColors.secondary,
                 fontWeight: FontWeight.w700,

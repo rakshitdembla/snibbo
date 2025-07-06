@@ -50,10 +50,10 @@ class _CommentInputFieldState extends State<CommentInputField> {
                 cursorColor: MyColors.secondaryDense,
                 cursorErrorColor: MyColors.secondaryDense,
                 minLines: 1,
-                style: TextStyle(fontSize: width * 0.035),
+                style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.035),
                 decoration: InputDecoration(
                   hintText: hintText,
-                  hintStyle: TextStyle(
+                  hintStyle: TextStyle(   overflow: TextOverflow.ellipsis,
                     fontSize: height * 0.016,
                     color: MyColors.grey,
                   ),

@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/local_data_manager/profile/user_profile_cleanup.dart';
+import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/circular_progress.dart';
@@ -30,12 +33,30 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   late String? username;
+  bool showAnimation = false;
+
+  Future<void> runAnimation() async {
+    showAnimation = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+
+    await Future.delayed(Duration(milliseconds: 1000));
+
+    showAnimation = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
+
   void getUserProfile() async {
     if (widget.isMyProfile == true) {
       username = await ServicesUtils.getUsername();
     } else {
       username = widget.username;
     }
+
+    runAnimation();
 
     if (mounted) {
       BlocProvider.of<UserProfileBloc>(
@@ -53,6 +74,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.read<ThemeBloc>().state is DarkThemeState;
+    final width = UiUtils.screenWidth(context);
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         if (didPop && widget.username != null) {
@@ -70,6 +92,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             "@${widget.username}",
             style: TextStyle(overflow: TextOverflow.ellipsis),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                runAnimation();
+                BlocProvider.of<UserProfileBloc>(
+                  context,
+                ).add(GetUserProfile(username: username!));
+              },
+              icon:
+                  showAnimation
+                      ? Icon(
+                        CupertinoIcons.arrow_2_circlepath,
+                        size: width * 0.065,
+                        color: isDark ? MyColors.primary : MyColors.darkPrimary,
+                      ).animate().rotate(duration: 1000.ms)
+                      : Icon(
+                        CupertinoIcons.arrow_2_circlepath,
+                        size: width * 0.065,
+                        color: isDark ? MyColors.primary : MyColors.darkPrimary,
+                      ),
+            ),
+          ],
           automaticallyImplyLeading: true,
         ),
         body: SafeArea(

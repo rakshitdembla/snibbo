@@ -78,12 +78,13 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                            FocusScope.of(context).unfocus();
                         context.router.push(UserProfileScreenRoute(
                           username: widget.replyEntity.userId.username));
                       },
                       child: Text(
                         widget.replyEntity.userId.username,
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w600,
                           fontSize: height * 0.012,
                         ),
@@ -91,7 +92,7 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
                     ),
                     Text(
                       "  ${ServicesUtils.toTimeAgo(widget.replyEntity.createdAt)}",
-                      style: TextStyle(
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,
                         color: MyColors.grey,
                         fontWeight: FontWeight.w500,
                         fontSize: height * 0.010,
@@ -109,7 +110,7 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
                 SizedBox(height: height * 0.0015),
                 Text(
                   widget.replyEntity.replyContent,
-                  style: TextStyle(
+                  style: TextStyle(   overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w100,
                     fontSize: height * 0.0135,
                   ),
@@ -216,7 +217,7 @@ class _UserReplyWidgetState extends State<UserReplyWidget> {
                         PostInteractionManager
                             .replyLikeCount[widget.replyEntity.id]
                             .toString(),
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           fontSize: width * 0.023,
                           color: MyColors.grey,
                         ),

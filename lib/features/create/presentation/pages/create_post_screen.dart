@@ -65,6 +65,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     isWarning: false,
                   );
                 } else if (state is CreatePostSuccess) {
+                      FocusScope.of(context).unfocus();
                   UiUtils.showToast(
                     title: state.title,
                     isDark: isDark,
@@ -95,7 +96,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   children: [
                     Text(
                       "Select Image",
-                      style: TextStyle(fontSize: width * 0.036),
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.036),
                     ),
                     SizedBox(height: height * 0.009),
                     InkWell(
@@ -190,7 +191,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     SizedBox(height: height * 0.02),
                     Text(
                       "Add caption",
-                      style: TextStyle(fontSize: width * 0.036),
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.036),
                     ),
                     SizedBox(height: height * 0.009),
                     CaptionsTextField(
@@ -202,6 +203,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ? Center(child: CircularProgressLoading())
                         : ElevatedCTA(
                           onPressed: () {
+                                FocusScope.of(context).unfocus();
                             createPostBloc.add(
                               CreatePost(
                                 caption: captionController.text.trim(),

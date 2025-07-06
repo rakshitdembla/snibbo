@@ -136,9 +136,9 @@ class _FeedScreenState extends State<FeedScreen> {
                       FeedAppBar(navController: widget.navController),
                       //# Success State Handling ->
                       if (state is GetFeedSuccessState) ...[
-                        
+                        SliverToBoxAdapter(
                           //$ Story Pagination BLoc Consumer
-                         BlocConsumer<
+                          child: BlocConsumer<
                             StoryPaginationBloc,
                             StoryPaginationStates
                           >(
@@ -165,7 +165,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               );
                             },
                           ),
-                        
+                        ),
                         //# Feed Posts ->
                         FeedPostsList(controller: controller),
                       ]

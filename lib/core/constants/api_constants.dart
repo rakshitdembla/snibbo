@@ -1,10 +1,10 @@
-import 'dart:io';
-
 class ApiMainUrl {
   ApiMainUrl._();
 
   static String baseUrl =
-      Platform.isAndroid ? "http://10.0.2.2:3000" : "http://172.20.10.8:3000";
+     "http://192.168.31.10:3000";
+  static String baseurl =
+     "https://snibbo-api.onrender.com";
 
   static String url = "$baseUrl/api";
 }

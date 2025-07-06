@@ -33,6 +33,7 @@ class MyStoryWidget extends StatelessWidget {
       padding: EdgeInsets.only(left: width * 0.015),
       child: GestureDetector(
         onTap: () {
+              FocusScope.of(context).unfocus();
           myStoryState.userStories.isNotEmpty ?
           context.router.push(
             StoryViewScreenRoute(
@@ -87,6 +88,7 @@ class MyStoryWidget extends StatelessWidget {
                               )
                               : GestureDetector(
                                 onTap: () {
+                                      FocusScope.of(context).unfocus();
                                   CreateStorySheet.show(
                                     context: context,
                                     isDark: isDark,
@@ -110,7 +112,7 @@ class MyStoryWidget extends StatelessWidget {
             ),
             Text(
               username,
-              style: TextStyle(
+              style: TextStyle(   overflow: TextOverflow.ellipsis,
                 fontSize: height * 0.013,
                 color: isDark ? MyColors.darkRefresh : const Color.fromARGB(255, 85, 85, 85),
               ),

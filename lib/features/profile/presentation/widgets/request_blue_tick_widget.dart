@@ -30,6 +30,7 @@ class RequestBlueTickWidget extends StatelessWidget {
         SizedBox(height: height * 0.01),
         GestureDetector(
           onTap: () {
+                FocusScope.of(context).unfocus();
             UiUtils.showToast(
               title: "Feature Coming Soon",
               description:

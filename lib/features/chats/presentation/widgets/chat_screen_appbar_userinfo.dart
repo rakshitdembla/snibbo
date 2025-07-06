@@ -26,7 +26,7 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
         children: [
           Text(
             username,
-            style: TextStyle(
+            style: TextStyle(   overflow: TextOverflow.ellipsis,
               fontSize: height * 0.016,
               color: MyColors.white,
             ),
@@ -44,7 +44,7 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
                 if (isTyping && isSameRoom) {
                   return Text(
                     "Typing...",
-                    style: TextStyle(
+                    style: TextStyle(   overflow: TextOverflow.ellipsis,
                       color: MyColors.white,
                       fontWeight: FontWeight.w400,
                       fontSize: height * 0.013,
@@ -57,7 +57,7 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
                         : lastSeen != null && lastSeen!.isNotEmpty
                         ? "last seen $lastSeen"
                         : "",
-                    style: TextStyle(
+                    style: TextStyle(   overflow: TextOverflow.ellipsis,
                       color: MyColors.white,
                       fontWeight: FontWeight.w400,
                       fontSize: height * 0.013,
@@ -71,7 +71,7 @@ class ChatScreenAppbarUserinfo extends StatelessWidget {
                     : lastSeen != null && lastSeen!.isNotEmpty
                     ? "last seen $lastSeen"
                     : "",
-                style: TextStyle(
+                style: TextStyle(   overflow: TextOverflow.ellipsis,
                   color: MyColors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: height * 0.013,

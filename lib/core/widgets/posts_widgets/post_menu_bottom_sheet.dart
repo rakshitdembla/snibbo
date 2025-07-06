@@ -34,6 +34,7 @@ class PostMenuBottomSheet {
               children: [
                 PostMenuSheetContainer._(
                   onTap: () {
+                        FocusScope.of(context).unfocus();
                     Navigator.pop(context);
                     ServicesUtils.copyLink(
                       uniqueID: postId,
@@ -50,6 +51,7 @@ class PostMenuBottomSheet {
                 ),
                 PostMenuSheetContainer._(
                   onTap: () {
+                        FocusScope.of(context).unfocus();
                     Navigator.pop(context);
                     ServicesUtils.openEmailApp(
                       reportFor: "post",
@@ -67,6 +69,7 @@ class PostMenuBottomSheet {
                 ),
                 PostMenuSheetContainer._(
                   onTap: () {
+                        FocusScope.of(context).unfocus();
                        Navigator.pop(context);
                     ServicesUtils.openEmailApp(
                       reportFor: "",
@@ -128,7 +131,7 @@ class PostMenuSheetContainer extends StatelessWidget {
             SizedBox(height: height * (0.002)),
             Text(
               text,
-              style: TextStyle(
+              style: TextStyle(   overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.w500,
                 fontSize: height * 0.014,
                 color: color,

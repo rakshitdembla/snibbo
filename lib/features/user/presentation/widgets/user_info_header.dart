@@ -59,8 +59,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
               ),
               Padding(
                 padding: EdgeInsets.only(left: width * 0.04),
-                child: SizedBox(
-                  height: height * 0.085,
+                child: IntrinsicHeight(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -68,7 +67,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                         padding: EdgeInsets.only(left: width * 0.006),
                         child: Text(
                           profile.name,
-                          style: TextStyle(
+                          style: TextStyle(   overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w600,
                             fontSize: width * 0.035,
                           ),
@@ -87,6 +86,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                             ),
                             SocialStatsWidget(
                               onTap: () {
+                                    FocusScope.of(context).unfocus();
                                 context.router.push(
                                   UserConnectionsScreenRoute(
                                     username: profile.username,
@@ -99,6 +99,7 @@ class _UserInfoHeaderState extends State<UserInfoHeader> {
                             ),
                             SocialStatsWidget(
                               onTap: () {
+                                    FocusScope.of(context).unfocus();
                                 context.router.push(
                                   UserConnectionsScreenRoute(
                                     username: profile.username,

@@ -36,14 +36,14 @@ class UiUtils {
       autoCloseDuration: const Duration(seconds: 3),
       title: Text(
         title,
-        style: TextStyle(
+        style: TextStyle(   overflow: TextOverflow.ellipsis,
           color: isDark ? MyColors.white : MyColors.black,
           fontSize: width * 0.04,
         ),
       ),
       description: Text(
         description,
-        style: TextStyle(color: MyColors.grey, fontSize: width * 0.03),
+        style: TextStyle(   overflow: TextOverflow.ellipsis,color: MyColors.grey, fontSize: width * 0.03),
       ),
       alignment: Alignment.bottomCenter,
       direction: TextDirection.ltr,

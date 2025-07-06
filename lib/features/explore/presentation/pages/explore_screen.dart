@@ -79,7 +79,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ),
                       title: Text(
                         "Search",
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           color: MyColors.grey,
                           fontSize: height * 0.02,
                         ),

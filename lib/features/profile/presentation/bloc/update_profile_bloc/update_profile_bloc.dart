@@ -17,9 +17,9 @@ class UpdateProfileBloc extends Bloc<UpdateProfileEvent, UpdateProfileState> {
     on<SubmitProfileUpdate>((event, emit) async {
       emit(UpdateProfileLoading());
 
-      final String username = event.username;
-      final String name = event.name;
-      final String bio = event.bio;
+      final String username = event.username.trim();
+      final String name = event.name.trim();
+      final String bio = event.bio.trim();
       final File? updatedProfile = event.updatedProfile;
       String? profileUrl;
 
@@ -33,6 +33,7 @@ class UpdateProfileBloc extends Bloc<UpdateProfileEvent, UpdateProfileState> {
         return;
       }
 
+      // Name validation
       if (name.length < 2) {
         emit(
           UpdateProfileError(
@@ -41,8 +42,25 @@ class UpdateProfileBloc extends Bloc<UpdateProfileEvent, UpdateProfileState> {
           ),
         );
         return;
+      } else if (name.length > 30) {
+        emit(
+          UpdateProfileError(
+            title: "Name Too Long",
+            description: "Name must not exceed 30 characters.",
+          ),
+        );
+        return;
+      } else if (!ServicesUtils.nameValidator(name)) {
+        emit(
+          UpdateProfileError(
+            title: "Invalid Name",
+            description: "Name cannot contain numbers or special characters.",
+          ),
+        );
+        return;
       }
 
+      // Username validation
       if (username.length < 4) {
         emit(
           UpdateProfileError(
@@ -51,7 +69,25 @@ class UpdateProfileBloc extends Bloc<UpdateProfileEvent, UpdateProfileState> {
           ),
         );
         return;
+      } else if (username.length > 20) {
+        emit(
+          UpdateProfileError(
+            title: "Username Too Long",
+            description: "Username must not exceed 20 characters.",
+          ),
+        );
+        return;
+      } else if (!ServicesUtils.usernameValidator(username)) {
+        emit(
+          UpdateProfileError(
+            title: "Invalid Username",
+            description:
+                "Username cannot contain spaces or special characters.",
+          ),
+        );
+        return;
       }
+
       if (updatedProfile != null) {
         final fileLength = await updatedProfile.length();
         if (fileLength > 2000000) {
@@ -98,14 +134,15 @@ class UpdateProfileBloc extends Bloc<UpdateProfileEvent, UpdateProfileState> {
         final context = event.context;
 
         if (context.mounted) {
-                          BlocProvider.of<UserProfileBloc>(
-                    context,
-                  ).add(GetUserProfile(username: username));
-                  context.router.pop();
+          BlocProvider.of<UserProfileBloc>(
+            context,
+          ).add(GetUserProfile(username: username));
+          context.router.pop();
         }
         await Future.delayed(1.seconds);
         emit(
           UpdateProfileSuccess(
+            username: event.username.trim(),
             title: "Profile Updated",
             description:
                 message ?? "Your profile has been successfully updated.",

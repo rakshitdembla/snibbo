@@ -37,7 +37,7 @@ class MiniElevatedCTA extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           buttonName,
-          style: TextStyle(
+          style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontFamily: MyFonts.assetsFontFamily(),
             fontWeight: FontWeight.w500,
             fontSize: height * 0.0145,

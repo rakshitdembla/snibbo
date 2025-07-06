@@ -23,6 +23,7 @@ import 'package:snibbo_app/core/widgets/posts_widgets/post_menu_bottom_sheet.dar
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_bloc.dart';
 import 'package:snibbo_app/features/settings/presentation/bloc/theme_states.dart';
 import 'package:snibbo_app/presentation/routes/auto_route.gr.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PostWidget extends StatefulWidget {
   final PostEntity postEntity;
@@ -89,6 +90,7 @@ class _PostWidgetState extends State<PostWidget> {
               ),
               GestureDetector(
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   context.router.push(
                     UserProfileScreenRoute(
                       username: widget.postEntity.userId.username,
@@ -114,6 +116,7 @@ class _PostWidgetState extends State<PostWidget> {
                         : Text(
                           postUser.name,
                           style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
                             fontSize: width * 0.033,
                             fontWeight: FontWeight.w700,
                           ),
@@ -138,6 +141,7 @@ class _PostWidgetState extends State<PostWidget> {
                         : Text(
                           postUser.username,
                           style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
                             fontSize: width * 0.030,
                             color: MyColors.grey,
                             fontWeight: FontWeight.w500,
@@ -202,28 +206,17 @@ class _PostWidgetState extends State<PostWidget> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Image.network(
-                post.postContent,
+              CachedNetworkImage(
+                imageUrl: post.postContent,
                 width: width,
-                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                  if (wasSynchronouslyLoaded || frame != null) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (mounted) {
-                        setState(() {
-                          showShimmer = false;
-                        });
-                      }
-                    });
-                    return child;
-                  } else {
-                    return SizedBox(
-                      width: double.infinity,
-                      height: height * 0.3,
-                      child: UiUtils.showShimmer(),
-                    );
-                  }
+                placeholder: (context, url) {
+                  return SizedBox(
+                    width: double.infinity,
+                    height: height * 0.3,
+                    child: UiUtils.showShimmer(),
+                  );
                 },
-                errorBuilder: (context, error, stackTrace) {
+                errorWidget: (context, url, error) {
                   return Container(
                     alignment: Alignment.center,
                     width: width,
@@ -240,6 +233,20 @@ class _PostWidgetState extends State<PostWidget> {
                         ),
                       ],
                     ),
+                  );
+                },
+                imageBuilder: (context, imageProvider) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {
+                        showShimmer = false;
+                      });
+                    }
+                  });
+                  return Image(
+                    image: imageProvider,
+                    width: width,
+                    fit: BoxFit.cover, // adjust if needed
                   );
                 },
               ),
@@ -285,7 +292,11 @@ class _PostWidgetState extends State<PostWidget> {
               SizedBox(height: height * 0.0020),
               Text(
                 ServicesUtils.toTimeAgo(post.createdAt),
-                style: TextStyle(color: MyColors.grey, fontSize: width * 0.028),
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  color: MyColors.grey,
+                  fontSize: width * 0.028,
+                ),
               ),
             ],
           ),

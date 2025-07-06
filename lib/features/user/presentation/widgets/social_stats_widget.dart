@@ -15,11 +15,11 @@ class SocialStatsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(count,style: TextStyle(
+          Text(count,style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.w600,
             fontSize: width * 0.04
           ),),
-          Text(title,style: TextStyle(
+          Text(title,style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.w500,
             fontSize: width * 0.03
           ),),

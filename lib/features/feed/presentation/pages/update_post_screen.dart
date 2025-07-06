@@ -194,7 +194,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Post Image", style: TextStyle(fontSize: width * 0.036)),
+                  Text("Post Image", style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.036)),
                   SizedBox(height: height * 0.009),
                   Container(
                     width: double.infinity,
@@ -217,7 +217,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                     ),
                   ),
                   SizedBox(height: height * 0.02),
-                  Text("Caption", style: TextStyle(fontSize: width * 0.036)),
+                  Text("Caption", style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.036)),
                   SizedBox(height: height * 0.009),
                   CaptionsTextField(
                     captionController: captionController,

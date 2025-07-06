@@ -78,7 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: Text(
           "My Profile",
-          style: TextStyle(
+          style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.w700,
             fontSize: height * 0.021,
           ),
@@ -134,7 +134,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
                 child: Text(
                   "Edit picture",
-                  style: TextStyle(
+                  style: TextStyle(   overflow: TextOverflow.ellipsis,
                     fontSize: width * 0.03,
                     color: const Color.fromARGB(255, 77, 86, 255),
                     fontWeight: FontWeight.w400,
@@ -194,7 +194,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsetsGeometry.only(right: width * 0.001,top: height * 0.002),
-                    child: Text("Max 4 lines allowed!",style: TextStyle(
+                    child: Text("Max 4 lines allowed!",style: TextStyle(   overflow: TextOverflow.ellipsis,
                       color: MyColors.grey,
                       fontSize: height * 0.013
                     ),),

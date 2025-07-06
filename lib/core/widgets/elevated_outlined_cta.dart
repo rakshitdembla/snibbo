@@ -42,7 +42,7 @@ class ElevatedOutlinedCTA extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           buttonName,
-          style: TextStyle(
+          style: TextStyle(   overflow: TextOverflow.ellipsis,
             fontFamily: MyFonts.assetsFontFamily(),
             color: isDark ? MyColors.white : MyColors.black,
             fontWeight: isShort ? FontWeight.w600 : FontWeight.w600,

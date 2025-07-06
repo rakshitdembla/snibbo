@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/services_utils.dart';
@@ -31,6 +33,22 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen> {
   String? username;
+  bool usernameInitialized = false;
+  bool showAnimation = false;
+
+  Future<void> runAnimation() async {
+    showAnimation = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+
+    await Future.delayed(Duration(milliseconds: 1000));
+
+    showAnimation = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
 
   void initialize() async {
     username = await ServicesUtils.getUsername();
@@ -39,7 +57,8 @@ class ProfileScreenState extends State<ProfileScreen> {
         context,
       ).add(GetUserProfile(username: username!));
     }
-    setState(() {});
+    usernameInitialized = true;
+    runAnimation();
   }
 
   @override
@@ -55,7 +74,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     return BlocListener<UpdateProfileBloc, UpdateProfileState>(
       listener: (context, state) async {
         if (state is UpdateProfileSuccess) {
-          username = await ServicesUtils.getUsername();
+          username = state.username;
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             setState(() {});
@@ -63,7 +82,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         }
       },
       child:
-          username == null
+          usernameInitialized == false
               ? Container(
                 color: isDark ? MyColors.darkPrimary : MyColors.primary,
                 child: Center(child: CircularProgressLoading()),
@@ -77,6 +96,32 @@ class ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(overflow: TextOverflow.ellipsis),
                     ),
                     actions: [
+                      IconButton(
+                        onPressed: () {
+                          runAnimation();
+                          BlocProvider.of<UserProfileBloc>(
+                            context,
+                          ).add(GetUserProfile(username: username!));
+                        },
+                        icon:
+                            showAnimation
+                                ? Icon(
+                                  CupertinoIcons.arrow_2_circlepath,
+                                  size: width * 0.065,
+                                  color:
+                                      isDark
+                                          ? MyColors.primary
+                                          : MyColors.darkPrimary,
+                                ).animate().rotate(duration: 1000.ms)
+                                : Icon(
+                                  CupertinoIcons.arrow_2_circlepath,
+                                  size: width * 0.065,
+                                  color:
+                                      isDark
+                                          ? MyColors.primary
+                                          : MyColors.darkPrimary,
+                                ),
+                      ),
                       IconButton(
                         onPressed: () {
                           context.router.push(SettingsScreenRoute());

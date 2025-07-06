@@ -14,10 +14,12 @@ class UpdateProfileLoading extends UpdateProfileState {}
 class UpdateProfileSuccess extends UpdateProfileState {
   final String title;
   final String description;
+  final String username;
 
   const UpdateProfileSuccess({
     required this.title,
     required this.description,
+    required this.username
   });
 
   @override

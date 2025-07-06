@@ -173,9 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     emailController.text.trim().toLowerCase(),
                                 password: passController.text,
                                 name: nameController.text.trim(),
-                                username:
-                                    usernameController.text
-                                        .toLowerCase(),
+                                username: usernameController.text.toLowerCase(),
                               ),
                             );
                           },
@@ -189,24 +187,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: height * 0.015),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextSpanBottom(
-                actionTitle: "Log In",
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  !widget.routedFromLogin
-                      ? context.router.push(
-                        LoginScreenRoute(routedFromRegister: true),
-                      )
-                      : context.router.pop();
-                },
-                title: "Already have an account? ",
-              ),
-            ],
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: height * 0.01),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextSpanBottom(
+                  actionTitle: "Log In",
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    !widget.routedFromLogin
+                        ? context.router.push(
+                          LoginScreenRoute(routedFromRegister: true),
+                        )
+                        : context.router.pop();
+                  },
+                  title: "Already have an account? ",
+                ),
+              ],
+            ),
           ),
         ),
       ),

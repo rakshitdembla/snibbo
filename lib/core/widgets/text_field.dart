@@ -49,7 +49,7 @@ class _MyTextFieldState extends State<MyTextField> {
           padding: EdgeInsets.only(left: width * 0.0040),
           child: Text(
             widget.label,
-            style: TextStyle(
+            style: TextStyle(   overflow: TextOverflow.ellipsis,
               color: MyColors.grey,
               fontWeight: FontWeight.w600,
               fontSize: width * 0.035,
@@ -65,7 +65,7 @@ class _MyTextFieldState extends State<MyTextField> {
             cursorErrorColor: MyColors.secondaryDense,
             controller: widget.textEditingController,
             focusNode: widget.focusNode,
-            style: TextStyle(
+            style: TextStyle(   overflow: TextOverflow.ellipsis,
               color: isDark ? MyColors.white : MyColors.grey,
               fontWeight: FontWeight.w500,
               fontSize: height * 0.02,
@@ -81,7 +81,7 @@ class _MyTextFieldState extends State<MyTextField> {
                 horizontal: width * 0.02,
               ),
               hintText: widget.hintText,
-              hintStyle: TextStyle(
+              hintStyle: TextStyle(   overflow: TextOverflow.ellipsis,
                 color: MyColors.lowOpacitySecondary,
                 fontWeight: FontWeight.w400,
                 fontSize: height * 0.02,

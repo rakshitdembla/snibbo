@@ -101,7 +101,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                           },
                           child: Text(
                             widget.commentEntity.userId.username,
-                            style: TextStyle(
+                            style: TextStyle(   overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.w600,
                               fontSize: height * 0.013,
                             ),
@@ -110,7 +110,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                         // -> When comment was created
                         Text(
                           "  ${ServicesUtils.toTimeAgo(widget.commentEntity.createdAt)}",
-                          style: TextStyle(
+                          style: TextStyle(   overflow: TextOverflow.ellipsis,
                             color: MyColors.grey,
                             fontWeight: FontWeight.w500,
                             fontSize: height * 0.011,
@@ -129,7 +129,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                     // -> Main comment content
                     Text(
                       widget.commentEntity.commentContent,
-                      style: TextStyle(
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,
                         fontWeight: FontWeight.w100,
                         fontSize: height * 0.0145,
                       ),
@@ -144,7 +144,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                       },
                       child: Text(
                         "Reply",
-                        style: TextStyle(
+                        style: TextStyle(   overflow: TextOverflow.ellipsis,
                           color: MyColors.grey,
                           fontWeight: FontWeight.w400,
                           fontSize: height * 0.012,
@@ -270,7 +270,7 @@ class _UserCommentWidgetState extends State<UserCommentWidget> {
                             PostInteractionManager
                                 .commentLikeCount[widget.commentEntity.id]
                                 .toString(),
-                            style: TextStyle(
+                            style: TextStyle(   overflow: TextOverflow.ellipsis,
                               fontSize: width * 0.025,
                               color: MyColors.grey,
                             ),

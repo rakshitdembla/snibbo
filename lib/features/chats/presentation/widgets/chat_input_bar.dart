@@ -59,7 +59,7 @@ class ChatInputBar extends StatelessWidget {
                           chatId: chatId,
                         );
                       },
-                      style: TextStyle(
+                      style: TextStyle(   overflow: TextOverflow.ellipsis,
                         fontSize: height * 0.018,
                         color: MyColors.black,
                       ),

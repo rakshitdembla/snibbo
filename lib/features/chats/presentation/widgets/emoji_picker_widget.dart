@@ -22,7 +22,7 @@ class EmojiPickerWidget extends StatelessWidget {
           
         ),
         height: height * 0.34,
-        emojiTextStyle: TextStyle(fontSize: height * 0.035),
+        emojiTextStyle: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: height * 0.035),
       ),
     );
   }

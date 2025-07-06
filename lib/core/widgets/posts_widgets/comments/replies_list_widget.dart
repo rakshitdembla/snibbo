@@ -148,7 +148,7 @@ class _RepliesListWidgetState extends State<RepliesListWidget> {
                                   ? "- view replies"
                                   : "- view replies (${initialRepliesLength - allReplies.length})"
                               : "- hide replies",
-                          style: TextStyle(
+                          style: TextStyle(   overflow: TextOverflow.ellipsis,
                             color:
                                 isDark
                                     ? MyColors.darkRefresh
@@ -162,8 +162,8 @@ class _RepliesListWidgetState extends State<RepliesListWidget> {
                               padding: EdgeInsets.only(left: width * 0.01),
                               child: Center(
                                 child: CircularProgressLoading(
-                                  androidScaleSize: width * 0.0006,
-                                  iosScaleSize: width * 0.001,
+                                  androidScaleSize: width * 0.0007,
+                                  iosScaleSize: width * 0.002,
                                 ),
                               ),
                             )

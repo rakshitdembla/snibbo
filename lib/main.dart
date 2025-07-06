@@ -58,9 +58,11 @@ import 'package:snibbo_app/presentation/routes/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snibbo_app/service_locator.dart';
 import 'package:toastification/toastification.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -176,6 +178,7 @@ void main() async {
       child: ToastificationWrapper(child: MyApp()),
     ),
   );
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {

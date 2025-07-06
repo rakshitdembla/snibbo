@@ -42,9 +42,8 @@ class _OnboardScreenState extends State<OnboardScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: height * 0.7,
+                height: height * 0.695,
                 width: width,
-
                 child: PageView(
                   onPageChanged: (value) {
                     index = value;
@@ -123,7 +122,9 @@ class _OnboardScreenState extends State<OnboardScreen> {
               ElevatedCTA(
                 onPressed: () {
                   if (index == 2) {
-                    context.router.push(RegisterScreenRoute(routedFromLogin: false));
+                    context.router.push(
+                      RegisterScreenRoute(routedFromLogin: false),
+                    );
                   } else {
                     pageController.animateToPage(
                       duration: const Duration(milliseconds: 300),
@@ -138,17 +139,29 @@ class _OnboardScreenState extends State<OnboardScreen> {
               SizedBox(height: height * 0.015),
               ElevatedOutlinedCTA(
                 onPressed: () {
-                  context.router.push(RegisterScreenRoute(routedFromLogin: false));
+                  context.router.push(
+                    RegisterScreenRoute(routedFromLogin: false),
+                  );
                 },
                 buttonName: "Skip",
                 isShort: false,
               ),
-
-              SizedBox(height: height * 0.03),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: height * 0.01),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               TextSpanBottom(
                 actionTitle: " Log In",
                 onTap: () {
-                  context.router.push(LoginScreenRoute(routedFromRegister: false));
+                  context.router.push(
+                    LoginScreenRoute(routedFromRegister: false),
+                  );
                 },
                 title: "Already have an account?",
               ),

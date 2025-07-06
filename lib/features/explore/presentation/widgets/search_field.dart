@@ -36,7 +36,7 @@ class SearchField extends StatelessWidget {
         cursorErrorColor: MyColors.grey,
         controller: textEditingController,
         focusNode: focusNode,
-        style: TextStyle(
+        style: TextStyle(   overflow: TextOverflow.ellipsis,
           color: isDark ? MyColors.white : MyColors.black,
           fontWeight: FontWeight.w500,
           fontSize: isMini ? height * 0.0165 : height * 0.0165,
@@ -44,7 +44,7 @@ class SearchField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: TextStyle(   overflow: TextOverflow.ellipsis,
             color: MyColors.lowOpacitySecondary,
             fontWeight: FontWeight.w500,
             fontSize: isMini ? height * 0.0139 : height * 0.0148,

@@ -20,7 +20,7 @@ class MyListtile extends StatelessWidget {
       contentPadding: EdgeInsets.symmetric(horizontal: width * 0.035),
       leading: Text(
         leadingTitle,
-        style: TextStyle(fontSize: width * 0.045, fontWeight: FontWeight.w600),
+        style: TextStyle(   overflow: TextOverflow.ellipsis,fontSize: width * 0.045, fontWeight: FontWeight.w600),
       ),
       trailing: trailingWidget,
     );
