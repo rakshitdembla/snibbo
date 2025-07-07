@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:snibbo_app/core/constants/myassets.dart';
+import 'package:snibbo_app/core/local_data_manager/clean_local_data.dart';
 import 'package:snibbo_app/core/theme/mycolors.dart';
 import 'package:snibbo_app/core/utils/ui_utils.dart';
 import 'package:snibbo_app/core/widgets/elevated_cta.dart';
@@ -22,6 +23,12 @@ class OnboardScreen extends StatefulWidget {
 
 class _OnboardScreenState extends State<OnboardScreen> {
   PageController pageController = PageController();
+
+  @override
+  void initState() {
+    CleanLocalData.clearAllLocalData();
+    super.initState();
+  }
 
   @override
   void dispose() {
